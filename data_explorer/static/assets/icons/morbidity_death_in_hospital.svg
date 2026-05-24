@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.69 56.69">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #bbd2df;
+      }
+
+      .cls-3, .cls-4 {
+        fill: none;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: .78px;
+      }
+
+      .cls-3, .cls-5 {
+        stroke: #8bb4c9;
+      }
+
+      .cls-4, .cls-6 {
+        stroke: #bbd2df;
+      }
+
+      .cls-7 {
+        fill: #8bb4c9;
+      }
+
+      .cls-8, .cls-5, .cls-6 {
+        fill: #296991;
+      }
+    </style>
+  </defs>
+  <rect class="cls-1" x="0" y="0" width="56.69" height="56.69" rx="3.5" ry="3.5"/>
+  <g>
+    <rect class="cls-7" x="12.91" y="4.93" width="30.88" height="43.46" rx="3.97" ry="3.97" transform="translate(55.01 -1.68) rotate(90)"/>
+    <rect class="cls-8" x="8.42" y="13.03" width="39.86" height="27.27" rx="2.17" ry="2.17"/>
+    <g>
+      <g>
+        <polyline class="cls-4" points="12.2 26.42 13.33 26.42 13.91 25.06 14.74 28.14 15.66 23.39 16.42 26.42"/>
+        <polyline class="cls-4" points="16.42 26.42 18.55 26.42 19.13 25.06 19.97 28.14 20.88 23.39 21.64 26.42 42.73 26.42"/>
+      </g>
+      <path class="cls-3" d="M17.97,34.03c.33,0,.63-.22.72-.54.25-.87.84-2.49,1.73-2.49s1.38.81,1.61,1.69c.09.33.38.57.73.57h19.98"/>
+      <path class="cls-3" d="M11.96,33.26h1.17c.33,0,.63-.22.72-.54.25-.87.84-1.71,1.73-1.71s1.38,1.58,1.61,2.46c.09.33.38.57.73.57"/>
+    </g>
+    <g id="Artwork_64x64" data-name="Artwork 64x64">
+      <path class="cls-2" d="M44.7,16.43c-.6-.69-1.64-.76-2.33-.17-.04.03-.07.07-.11.1l-.27.26s-.05.02-.06,0h0s-.3-.3-.3-.3c-.64-.64-1.67-.64-2.3,0h0c-.64.64-.64,1.67,0,2.3,0,0,0,0,0,0l2.32,2.32c.18.18.46.18.64,0l2.32-2.32c.6-.6.64-1.56.09-2.2Z"/>
+    </g>
+    <rect class="cls-2" x="24.92" y="42.1" width="6.85" height="3.99"/>
+    <rect class="cls-7" x="10.2" y="46.09" width="36.41" height="1.38" rx=".69" ry=".69"/>
+    <circle class="cls-6" cx="42.73" cy="26.42" r=".9"/>
+    <circle class="cls-5" cx="42.73" cy="33.27" r=".9"/>
+  </g>
+</svg>

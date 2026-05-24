@@ -1,0 +1,432 @@
+<!-- prettier-ignore -->
+{% import "macros/accordion.html" as acc %}
+{% import "macros/image.html" as image %}
+{% import "macros/buttons.html" as btn %}
+{% import "macros/cards.html" as cards %}
+{% import "macros/external_link.html" as link %}
+{% set title = "Air pollution" %}
+{% set topic_id = "air-pollution" %}
+{# TITLE #}
+<h1 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h1>
+{# INTRO PARAGRAPH #}
+<p class="ons-u-fs-r">
+  The interplay between climate change and air pollution presents a pressing global health hazard
+  with far-reaching implications for human well-being and environmental sustainability. The health
+  impacts of air pollution by climate change are extensive and multifaceted, impacting individuals
+  in both the short-term and long-term, encompassing a range of acute and chronic conditions.
+</p>
+{# INFO PANEL TOP #}
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      This topic area aims to quantify the short-term health impacts of particulate matter (PM2.5)
+      on all-cause mortality.
+    </p>
+  </div>
+</div>
+{# BUTTONS ONE (TOPIC INTRO, METHODOLOGY, METADATA) #}
+<!-- prettier-ignore -->
+{% set buttons = [
+  {
+    "text": "Topic Introduction",
+    "href": "https://doi.org/10.5281/zenodo.14884211",
+    "classes": ""
+  },
+  {
+    "text": "Methodology",
+    "href": "https://doi.org/10.5281/zenodo.15585042",
+    "classes": "ons-btn--secondary"
+  },
+  {
+    "text": "Metadata",
+    "href": "https://doi.org/10.5281/zenodo.15585284",
+    "classes": ""
+  }
+] %}
+<div
+  class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1"
+>
+  {% for button in buttons %}
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.external(button.text, button.href, button.classes) }}
+  </div>
+  {% endfor %}
+</div>
+{# ACCORDION ONE #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-one",
+group=topic_id ~ "-accordion",) }}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 1, "Impact Pathway", title_level=3) %}
+  {{ image.image(image_name='framework-air-pollution.png', width='100%', alt="Diagram showing pathways between climate change and air pollution related health impacts. At the top left, climate drivers and hazards include rising temperature, extreme weather events such as storms, floods, droughts, alongside increased air pollution driven by population mobility, urbanisation and changing human behaviours. At the top right, exposure and vulnerability include higher exposure in urban areas dud to population density as well as socioeconomic and demographic factors such as age, economic status and pre-existing health conditions. These factors interact and flow downward toward physiological impacts and health outcomes. Physiological impacts include dehydration, increased heat stress, cardiovascular strain, and higher infection risk. Health outcomes include acute and chronic respiratory and cardiovascular diseases, aggravated allergies and  increased premature mortality. Adaptation and mitigation measures—such as strengthened air quality monitoring, targeted public health interventions, ecosystem-based mitigation strategies and forestation—are shown intervening to reduce negative impacts.") }}
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicators", title_level=3) %}
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      The priority indicator for the health effects of air pollution topic is all-cause mortality
+      attributable to short-term exposure to outdoor PM2.5
+    </p>
+  </div>
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">
+  It was agreed to prioritise this indicator as they can provide regular, reliable, and comparable
+  data to monitor climate-related health impacts using state-of-the-art statistical methods.
+</p>
+<p class="ons-u-fs-r">
+  Further justification for the focus on this indicator is explained in the Topic introduction,
+  which also outlines supplementary and additional indicators that are not in scope for the current
+  SOSCHI framework but are recommended for future development.
+</p>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      Number of all-cause deaths attributable to short-term outdoor PM2.5 exposure
+    </p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      Relative risk of mortality associated with short-term outdoor PM2.5 exposure
+    </p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      All-cause mortality rate per 100,000 population attributable to short-term outdoor PM2.5
+      exposure
+    </p>
+  </div>
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">
+  For guidance on the process for calculating these indicator metrics, see the Methodology section
+  below.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 3, "Policy Relevance", title_level=3) %}
+<p class="ons-u-fs-r">
+  This indicator provides insights into how climate-related changes — particularly fine particulate
+  matter (PM2.5)— affect air pollution health outcomes across regions and groups.
+</p>
+<p class="ons-u-fs-r">
+  While air pollution is influenced by many factors beyond climate alone, PM2.5 is a
+  well-established and sensitive marker of air quality-related health risk that is widely measured
+  across countries and contexts. Estimating mortality attributable to PM2.5 helps quantify the
+  immediate health burden of air pollution and provides evidence to support air quality regulations,
+  emergency response planning, and public health interventions.
+</p>
+<p class="ons-u-fs-r--b">This indicator can therefore:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    Monitor and quantify health impacts associated with climate-sensitive air pollution exposures
+  </li>
+  <li class="ons-list__item list-disc">
+    Inform national adaptation plans (NAPs) and resilience strategies
+  </li>
+  <li class="ons-list__item list-disc">
+    Guide environmental and public health policy, including air quality regulation and health
+    protection measures
+  </li>
+</ul>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 4, "Methodology", title_level=3) %}
+<p class="ons-u-fs-r">
+  The indicator estimates short-term health effects associated with outdoor PM2.5 exposure using a
+  Generalised Additive Model (GAM), with parameters estimated by Restricted Maximum Likelihood
+  (REML). The model adjusts for key confounders such as temperature, precipitation, humidity and
+  wind speed, thereby isolating the specific influence of PM2.5. Lag terms are incorporated to
+  account for the possibility that mortality may be influenced not only by same-day exposure but
+  also by exposures on preceding days. This approach allows the model to capture both immediate and
+  delayed health effects, providing a comprehensive assessment of the potential lagged impact of
+  PM2.5 on all-cause mortality. Estimates are first generated at the sub-national level and
+  subsequently aggregated to produce national totals.
+</p>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Understand the method</h5>
+    <p class="ons-u-fs-r">
+      Read the {{ link.external_link('https://doi.org/10.5281/zenodo.15585042', 'Air pollution:
+      methodology') }} for details on the modelling approach, the data needed, and guidance on
+      interpreting results.
+    </p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Develop bespoke analyses</h5>
+    <p class="ons-u-fs-r">
+      For flexible, reproducible analysis or to adapt methods to your country or region, use the
+      Code Library and R package, which provides program code for the priority indicators.
+    </p>
+  </div>
+</div>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 5, "Data Requirements and Guidance", title_level=3) %}
+<p class="ons-u-fs-r--b">The following data is needed for this indicator production:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    Daily all-cause mortality data from national administrative records and civil registration
+    records.
+  </li>
+  <li class="ons-list__item list-disc">Climate data from the National Meteorological Agency.</li>
+  <li class="ons-list__item list-disc">
+    Population estimates are obtained from national statistical agencies.
+  </li>
+</ul>
+<p class="ons-u-fs-r ons-u-mt-m">
+  Where this data is unavailable or observations are incomplete, proxy datasets may be used. Further
+  information on these potential sources as well as required variable names and formats are outlined
+  in section 2 of the {{ link.external_link('https://doi.org/10.5281/zenodo.15585042', 'Air
+  pollution: methodology') }}
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}
+{# BUTTONS TWO (CODE LIBRARY, INDICATOR TOOLS) #}
+<div
+  class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1"
+>
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.external('Code Library', 'https://github.com/onssoschi/climatehealth') }}
+  </div>
+</div>
+{# ACCORDION TWO #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-two",
+group=topic_id ~ "-accordion-two",
+toggle_text_open="Show all FAQs",
+toggle_text_close="Hide all FAQs") }}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 1, "What does all-cause mortality mean?", title_level=3) %}
+<p class="ons-u-fs-r">
+  All-cause mortality refers to the total number of deaths in a population from any cause, without
+  distinguishing between specific diseases or conditions. It provides a broad measure of overall
+  population health.
+</p>
+<p class="ons-u-fs-r">
+  In the context of this topic, all-cause mortality is used because air pollution can contribute to
+  deaths through multiple pathways, most commonly cardiovascular and respiratory conditions.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "What does “short-term exposure” to outdoor PM2.5 mean?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Short-term exposure refers to exposure to outdoor PM2.5 concentrations over a period of days,
+  rather than months or years. Daily PM2.5 levels are analysed, and their effects on mortality are
+  assessed for the same day and up to 14 previous days using lag structures.
+</p>
+<p class="ons-u-fs-r">
+  This approach captures the short-term health effects of PM2.5 exposure and is particularly suited
+  for identifying the impacts of pollution episodes.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "What is the relevance of statistics on all-cause mortality attributable to short-term exposure to outdoor PM2.5?", title_level=3) %}
+<p class="ons-u-fs-r">
+  All-cause mortality is a comprehensive health outcome that captures deaths from any cause and is
+  therefore a robust indicator of the overall health impact of air pollution. Short-term exposure to
+  outdoor PM2.5 has been shown to increase the risk of death, particularly from cardiovascular and
+  respiratory causes.
+</p>
+<p class="ons-u-fs-r">
+  Estimating mortality attributable to PM2.5 helps quantify the immediate health burden of air
+  pollution and provides evidence to support air quality regulations, emergency response planning,
+  and public health interventions. However, these estimates reflect population-level risk and do not
+  imply that PM2.5 exposure is the sole cause of any individual death.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "Why is PM2.5 used as the main air pollution indicator?", title_level=3) %}
+<p class="ons-u-fs-r">
+  PM2.5 consists of very fine particles that can penetrate deep into the lungs and enter the
+  bloodstream, making it especially harmful to human health. A substantial body of scientific
+  evidence links short-term exposure to PM2.5 with an increased mortality risk. PM2.5 is also widely
+  monitored and can be estimated using satellite and modelled data, which makes it suitable for
+  consistent analysis across countries and regions.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "How is the reference level for PM2.5 chosen?", title_level=3) %}
+<p class="ons-u-fs-r">
+  By default, the topic uses the World Health Organization (WHO) 24-hour PM2.5 guideline of 15 µg/m³
+  as the reference level. Users may also apply their national air quality standards if these are
+  more relevant for local policy contexts. The reference level represents a counterfactual scenario:
+  mortality above this level is considered potentially preventable if PM2.5 concentrations were
+  reduced to the reference value.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "Why are daily data required for this analysis?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Daily data are essential because this analysis focuses on short-term health effects, which can
+  vary from day to day. Using daily mortality, PM2.5, and meteorological data allows the model to
+  detect rapid changes in risk following exposure. Daily data also enable flexible aggregation to
+  weekly, monthly, or annual summaries for reporting and communication purposes.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "Why are meteorological variables included in the model?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Meteorological factors such as temperature, humidity, precipitation, and wind speed influence both
+  PM2.5 concentrations and human health. If not controlled for, they could confound the estimated
+  relationship between PM2.5 and mortality.
+</p>
+<p class="ons-u-fs-r">
+  Including these variables helps isolate the specific contribution of PM2.5 to mortality risk and
+  improves the validity of the results.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 8, "Why is disaggregation by age, sex, and other characteristics important?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Disaggregating the results helps identify population groups that are more vulnerable to short-term
+  PM2.5 exposure, such as older adults, young children, or people living in urban areas. This
+  information supports equity-oriented public health policies and enables targeted interventions,
+  rather than one-size-fits-all approaches.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 9, "What are the main limitations of these PM2.5 mortality estimates?", title_level=3) %}
+<p class="ons-u-fs-r">
+  The topic estimates population-level associations and does not measure individual exposure or
+  causation. PM2.5 exposure may be misclassified because the topic does not account for indoor air
+  pollution or individual behaviours, such as staying indoors during high pollution days. In
+  addition, data availability and quality can affect the precision and reliability of the estimates.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 10, "How should the results be interpreted by policymakers and the public?s", title_level=3) %}
+<p class="ons-u-fs-r">
+  The results indicate how many deaths are statistically associated with short-term PM2.5 exposure
+  at the population level, not how many deaths were directly caused by air pollution in a
+  deterministic sense.
+</p>
+<p class="ons-u-fs-r">
+  These estimates are best used to identify trends, compare regions, assess the scale of the health
+  burden, and inform air quality management and public health planning. They should be interpreted
+  alongside other evidence and local contextual knowledge.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}
+<p class="ons-u-fs-r ons-u-mt-l">
+  For broader questions that apply across the platform, please see our{{
+  link.internal_link(url_for('main_bp.faqs') , 'General FAQs' ) }}section.
+</p>
+{# RELATED TOPICS #}
+<h2 class="ons-u-fs--l ons-u-mt-xl">Related Topics</h2>
+<div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
+  <!-- prettier-ignore -->
+    {{ cards.relevant_pages("Health effects of extreme weather events - Wildfires", "", [], "icons/wildfires.svg", title_href=url_for('data_bp.framework') ~ '#wildfires-tab', img_width=200, img_height=200, img_alt='Wildfires icon') }}
+</div>
+<h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
+<p class="ons-u-fs-r">
+  The air pollution topic expert group was set up to review climate and health topics and guide what
+  we measure and how we measure it. The group brings together internal and external specialists who
+  advise on indicators and methods, share subject knowledge so we build on existing work and good
+  practice, and help quality assure draft outputs before publication.
+</p>
+<!-- prettier-ignore -->
+{% set team_members = [
+  {
+    "name": "Prof. Sir Andy Haines",
+    "company": "London School of Hygiene & Tropical Medicine, UK"
+  },
+  {
+    "name": "Prof. Ian Hamilton",
+    "company": "University College London (UCL), UK"
+  },
+  {
+    "name": "Dr. Maquines Sewe",
+    "company": "Umeå University, Sweden"
+  }
+] %}
+<!-- prettier-ignore -->
+{% set team_list_id = "ons-meet-the-team-" ~ topic_id ~ "-list" %}
+{# TEAM CARDS #}
+{% set members_count = team_members | length %}
+<div
+  class="ons-team-cards ons-u-mt-xl"
+  role="region"
+  aria-label="{{ title }} team"
+  data-js="ons-team-cards"
+>
+  <ul
+    id="{{ team_list_id }}"
+    class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
+    data-js="ons-team-cards-list"
+  >
+    {% for member in team_members %}
+    <li class="ons-team-cards__item flex items-end">
+      <div class="ons-card">
+        <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
+        {% if member.company %}
+        <p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  <button
+    type="button"
+    class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
+    aria-label="Show next team members"
+    aria-controls="{{ team_list_id }}"
+    data-js="ons-team-cards-next"
+  >
+    <svg
+      class="ons-icon"
+      viewBox="0 0 12 12"
+      xmlns="http://www.w3.org/2000/svg"
+      focusable="false"
+      aria-hidden="true"
+      role="img"
+    >
+      <path
+        d="M4 2.5L8 6L4 9.5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </button>
+</div>
+{# CLOSING TEXT - FINAL #}
+<div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      The framework topic documents are a final version produced as part of the SOSCHI project
+      (Wellcome grant no. 224682/Z/21/Z). Please note that as this is an emerging topic area,
+      indicators and methods are subject to change. Notices will be issued on this page to inform
+      users of any changes to the information captured.
+    </p>
+    <p class="ons-u-fs-r">
+      For more information on the selection criteria used for prioritising the SOSCHI topics and the
+      development process, see the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI
+      Framework Page' ) }}.
+    </p>
+    <p class="ons-u-fs-r">
+      We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
+      page can be used for official statistics reporting. See the{{
+      link.internal_link(url_for('data_bp.framework') , 'SOSCHI Framework Page' ) }}for information
+      on the endorsement of the proposed indicators.
+    </p>
+  </div>
+</div>
+{# LAST UPDATED #}
+<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 28/02/2025</p>

@@ -1,0 +1,5 @@
+resources:
+  - deployment.yaml
+  - service.yaml
+  # - api-1.1.deployment.yaml
+  # - api-1.1.service.yaml

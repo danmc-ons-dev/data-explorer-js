@@ -1,0 +1,46 @@
+{# templates/macros/timeline.html #}
+{% macro ons_timeline(items=[]) -%}
+  <div class="ons-timeline">
+    {%- for item in items %}
+      {%- set heading_text = item.heading %}
+      {%- set heading_class = "ons-timeline__heading" %}
+      {%- if item.heading is mapping %}
+        {%- set heading_text = item.heading.get("text", "") %}
+        {%- if item.heading.get("highlight") %}
+          {%- set heading_class = heading_class ~ " timeline--highlight" %}
+        {%- endif %}
+      {%- endif %}
+      {%- set subheading_text = item.subheading %}
+      {%- set subheading_class = "ons-u-fs-r--b" %}
+      {%- if item.subheading is mapping %}
+        {%- set subheading_text = item.subheading.get("text", "") %}
+        {%- if item.subheading.get("highlight") %}
+          {%- set subheading_class = subheading_class ~ " timeline--highlight" %}
+        {%- endif %}
+      {%- endif %}
+      <div class="ons-timeline__item">
+        <h2 class="{{ heading_class }}">{{ heading_text }}</h2>
+        <p class="{{ subheading_class }}">{{ subheading_text }}</p>
+        <div class="ons-timeline__content">
+          {%- if item.list_items %}
+            <ul class="ons-list ons-list--bare">
+              {%- for li in item.list_items %}
+                {%- set li_text = li %}
+                {%- set li_class = "ons-list__item" %}
+                {%- if li is mapping %}
+                  {%- set li_text = li.get("text", "") %}
+                  {%- if li.get("highlight") %}
+                    {%- set li_class = li_class ~ " timeline--highlight" %}
+                  {%- endif %}
+                {%- endif %}
+                <li class="{{ li_class }}">{{ li_text }}</li>
+              {%- endfor %}
+            </ul>
+          {%- elif item.content_html %} {{ item.content_html | safe }} {%- elif item.content %}
+            <p>{{ item.content }}</p>
+          {%- endif %}
+        </div>
+      </div>
+    {%- endfor %}
+  </div>
+{%- endmacro %}

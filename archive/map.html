@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Climate Health Data Explorer</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-200">
+    <header
+    class="bg-black text-white py-5 flex items-center justify-between px-15 relative"
+  >
+    <img src="assets/ons_logo.png" alt="Logo1" class="h-6 absolute left-4" />
+    <h1
+    class="text-6xl font-bold w-full text-center flex items-center justify-center"
+  >
+  <a href="index.html">
+    <span class="text-white">Climate and Health</span>
+    <span class="text-white mr-4">Data Explorer</span>
+    </a>
+    <span class="text-xl bg-green-500 text-black px-2 py-1 rounded-full"
+      >BETA</span
+    >
+  </h1>
+    <img
+      src="assets/wellcome_logo.png"
+      alt="Logo2"
+      class="h-20 absolute right-4"
+    />
+  </header>
+
+    <div class="bg-gray-100 p-6">
+      <div class="tabs flex">
+        <a
+        href="data_explorer.html"
+        class="tab flex-1 text-2xl bg-blue-800 text-white text-center px-6 py-2 rounded-lg hover:bg-blue-700 transition border"
+        >Data explorer &#127758;</a
+      >
+      <a
+        href="upload.html"
+        class="tab flex-1 text-2xl bg-blue-800 text-white text-center px-6 py-2 rounded-lg hover:bg-blue-700 transition border"
+        >Upload <i class="fa fa-upload"></i
+          ></a>
+      <a
+        href="indicator_calculators.html"
+        class="tab flex-1 text-2xl bg-blue-800 text-white text-center px-6 py-2 rounded-lg hover:bg-blue-700 transition border"
+        >Indicator calculators &#128202;</a
+      >
+      <a
+        href="framework.html"
+        class="tab flex-1 text-2xl bg-blue-800 text-white text-center px-6 py-2 rounded-lg hover:bg-blue-700 transition border"
+        >Framework &#128218;</a
+      >
+      <a
+      href="about.html"
+      class="tab flex-1 text-2xl bg-blue-800 text-white text-center px-6 py-2 rounded-lg hover:bg-blue-700 transition border"
+      >About &#127968;</a
+      >
+      </div>
+
+      <div class="container mx-auto mt-8 bg-white p-6 rounded-lg shadow-lg">
+            <!-- Map Container -->
+            <div class="flex justify-center items-center min-h-screen"
+              id="map" class="w-[300px] h-[300px]"></div>
+          </div>
+      </div>
+    </div>
+    <script src="js/tabs.js"></script>
+
+    <!-- Custom JavaScript to Initialize the Map -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <script>
+      // Initialize the map centered on a latitude and longitude and set the zoom level
+      var map = L.map('map').setView([51.5, 0], 5);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      fetch('assets/countries.geojson')
+      .then(response => response.json())
+      .then(data => {
+        L.geoJSON(data, {
+          style: {
+            fillColor: 'gray',
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 0.4
+    }
+        }).addTo(map);
+    });      
+      map.invalidateSize();
+
+    </script>
+  </body>
+</html>

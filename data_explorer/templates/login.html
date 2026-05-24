@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Climate Health Data Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+    />
+    <link
+      href="{{ url_for('static', filename='css/styles.css') }}"
+      rel="stylesheet"
+    />
+
+    <script src="{{ url_for('static', filename='js/header.js') }}" type="text/javascript" defer></script>
+    <script src="{{ url_for('static', filename='js/footer.js') }}" type="text/javascript" defer></script>
+
+  </head>
+  <body class="bg-gray-200">
+    
+
+    <header-component></header-component>
+    
+    <div
+      class="bg-cover h-screen flex flex-col justify-between"
+      style="
+        background-image: url('static/assets/pexels-pixabay-60013.jpg');
+      "
+    >
+
+      <div
+        class="container mx-10 mt-12 w-2/3 whitespace-normal bg-white bg-opacity-40"
+      >
+        <div
+          class="py-8 px-4 mx-auto whitespace-normal max-w-screen text-center space-y-10 lg:py-16 rounded-lg"
+        >
+          <h1 class="text-3xl font-extrabold space-y-5 text-gray-900">
+            Under Development
+          </h1>
+          
+
+        </div>
+      </div>
+
+    
+
+    </div>
+    
+    <footer-component></footer-component>
+
+  </body>
+</html>

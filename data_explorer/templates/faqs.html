@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% import "macros/accordion.html" as acc %}
+{% import "macros/external_link.html" as link %}
+{% import "macros/cards.html" as cards %}
+{% set topic_id = "faqs" %}
+{% block content %}
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Frequently Asked Questions</h1>
+  <!-- prettier-ignore -->
+  {{ acc.accordion_start(id=topic_id ~ "-accordion-one",
+    group=topic_id ~ "-accordion",) 
+  }}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 1, "What is SOSCHI?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      Standards for Official Statistics on Climate-Health Interactions (SOSCHI) is a 4-year
+      project funded by Wellcome (2022-2026) to develop a well-defined set of indicators to
+      measure climate-related health impacts. The aim is to support regular reporting and
+      monitoring at global, national and potentially sub-national levels. For more information
+      see the{{ link.internal_link(url_for('main_bp.about') , 'About us' ) }} page.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 2, "What is meant by a climate-health indicator?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      An "indicator" is a single numeric measurement which describes a clearly defined health
+      outcome in a specific population at a given time. The definition of the indicator includes
+      the measurement units, the numerator and denominator (if relevant), etc. e.g. Rate per
+      100,000 population of deaths from all causes, attributable to excess heat (ambient mean
+      outdoor temperature).
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 3, "What information can I access on the SOSCHI climate-health platform, and how can this be used?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      This website is a methods, tools and knowledge-sharing platform. It cannot currently be
+      used to report or store any data.
+    </p>
+    <p class="ons-u-fs-r">
+      The primary purpose is to support the dissemination of the SOSCHI statistical framework,
+      and support users to produce indicator metrics using their own underlying climate and
+      health input data. Guidance for users includes{{ link.internal_link(url_for('data_bp.framework') , 'topic documents' ) }},{{ link.internal_link(url_for('data_bp.indicator_calculators') , 'statistical code and tools'
+      ) }} and {{ link.internal_link(url_for('main_bp.resources') , 'other resources' ) }}.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 4, "How does the SOSCHI framework compare to existing frameworks?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      The SOSCHI project has engaged with a range of global stakeholders to avoid duplication of
+      effort and support global implementation of the SOSCHI framework. The main benefit of the
+      SOSCHI framework, and its contribution to this field, is providing National Statistics
+      Organisations (NSOs) and other government institutions with harmonised indicators,
+      validated methods and practical tools, to improve the monitoring of climate change impacts
+      on health.
+    </p>
+    <p class="ons-u-fs-r">
+      We are seeking endorsement of the SOSCHI framework by the UN Statistical Commission to
+      become part of the authoritative UN Global Set of Climate Change Statistics and
+      Indicators{{ link.external_link('https://unstats.un.org/unsd/envstats/climatechange.cshtml', 'UN Global
+      Set of Climate Change Statistics and Indicators') }} (first adopted in March 2022). This
+      activity is being progressed through the UN Expert Group on Environment and Climate Change
+      Statistics (EG-ECCS).
+    </p>
+    <p class="ons-u-fs-r">
+      {# TODO: ADD LINK WHEN PUBLISHED ON ZENODO #} For more information see the SOSCHI
+      framework report (section 3.3: Relationship to other frameworks).
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 5, "How were the SOSCHI topics and indicators selected?", title_level=3) %}
+    <p class="ons-u-fs-r">The following stages in the project were used to define the project scope:</p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">
+        The Discovery Phase (2022-23) involved defining the scope and approach of the
+        statistical framework.
+      </li>
+      <li class="ons-list__item list-disc">
+        The Alpha Phase (2023-24) involved outlining the scope of each topic, identifying
+        potential indicators and developing methods.
+      </li>
+      <li class="ons-list__item list-disc">
+        The Beta Phase (2025-25) focussed on six priority topics - selected for further methods
+        development and production of indicator tools on the platform.
+      </li>
+    </ul>
+    <p class="ons-u-fs-r">
+      {# TODO: ADD LINK WHEN PUBLISHED ON ZENODO #} For more information on the framework
+      development process see section 2.3 of the SOSCHI Framework Report.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 6, "Why are there only indicator tools for some of the topics?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      Given data challenges it was not possible to develop all topics to the same quality
+      standard. As a result, each of the SOSCHI framework topics is at a different stage of
+      readiness. Each topic page will include a note advising users on the version/status of the
+      topic.
+    </p>
+    <p class="ons-u-fs-r">
+      There are six selected topics which have been
+      prioritised; the outputs for these include a final version of{{ link.internal_link(url_for('data_bp.framework') , 'topic documents,' ) }}{{ link.internal_link(url_for('main_bp.r_package') , 'R code' ) }} and {{ link.internal_link(url_for('data_bp.indicator_calculators') , 'an indicator tool' ) }}.
+    </p>
+    <p class="ons-u-fs-r">
+      The additional topics will have an alpha version of these documents, and there may be
+      other related publications, however no fully completed R code or online indicator tools
+      are currently available for these topics.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 7, "How do I get information on climate and health impacts for the country or area I live in?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      Users need to produce climate-health indicators using their own underlying input data
+      sources.
+    </p>
+    <p class="ons-u-fs-r">
+      {# TODO: ADD LINK TO R PACKAGE #} Use the search function on the header to navigate to
+      specific topics or indicators which you are interested in. If you want to produce any of
+      the indicator metrics, you will first need to identify and prepare the input data sources.
+      Once the input data is in the required structure, you can either use the R Code or {{ link.internal_link(url_for('data_bp.indicator_calculators') , 'indicator tool' ) }}
+      (subject to availability) to produce selected climate-health indicator metrics for your
+      country or area. Additional guidance is available to support users (LINKS) (e.g. topic
+      documents, guidance videos etc).
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 8, "Can the SOSCHI framework provide data on climate impacts on health at a local level?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      All indicators in the SOSCHI framework can be used to provide estimates and both a
+      national and sub-national level. The specific geographic granularity will vary by country,
+      depending on the statistical power. Furthermore, some methods are only recommended for
+      regional level analysis. For further guidance, see the {{ link.internal_link(url_for('data_bp.framework') , 'Framework topic pages' ) }}for links to
+      the methods documents', Section 2: Data and variables.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 9, "What data sources do I need to produce estimates for the indicators in the SOSCHI framework?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      The climate-health indicators are not based on direct counts. For all indicators these are
+      estimated based on statistical models. For further guidance see the {{ link.internal_link(url_for('data_bp.framework') , 'Framework topic pages' ) }} for links to
+      the methods documents', Section 2: Data and variables.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 10, "Can the SOSCHI framework provide insights on which populations groups are most vulnerable to climate impacts on health?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      All the proposed indicators include guidance on potential disaggregations to identify
+      vulnerable groups and inform policy interventions. Because of data limitations in some
+      countries, and potentially differing policy needs, the feasibility of this will depend on
+      data availability and quality. Furthermore, if an outcome is relatively uncommon, the
+      number of cases and the statistical model techniques used may be insufficient to provide
+      reliable results. For further guidance see the {{ link.internal_link(url_for('data_bp.framework') , 'Framework topic pages' ) }} for links to
+      the methods documents', Section 2.4: Disaggregations of data.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 11, "How do I know whether the indicator metrics produced are reliable?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      The reliability of indicator metrics produced by the SOSCHI framework is crucial, given
+      that the main purpose is to be suitable for official statistics production.
+    </p>
+    <p class="ons-u-fs-r">
+      Official statistics are the format in which a National Statistical Office, or other
+      analytical teams in government, communicates statistical outputs to the public and other
+      government bodies (including policy makes) to inform and make decisions.
+    </p>
+    <p class="ons-u-fs-r">
+      Key characteristics of an official statistic include its relevance, accessibility, and
+      statistical quality to accurately and timely inform users. Please see the SOSCHI Framework
+      Report, section 5.2: Statistical quality for more information on the quality assurance
+      processes used in the development of the framework and R package.
+    </p>
+    <p class="ons-u-fs-r">
+      The following sections of the{{ link.internal_link(url_for('data_bp.framework') ,
+      'indicator methods documents' ) }}will also provide users with guidance to support their
+      interpretation of results, and explain any potential limitations:
+    </p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">Section 2.5: Data limitations</li>
+      <li class="ons-list__item list-disc">Section 4: Communication and interpretation</li>
+      <li class="ons-list__item list-disc">Section 5: Methods limitations</li>
+    </ul>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 12, "What level of statistical knowledge and coding ability do I need to run the indicators?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      An understanding of descriptive statistics is advised. Each indicator's methodology
+      document provides guidance for running the analysis, interpreting the results, and
+      communicating uncertainty.
+    </p>
+    <p class="ons-u-fs-r">
+      Required R coding ability depends on which analysis option a user chooses. The project
+      provides three options as described on the R package page. The "low code" option is
+      recommended for the most comprehensive analysis and requires users to be able to read and
+      edit R code.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 13, "What hardware and software do I need to access the code library?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      The indicator tool on the platform is supported on desktop, tablet and mobile devices,
+      however these devices may not have the capacity to process the data.
+    </p>
+    <p class="ons-u-fs-r">
+      The open-source R code library can be found in
+      the{{ link.external_link('https://github.com/onssoschi/climatehealth',
+      'onssochi/climatehealth Github') }}repository. To install the package and utilise its
+      functionality, an R build is required. This package was largely developed on R-4.4.1,
+      therefore it is recommended. R-4.4.1 can be downloaded here. Users will also need to have
+      appropriate software of their choice for data preparation, following the guidance provided
+      in sections 2.3 and 3.2 of the respective indicator methodology documents.
+    </p>
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item("faqs" ~ "-accordion", 14, "What do I do if there I get errors when using the indicator tool or code library?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      The end-to-end process for producing the SOSCHI climate-health indicators is complex. So,
+      it is likely that there may be some errors in the data production process. The various
+      resources provided, aim to provide users with sufficient guidance. However, if users are
+      unable to resolve these, please contact our {{ link.internal_link(href='mailto:climate.health@ons.gov.uk',
+       text='climate.health@ons.gov.uk') }} inbox for further support and feedback.
+    </p>
+  {% endcall %}
+  <div class="ons-grid ons-u-mt-xl">
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("SOSCHI Framework", "", [ { "text": "Framework landing page",
+              "href": url_for('data_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('data_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('data_bp.framework') ~ '#waterborne-diseases' } ],
+        "icons/framework_overview_large_colour.svg" ) }}
+    </div>
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("Tools for
+              implementation", "", [ { "text": "SOSCHI open-source R package", "href": url_for('main_bp.r_package') }, { "text":
+        "Online analysis tools", "href": url_for('data_bp.indicator_calculators') }, { "text":
+        "Additional resources", "href": url_for('main_bp.resources') } ], "icons/analysis_tools_large_colour.svg" ) }}
+    </div>
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
+              diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+        "Health effects of wildfires", "href": url_for('data_bp.framework') ~
+        '#extreme-weather-events' }, { "text": "Mental Health", "href":
+        url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+        }}
+    </div>
+  </div>
+{% endblock %}

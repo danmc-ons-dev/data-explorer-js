@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Climate Health Platform</title>
+    {% block head_extra %}{% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+          rel="stylesheet" />
+    <link href="https://cdn.ons.gov.uk/sdc/design-system/73.0.3/css/main.css"
+          rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link href="{{ url_for('static', filename='css/styles.css') }}"
+          rel="stylesheet" />
+    <script>var ONS_assets_base_URL = "https://cdn.ons.gov.uk/sdc/design-system/73.0.3/";</script>
+    <script src="https://cdn.ons.gov.uk/sdc/design-system/73.0.3/scripts/main.js"
+            defer></script>
+  </head>
+  <body cz-shortcut-listen="true" class="ons-js-enabled">
+    <a href="#main-content"
+       class="ons-skip-to-content"
+       aria-label="Skip to main content">Skip to main content</a>
+    {% include "components/header/header.html" %}
+    <main id="main-content">
+      <div class="ons-page ons-page__container ons-container">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+    {% include "components/footer/footer.html" %}
+    <script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,26 @@
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixRoute
+metadata:
+  name: oidc-route
+  namespace: ons-data-explorer
+spec:
+  http:
+    - name: oidc
+      match:
+        hosts:
+          - "climate-health.dev.officialstatistics.org"
+        paths:
+          - "/*"
+      backends:
+        - serviceName: data-explorer-service
+          servicePort: 80
+      plugins:
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: ons-data-explorer
+            client_secret: [example-only]
+            discovery: "https://id.officialstatistics.org/realms/ungp/.well-known/openid-configuration"
+            bearer_only: false
+            realm: ungp
+            redirect_uri: https://climate-health.dev.officialstatistics.org/success

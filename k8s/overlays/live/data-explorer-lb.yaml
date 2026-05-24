@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-explorer-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-schema: internet-facing
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 5001
+      protocol: TCP
+  selector:
+    app: data-explorer

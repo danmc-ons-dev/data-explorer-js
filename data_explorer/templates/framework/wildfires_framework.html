@@ -1,0 +1,464 @@
+<!-- prettier-ignore -->
+{% import "macros/accordion.html" as acc %}
+{% import "macros/image.html" as image %}
+{% import "macros/buttons.html" as btn %}
+{% import "macros/cards.html" as cards %}
+{% import "macros/external_link.html" as link %}
+{% set title = "Wildfires" %}
+{% set topic_id = "wildfires" %}
+{# TITLE #}
+<h1 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h1>
+{# INTRO PARAGRAPH #}
+<p class="ons-u-fs-r">
+  Climate change is increasing the frequency, intensity, and duration of hot and dry conditions,
+  raising the risk of wildfires in many regions. Wildfires are uncontrolled or unplanned fires that
+  occur in vegetated areas. Their impacts extend beyond the burned areas, affecting ecosystems,
+  economies and human health. A major health hazard from wildfires is its associated smoke and air
+  pollution. Vulnerability to this exposure is controlled by demographic and socioeconomic factors,
+  thus risk is not distributed evenly within populations.
+</p>
+{# INFO PANEL TOP #}
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      This topic area focuses on measuring population-level exposure to wildfire-related PM2.5 and
+      estimating its short-term impacts on health.
+    </p>
+  </div>
+</div>
+{# BUTTONS ONE (TOPIC INTRO, METHODOLOGY, METADATA) #}
+<!-- prettier-ignore -->
+{% set buttons = [
+  {
+    "text": "Topic Introduction",
+    "href": "https://zenodo.org/records/14051584",
+    "classes": ""
+  },
+  {
+    "text": "Methodology",
+    "href": "https://zenodo.org/records/14052184",
+    "classes": "ons-btn--secondary"
+  },
+  {
+    "text": "Metadata",
+    "href": "https://zenodo.org/records/14051762",
+    "classes": ""
+  }
+] %}
+<div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
+  {% for button in buttons %}
+    <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
+  {% endfor %}
+</div>
+{# ACCORDION ONE #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-one",
+group=topic_id ~ "-accordion",) }}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 1, "Impact Pathway", title_level=3) %}
+  {{ image.image(image_name='framework-wildfires.png', width='100%', alt="Diagram showing how climate drivers and hazards such as frequent, intense hot temperatures increase wildfire risk leading to smoke exposure that affects populations differently depending on vulnerability. Inhaling wildfire smoke (especially wildfire-related PM2.5) lead to physiological impacts that can lead to several health outcomes, including increased mortality, respiratory and cardiovascular risks. Adaptation and mitigation actions can reduce exposure, protect health and limit future wildfire risk.") }}
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicators", title_level=3) %}
+  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r--b">
+        The priority indicator developed within this topic is All-cause mortality attributable to
+        wildfire-related PM2.5.
+      </p>
+    </div>
+  </div>
+  <p class="ons-u-fs-r ons-u-mt-m">
+    It was agreed to prioritise this indicator as wildfire-related PM2.5 is strongly linked to adverse
+    health outcomes and has a well-established evidence base in epidemiological studies.
+    Wildfire-related PM2.5 is also consistently measured across regions, enabling comparable and
+    policy relevant assessments of wildfire-related health impacts.
+  </p>
+  <p class="ons-u-fs-r">
+    Further justification for the focus on this indicator is explained in the Topic introduction,
+    which also outlines supplementary and additional indicators that are not in scope for the current
+    SOSCHI framework but are recommended for future development.
+  </p>
+  <div class="ons-panel ons-panel--info ons-panel--no-title">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r--b">Relative risk of mortality associated with wildfire-related PM2.5</p>
+    </div>
+  </div>
+  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__two">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r--b">Number of deaths attributable to wildfire-smoke PM2.5</p>
+    </div>
+  </div>
+  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__three">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r--b">Deaths per 100,000 population attributable to wildfire-related PM2.5</p>
+    </div>
+  </div>
+  <p class="ons-u-fs-r ons-u-mt-m">
+    For guidance on the process for calculating these indicator metrics, see the Methodology section
+    below.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 3, "Policy Relevance", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The wildfires indicator provides actionable evidence on the health impacts of wildfires,
+    particularly mortality, across different geographies and helps identify populations most at risk.
+    Seasonal patterns show when risk is the highest, enabling governments and health systems to plan
+    ahead, strengthen preparedness and manage resources effectively. Further disaggregation by age,
+    occupation and other socio-demographic factors help distinguish vulnerable groups and informs
+    tailored adaptation and protection measures.
+  </p>
+  <p class="ons-u-fs-r">
+    By monitoring wildfire mortality risk over time also strengthens the case for sustained policy
+    action by revealing trends, emerging risks and consequences of inaction. These insights can help
+    support development of proactive policies that reduce vulnerability while safeguarding human
+    health and the environment.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 4, "Methodology", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The indicator estimates short-term health impacts of wildfire-related PM2.5 using a time
+    stratified case crossover design with conditional quasi-Poisson regression model. Exposure on case
+    days is compared with nearby control days, accounting for seasonal patterns and long-term trends.
+    The analysis also looks at lag days, to see how exposure affects health outcome on the same day
+    and in the days prior to exposure, and reports results as relative risk per 10 µg/m³ increase in
+    wildfire-related PM2.5.
+  </p>
+  <div class="ons-panel ons-panel--info ons-panel--no-title">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <h5 class="ons-u-fs-r--b">Understand the method</h5>
+      <p class="ons-u-fs-r">
+        Read the {{ link.external_link('https://zenodo.org/records/14052184', 'All-cause mortality
+         attributable to wildfire smoke: methodology') }} for details on the modelling approach, the
+        data needed, and guidance on interpreting results.
+      </p>
+    </div>
+  </div>
+  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <h5 class="ons-u-fs-r--b">Develop bespoke analyses</h5>
+      <p class="ons-u-fs-r">
+        For flexible, reproducible analysis or to adapt methods to your country or region, use the
+        Code Library and R package, which provides program code for the priority indicators.
+      </p>
+    </div>
+  </div>
+  <div class="ons-panel ons-panel--no-title ons-panel--info headline-indicators__two ons-u-mb-m">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <h5 class="ons-u-fs-r--b">No-code option for indicator analysis</h5>
+      <p class="ons-u-fs-r">
+        Use the Indicator tool if you want quick baseline estimates and simple charts without writing
+        code; it supports secure temporary uploads and downloadable outputs.
+      </p>
+    </div>
+  </div>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 5, "Data Requirements and Guidance", title_level=3) %}
+  <p class="ons-u-fs-r--b">The following data is needed for this indicator production:</p>
+  <ul class="ons-list">
+    <li class="ons-list__item list-disc">Daily all-cause mortality from national administrative records.</li>
+    <li class="ons-list__item list-disc">Daily mean temperature from governmental meteorological offices.</li>
+    <li class="ons-list__item list-disc">Population estimates from national offices</li>
+    <li class="ons-list__item list-disc">
+      Daily Wildfire-related PM2.5 from open source {{ link.external_link('https://fmi.b2share.csc.fi/records/d1cac971b3224d438d5304e945e9f16c',
+       'dataset.') }}
+    </li>
+  </ul>
+  <p class="ons-u-fs-r ons-u-mt-m">
+    Where this data is unavailable or observations are incomplete, proxy datasets may be used. Further
+    information on these potential sources as well as required variable names and formats are outlined
+    in section 2 of the {{ link.external_link('https://zenodo.org/records/14052184', 'All-cause
+     mortality attributable to wildfire smoke: methodology') }}. A minimal example of the data template
+    is provided on the Indicator tool page to help structure uploads before running the calculator.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}
+{# BUTTONS TWO (CODE LIBRARY, INDICATOR TOOLS) #}
+<div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.external('Code Library', 'https://github.com/onssoschi/climatehealth') }}
+  </div>
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.internal("Indicator Tools", url_for('data_bp.indicator_calculators') ~
+    '#wildfires-select-file', "ons-btn--secondary" ) }}
+  </div>
+</div>
+{# ACCORDION TWO #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-two",
+group=topic_id ~ "-accordion-two",
+toggle_text_open="Show all FAQs",
+toggle_text_close="Hide all FAQs") }}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 1, "Why was this statistical model used?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    This statistical approach is appropriate for analysing acute health impacts of short-term wildfire
+    related PM2.5 exposure. It allows to compare health outcome on high wildfire PM2.5 exposure days
+    with nearby low wildfire PM2.5 exposure days with controlling season, long-term trends, and day of
+    the week.
+  </p>
+  <p class="ons-u-fs-r">
+    The methodology was developed with guidance and consultation from Topic Expert Group and further
+    information can be found in methodology documentation.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "What does the wildfire indicator show?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The indicator shows the short-term effects of wildfire related PM2.5 on daily mortality. It
+    quantifies relative risk of death associated with wildfire smoke exposure. It also estimates
+    proportion of deaths attributable to exposure and mortality rates per 100,000, standardised so
+    results are easily comparable across regions. Detailed information can be found in the methodology
+    documentation.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "Who should use this indicator tool?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The indicator is intended for users who need to assess the impact of wildfire-related PM2.5
+    exposure on human mortality. Our target users are global producers of official statistics,
+    academics, students, NGOs and also policymakers who can use the statistics to support and evidence
+    action against climate hazards.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "Why was wildfire-related PM2.5 chosen to measure exposure?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    Wildfire related PM2.5 is one of the main harmful components of wildfire smoke. PM2.5 refers to
+    very fine particles that when inhaled, can go deep into the lungs and enter the bloodstream, where
+    they can cause wide range of health issues. Studies show that wildfire related- PM2.5 has distinct
+    toxicological characteristics compared to PM2.5 from other ambient air pollution sources and may
+    be more harmful to human health. It is also one of the most well studied wildfire components, with
+    strong evidence linking to health risks. Because wildfire‑related PM2.5 captures both nearby and
+    transported smoke and has a well‑established scientific basis for measuring exposure, it was
+    selected as the primary indicator. For further reading, please refer to methods document.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "How are wildfires events detected and measured?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    When using this methodology, we recommend users to use this {{ link.external_link('https://fmi.b2share.csc.fi/records/d1cac971b3224d438d5304e945e9f16c',
+     'dataset') }} provided by Finnish Meteorological Institute. It uses satellite data (MODIS
+    instrument onboard of Aqua and Terra satellite) combined with atmospheric modelling (SILAM
+    chemical transport model) to estimate the dispersion of fire related PM (particulate matter). The
+    dataset has global coverage, for further information – please refer to the Wildfires methodology
+    documentation.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "What health data does the wildfire indicator use?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    To run the wildfire analysis, users require daily all-cause mortality data. List of supplementary
+    indicators and related data requirements can be found in the methods document. In all cases, we
+    recommend users to follow data preparation procedures as listed in methods document (section 3.2)
+    prior to analysis.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "How often is wildfire data updated?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    This version of wildfire methodology uses wildfire-related PM2.5 (fine smoke particles) data
+    developed Finnish Meteorological Institute and is updated annually. Please refer to methodology
+    documentation for further details.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 8, "Can I use weekly or monthly deaths count data?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    Weekly or monthly aggregated death count data are not compatible with this methodology as this
+    approach looks at the short-term health impact and is designed to compare specific exposure days
+    to low exposure days. Also, weekly or monthly aggregations smooths over wildfire smoke days which
+    are typically intense, short-lived and highly variable within a few days.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 9, "What time period is required to run wildfire analysis?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    There is no single fixed minimum, but in practice you would need a few months of daily data to run
+    the wildfire analysis. For more reliable results, it is advised to use several months to multiple
+    years of data, ideally covering a full wildfire season. Please note that there would be model bias
+    if data consists of only wildfire events and vice versa. For further methodology analysis, please
+    refer to documentation.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 10, "How reliable are the estimates that are produced?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    Users should carefully follow the recommended data preparation procedures to ensure valid results.
+    We strongly recommend using the GitHub analysis package, which includes built-in model validation
+    steps to help ensure robust estimates are produced. All results should be interpreted as
+    statistical estimates, not actual counts of death, and should always be considered together with
+    their confidence intervals.
+  </p>
+  <p class="ons-u-fs-r">
+    The analysis is based on historic data and does not provide real-time estimates. Wildfires vary
+    substantially between regions, and new or emerging wildfire-affected areas may not yet be fully
+    captured in the data. For further information, please refer to methods document.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 11, "Can I compare wildfire impacts between regions or years?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    Yes, provided data is set up and ready to use as recommended by the methodology document (section
+    2.3, 3.2 and 3.3), this indicator analysis will provide comparable results.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 12, "How should I interpret a negative or zero value?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    A value of zero indicates no detectable association between wildfire-related PM2.5 and mortality
+    for the time period. A negative estimate does not imply wildfire smoke is protective but should be
+    interpreted as no evidence of an increased risk. Negative values can arise from limited sample
+    size and/or statistical uncertainty. Estimate results should be considered together with its
+    confidence interval.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 13, "How should I interpret the wildfire-health indicator results?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    All results from the analysis show statistical associations between wildfire‑related PM2.5 and
+    mortality. They estimate how many deaths are linked to this exposure, not a direct count of
+    observed deaths. For detailed guidance on how to interpret and communicate the indicator results,
+    please refer to methodology documentation (section 4).
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 14, "How can policymakers use this data to reduce health risk from wildfires?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The analysis results can quantify how real health impacts from wildfire-related PM2.5 has changed
+    over time and can provide the evidence for action. With recommended disaggregation, the data can
+    be used to inform for targeted prevention and preparedness.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}
+<p class="ons-u-fs-r ons-u-mt-l">
+  For broader questions that apply across the platform, please see our{{ link.internal_link(url_for('main_bp.faqs') , 'General FAQs' ) }}section.
+</p>
+{# RELATED TOPICS #}
+<h2 class="ons-u-fs--l ons-u-mt-xl">Related Topics</h2>
+<div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
+  <!-- prettier-ignore -->
+    {{ cards.relevant_pages("Health effects of air pollution", "", [], "icons/air_pollution.svg", title_href=url_for('data_bp.framework') ~ '#air-pollution-tab', img_width=200, img_height=200, img_alt='air polltion icon') }}
+    {{ cards.relevant_pages("Mental Health", "", [], "icons/mental_health.svg", title_href=url_for('data_bp.framework') ~ '#mental-health', img_width=200, img_height=200, img_alt='Mental health icon') }}
+</div>
+<h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
+<p class="ons-u-fs-r">
+  The vector-borne diseases topic expert group was setup to review this topic and guide what we
+  measure and how we measure it. The group brings together internal and external specialists who
+  advise on indicators and methods, share subject knowledge so we build on existing work and good
+  practice, and help quality assure draft outputs before publication.
+</p>
+<!-- prettier-ignore -->
+{% set team_members = [
+  {
+    "name": "Dr Anna Rom",
+    "company": "UK Health Security Agency"
+  },
+  {
+    "name": "Professor Carlos Gould",
+    "company": "University of California, San Diego"
+  },
+  {
+    "name": "Kanza Ahmed",
+    "company": "UK Health Security Agency"
+  },
+  {
+    "name": "Professor Mikhail Sofiev",
+    "company": "Finnish Meteorological Institute"
+  },
+  {
+    "name": "Dr Qiao Zhu",
+    "company": "Emory University"
+  },
+  {
+    "name": "Professor Sheryl Magzamen",
+    "company": "Colorado State University"
+  },
+  {
+    "name": "Talia Caplan",
+    "company": "Wellcome"
+  },
+  {
+    "name": "Professor Tarik Benmarhnia",
+    "company": "University of California, San Diego"
+  },
+  {
+    "name": "Professor Yuming Guo",
+    "company": "Monash University"
+  },
+  {
+    "name": "Professor Yun Hang",
+    "company": "University of Texas Health Science Center"
+  }
+] %}
+<!-- prettier-ignore -->
+{% set team_list_id = "ons-meet-the-team-" ~ topic_id ~ "-list" %}
+{# TEAM CARDS #}
+{% set members_count = team_members | length %}
+<div class="ons-team-cards ons-u-mt-xl"
+     role="region"
+     aria-label="{{ title }} team"
+     data-js="ons-team-cards">
+  <ul id="{{ team_list_id }}"
+      class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
+      data-js="ons-team-cards-list">
+    {% for member in team_members %}
+      <li class="ons-team-cards__item flex items-end">
+        <div class="ons-card">
+          <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
+          {% if member.company %}<p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>{% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  <button type="button"
+          class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
+          aria-label="Show next team members"
+          aria-controls="{{ team_list_id }}"
+          data-js="ons-team-cards-next">
+    <svg class="ons-icon"
+         viewBox="0 0 12 12"
+         xmlns="http://www.w3.org/2000/svg"
+         focusable="false"
+         aria-hidden="true"
+         role="img">
+      <path d="M4 2.5L8 6L4 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+</div>
+{# CLOSING TEXT - FINAL #}
+<div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      The framework topic documents are a final version produced as part of the SOSCHI project
+      (Wellcome grant no. 224682/Z/21/Z). Please note that as this is an emerging topic area,
+      indicators and methods are subject to change. Notices will be issued on this page to inform
+      users of any changes to the information captured.
+    </p>
+    <p class="ons-u-fs-r">
+      For more information on the selection criteria used for prioritising the SOSCHI topics and the
+      development process, see the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI
+      Framework Page' ) }}.
+    </p>
+    <p class="ons-u-fs-r">
+      We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
+      page can be used for official statistics reporting. See the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI Framework Page' ) }}for information
+      on the endorsement of the proposed indicators.
+    </p>
+  </div>
+</div>
+{# LAST UPDATED #}
+<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 12/11/2024</p>

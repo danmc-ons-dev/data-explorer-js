@@ -1,0 +1,10 @@
+# Personal AWS learning environment - dummy mode configuration.
+# This file is mounted into the container at /usr/src/app/config.yml.
+# SECRET_KEY is intentionally absent here - it is injected via a
+# Kubernetes Secret (app-secret) so it is never stored in the repo.
+
+run_migrations: "false"
+debug_mode: "false"
+dummy_mode: "true"
+enable_full_ui: "true"
+show_system_health_notice: "false"

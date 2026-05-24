@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="ons-u-mt-m ons-u-mb-l">
+    <div class="ons-panel ons-panel--simple">
+      <h1 class="ons-u-fs-xl ons-u-mb-xs">{{ page_title or "Coming soon" }}</h1>
+      <p class="ons-u-fs-r ons-u-mb-s">
+        {{ page_description or "This page is under development. Please check back later." }}
+      </p>
+      <a class="ons-btn ons-btn--secondary" href="/">Back to home</a>
+    </div>
+  </div>
+{% endblock %}

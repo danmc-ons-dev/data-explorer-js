@@ -1,0 +1,27 @@
+{# templates/macros/upload.html #}
+{% macro ons_file_upload(
+  id='file-example-upload',
+  label='Upload file',
+  text=None,
+  accept='.csv,text/csv',
+  name=None,
+  classes='',
+  attrs=None
+  ) %}
+  <div class="ons-field">
+    <label class="ons-label ons-label--with-description" for="{{ id }}">
+      <span class="ons-label__text">{{ label }}</span>
+      {% if text %}
+        <span id="{{ id }}-hint"
+              class="ons-label__description ons-input--with-description">{{ text }}</span>
+      {% endif %}
+    </label>
+    <input type="file"
+           id="{{ id }}"
+           name="{{ name or id }}"
+           class="ons-input ons-input--upload {{ classes }}"
+           accept="{{ accept }}"
+           {% if text %}aria-describedby="{{ id }}-hint"{% endif %}
+           {% if attrs %}{{ attrs|xmlattr }}{% endif %} />
+  </div>
+{% endmacro %}

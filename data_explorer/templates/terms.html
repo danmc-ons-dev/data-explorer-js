@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% import "macros/cards.html" as cards %}
+{% import "macros/external_link.html" as link %}
+{% block content %}
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Terms and conditions</h1>
+  <p class="ons-u-fs-r">
+    By using the Climate-Health platform website, you are agreeing to the terms and conditions
+    outlined.
+  </p>
+  <h2 class="ons-u-fs-l ons-u-mt-l">1. Important notes</h2>
+  <h3 class="ons-u-fs-m ons-u-mt-m">1.1 Statistics in development</h3>
+  <p class="ons-u-fs-r">
+    The Climate-Health Platform has been produced as part of the SOSCHI project. However,
+    given that Climate-Health is an emerging area of research, there may be future
+    modifications required based on user feedback and advancements in the scientific
+    literature.
+  </p>
+  <p class="ons-u-fs-r">
+    Statistics produced using the SOSCHI framework and tools are therefore considered
+    statistics in development. See our{{ link.external_link("https://www.ons.gov.uk/methodology/methodologytopicsandstatisticalconcepts/guidetoofficialstatisticsindevelopment#labelling-official-statistics-in-development",
+    "Guide to official statistics in development") }}for more information about what this
+    means.
+  </p>
+  <h3 class="ons-u-fs-m ons-u-mt-m">1.2 Licensing and reproduction</h3>
+  <p class="ons-u-fs-r">
+    This is an open access document published under the UK
+    <a class="ons-link"
+       href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+       target="_blank">Open Government Licence 3.0</a>
+    which is compatible with the Creative Commons {{ link.external_link("https://creativecommons.org/licenses/by-sa/4.0/", "CC-BY-SA 4.0
+     licence.") }} You are free to copy, publish, distribute and adapt the information,
+    provided you acknowledge the source and link to this publication or the {{ link.internal_link('/', 'ONS SOSCHI project home page.') }} Statistical data used in the
+    preparation of the SOSCHI framework may be confidential under UK or other national laws.
+    Enquiries concerning the availability of data can be made to the project team at {{ link.internal_link('mailto:climate.health@ons.gov.uk', 'climate.health@ons.gov.uk') }} .
+    Institutional logos are the property of the relevant institutions.
+  </p>
+  <h3 class="ons-u-fs-m ons-u-mt-m">1.3 Preferred citation of platform</h3>
+  <p class="ons-u-fs-r">
+    SOSCHI Platform (2026). Standards for Official Statistics on ClimateHealth Interactions
+    (SOSCHI). Available at: {{ link.external_link("https://climate-health.officialstatistics.org/",
+     "https://climate-health.officialstatistics.org/") }}
+  </p>
+  <div class="ons-grid ons-u-mt-xl">
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("SOSCHI Framework", "", [ { "text": "Framework landing page",
+              "href": url_for('data_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('data_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('data_bp.framework') ~ '#waterborne-diseases' } ],
+        "icons/framework_overview_large_colour.svg" ) }}
+    </div>
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("Tools for
+              implementation", "", [ { "text": "SOSCHI open-source R package", "href": url_for('main_bp.r_package') }, { "text":
+        "Online analysis tools", "href": url_for('data_bp.indicator_calculators') }, { "text":
+        "Additional resources", "href": url_for('main_bp.resources') } ], "icons/analysis_tools_large_colour.svg" ) }}
+    </div>
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
+              diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+        "Health effects of wildfires", "href": url_for('data_bp.framework') ~
+        '#extreme-weather-events' }, { "text": "Mental Health", "href":
+        url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+        }}
+    </div>
+  </div>
+{% endblock %}

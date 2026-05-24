@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: r-api-1-1
+  namespace: ons-data-explorer
+spec:
+  selector:
+    app: climate-health-r-api-1-1
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000

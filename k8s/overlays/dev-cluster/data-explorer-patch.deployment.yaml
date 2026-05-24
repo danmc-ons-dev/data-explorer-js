@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-explorer
+spec:
+  template:
+    spec:
+      containers:
+        - name: data-explorer
+          env: null
+          envFrom: null
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/src/app/config.yml
+              subPath: config.yml
+            - mountPath: /tmp/cache
+              name: cache-volume
+          ports:
+            - containerPort: 5001
+      # initContainers:
+      #   - name: migrate
+      #     env: null
+      #     envFrom: null
+      #     volumeMounts:
+      #       - name: config-volume
+      #         mountPath: /usr/src/app/config.yml
+      #         subPath: config.yml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: data-explorer-config
+            items:
+              - key: config.yml
+                path: config.yml
+        - name: cache-volume
+          emptyDir: {}

@@ -1,0 +1,410 @@
+{# templates/indicators/mental_health.html #}
+<!-- prettier-ignore -->
+{% import "macros/table.html" as table %}
+{% import "macros/upload.html" as upload %}
+{% import "macros/select.html" as select %}
+{% import "macros/input.html" as input %}
+{% import "macros/radios.html" as radio %}
+{% import "macros/external_link.html" as link %}
+{% set tooltips = tooltips|default({}) %}
+<div id="mental-health"
+     class="subtab-content ons-page__container ons-container">
+  {# TITLE AND BANNERS #}
+  <div class="ons-grid">
+    <div class="ons-grid__col ons-col-12@m ons-u-mt-m">{% include "components/indicator_banner.html" %}</div>
+    <div class="ons-grid__col ons-col-12@m ons-u-mt-m">
+      <h1 class="ons-u-fs-xl">Mental Health Indicator: Suicides attributable to extreme temperature</h1>
+      <p class="ons-u-fs-r">
+        This tool estimates suicides attributable to extreme heat by applying a time-stratified
+        case-crossover approach with a distributed lag non-linear model (DLNM) to your data.
+      </p>
+      <p class="ons-u-fs-r">
+        Full details of the methodology and guidance on input data are provided in the
+        <a href="{{ url_for("data_bp.framework") }}#mental-health"
+           onclick="setTabNo(7)"
+           class="ons-link ons-u-fs-r--b">Mental Health Framework Documentation</a>
+      </p>
+      <div class="ons-panel ons-panel--info ons-panel--no-title">
+        <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+        <div class="ons-panel__body">
+          <p class="ons-u-fs-r">
+            Please upload your daily time series CSV. This should be prepared in accordance with the
+            guidance in section 2.3 and 3.2 of the{{ link.external_link('https://doi.org/10.5281/zenodo.14050224', 'methodology
+            documentation.') }}
+          </p>
+          <p class="ons-u-fs-r">
+            Due to the nature of the health outcome, low counts of suicide are likely and therefore
+            potentially susceptible to large uncertainty. Please interpret any outputs alongside the
+            confidence intervals and model validation statistics.
+          </p>
+          <p class="ons-u-fs-r ons-u-mt-m">This calculator returns the following data:</p>
+          <ul class="ons-list">
+            <li class="ons-list__item list-disc">Model validation statistics</li>
+            <li class="ons-list__item list-disc">Relative risk: association between mean temperature and suicide</li>
+            <li class="ons-list__item list-disc">Attributable fraction: percentage of suicides attributable to extreme heat</li>
+            <li class="ons-list__item list-disc">Attributable number: number of suicides attributable to extreme heat</li>
+            <li class="ons-list__item list-disc">
+              Attributable rate: suicides per 100,000 population attributable to extreme heat
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {# TABS #}
+  <section class="ons-tabs ons-u-mt-m">
+    <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
+    <div class="ons-tabs__container">
+      <ul class="ons-tabs__list">
+        <li class="ons-tab__list-item">
+          <a href="#mental-health-select-file" class="ons-tab">Select File</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#mental-health-view-results" class="ons-tab">View Results</a>
+        </li>
+      </ul>
+    </div>
+    {# TAB CONTENT - SELECT FILE #}
+    <section id="mental-health-select-file" class="ons-tabs__panel">
+      <div class="ons-grid">
+        <div class="ons-grid__col ons-col-12@m">
+          <div class="ons-panel ons-panel--info ons-panel--no-title">
+            <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+            <div class="ons-panel__body">
+              <h4 class="ons-u-f-b">Mental Health indicator tool instructions</h4>
+              <ul class="ons-list">
+                <li class="ons-list__item list-disc">Select your input data (.csv) file</li>
+                <li class="ons-list__item list-disc">Select columns from your file to match the required columns in the dropdowns</li>
+                <li class="ons-list__item list-disc">
+                  Select additional independent variables if required (see section 3.6 of the{{ link.external_link('https://doi.org/10.5281/zenodo.14050224', 'methodology
+                  documentation.') }} for guidance on sensitivity analysis)
+                </li>
+              </ul>
+              <p class="inline-flex items-center gap-2 m-0">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-4 w-4 shrink-0 align-middle"
+                     viewBox="0 0 28 28"
+                     aria-hidden="true"
+                     focusable="false">
+                  <path d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 5.75C14.3461 5.75 14.6845 5.85264 14.9723 6.04493C15.26 6.23722 15.4843 6.51053 15.6168 6.8303C15.7492 7.15007 15.7839 7.50194 15.7164 7.84141C15.6489 8.18087 15.4822 8.4927 15.2374 8.73744C14.9927 8.98218 14.6809 9.14885 14.3414 9.21637C14.0019 9.2839 13.6501 9.24924 13.3303 9.11679C13.0105 8.98434 12.7372 8.76003 12.5449 8.47225C12.3526 8.18446 12.25 7.84612 12.25 7.5C12.25 7.03587 12.4344 6.59075 12.7626 6.26256C13.0908 5.93437 13.5359 5.75 14 5.75ZM16.5 21.25C16.5 21.3826 16.4473 21.5098 16.3536 21.6036C16.2598 21.6973 16.1326 21.75 16 21.75H12C11.8674 21.75 11.7402 21.6973 11.6465 21.6036C11.5527 21.5098 11.5 21.3826 11.5 21.25V20.25C11.5 20.1174 11.5527 19.9902 11.6465 19.8964C11.7402 19.8027 11.8674 19.75 12 19.75H12.5V12.75H12C11.8674 12.75 11.7402 12.6973 11.6465 12.6036C11.5527 12.5098 11.5 12.3826 11.5 12.25V11.25C11.5 11.1174 11.5527 10.9902 11.6465 10.8964C11.7402 10.8027 11.8674 10.75 12 10.75H15C15.1326 10.75 15.2598 10.8027 15.3536 10.8964C15.4473 10.9902 15.5 11.1174 15.5 11.25V19.75H16C16.1326 19.75 16.2598 19.8027 16.3536 19.8964C16.4473 19.9902 16.5 20.1174 16.5 20.25V21.25Z" fill="currentColor" />
+                </svg>
+                <span class="sr-only">Info:</span>
+                <span>Data uploaded is not stored</span>
+              </p>
+            </div>
+          </div>
+          <p class="ons-u-fs-r ons-u-mt-m">
+            Data must contain columns for date, temperature, geography, suicides and population in
+            the following format:
+          </p>
+          <!-- prettier-ignore -->
+          {{ table.ons_table(headers=['Date (yyyy-mm-dd)', 'Geography (Area)', 'Mean Temperature (°C)', 'Suicide related Deaths', 'Population'], rows=[['2021-01-28','North West','20.5','190','2600000'],['2021-01-29','North West','21.3','210', '3200000']], id='climate-table', aria_label='Mental health example input table', scroll=True) }}
+        </div>
+        <div class="ons-grid__col ons-col-6@m">
+          {{ upload.ons_file_upload(id="t7csvInput", label="Upload data", text="File types accepted
+                    are .csv (max 40MB)") }}
+        </div>
+      </div>
+      {# FORM #}
+      <form method="POST"
+            action="{{ url_for('indicator_bp.mental_health_indicator') }}"
+            enctype="multipart/form-data">
+        <div class="ons-grid ons-u-mt-m">
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t7timeCol', name='t7time', label='Date column',
+                            placeholder='Select an option', options=[], hint=tooltips.get('date_column') ) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t7geographyCol', name='t7region', label='Geography column',
+                            placeholder='Select an option', options=[], hint=tooltips.get('geography_column') ) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t7tempCol', name='t7temp', label='Temperature column',
+                            placeholder='Select an option', options=[], hint=tooltips.get('temperature_column') )
+              }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t7healthOutcomeCol', name='health', label='Suicides column',
+                            placeholder='Select an option', options=[], hint=tooltips.get('suicides_column') ) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t7popCol', name='t7pop', label='Population column',
+                            placeholder='Select an option', options=[], hint=tooltips.get('population_column') ) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ input.text_input(id='t7country', name='t7country', type='text', label='Country of
+                            analysis', value='', autocomplete='off', hint=tooltips.get('country_of_analysis') ) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {% set meta_analysis_options = [{"value": true, "label": "Yes"}, {"value": false, "label": "No"}] %} {{ radio.radio_group("t7-results-by-region", "Meta analysis",
+               meta_analysis_options, false, "Recommended if your dataset is broken down by multiple
+               sub-national areas. Set to “no” otherwise.") }}
+            </div>
+          </div>
+          <div class="ons-grid__row checkbox-collapsible ons-u-vh" hidden>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              <div class="ons-details ons-js-details ons-details--initialised"
+                   role="group">
+                <div class="ons-details__heading ons-js-details-heading"
+                     role="link"
+                     tabindex="0"
+                     aria-expanded="false"
+                     data-ga-action="Close panel">
+                  <h2 class="ons-details__title ons-u-fs-r--b">Independent Columns</h2>
+                  <span class="ons-details__icon">
+                    <svg class="ons-icon"
+                         viewBox="0 0 8 13"
+                         xmlns="http://www.w3.org/2000/svg"
+                         focusable="false"
+                         fill="currentColor"
+                         role="img"
+                         aria-hidden="true">
+                      <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -0.59)">
+                      </path>
+                    </svg>
+                  </span>
+                </div>
+                <div class="ons-details__content ons-js-details-content"
+                     aria-hidden="true">
+                  <div id="t7IndependentColList"></div>
+                </div>
+              </div>
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              <div class="ons-details ons-js-details ons-details--initialised"
+                   role="group">
+                <div class="ons-details__heading ons-js-details-heading"
+                     role="link"
+                     tabindex="0"
+                     aria-expanded="false"
+                     data-ga-action="Close panel">
+                  <h2 class="ons-details__title ons-u-fs-r--b">Control Columns</h2>
+                  <span class="ons-details__icon">
+                    <svg class="ons-icon"
+                         viewBox="0 0 8 13"
+                         xmlns="http://www.w3.org/2000/svg"
+                         focusable="false"
+                         fill="currentColor"
+                         role="img"
+                         aria-hidden="true">
+                      <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -0.59)">
+                      </path>
+                    </svg>
+                  </span>
+                </div>
+                <div class="ons-details__content ons-js-details-content"
+                     aria-hidden="true">
+                  <div id="t7ControlColList"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l">
+          <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+          <div class="ons-panel__body">
+            <p class="ons-u-fs-r">
+              This tool utilises the baseline (default) model parameters only. These cannot be
+              altered here but can be adjusted within the R package on GitHub.
+            </p>
+            <p class="ons-u-fs-r">The default model approach uses:</p>
+            <ul class="ons-list">
+              <li class="ons-list__item list-disc">
+                A smooth temperature-response curve (a quadratic b-spline) with key points (knots)
+                evenly set at the 25th, 50th and 75th percentiles of daily temperature for the
+                corresponding area.
+              </li>
+              <li class="ons-list__item list-disc">
+                Lag effects grouped into two periods: same day (lag 0) and the next two days (lag
+                1-2).
+              </li>
+              <li class="ons-list__item list-disc">
+                An extreme heat threshold of the top 2.5% (97.5th percentile) of daily temperatures
+                for each corresponding area over the whole timeseries.
+              </li>
+            </ul>
+            <p class="ons-u-fs-r ons-u-mt-m">
+              For more details see the {{ link.external_link('https://doi.org/10.5281/zenodo.14050224', 'methodology
+               documentation.') }}
+            </p>
+            <p class="ons-u-fs-r ons-u-mt-m">
+              <strong>DISCLAIMER!</strong>
+              This analysis could take some time.
+            </p>
+          </div>
+        </div>
+        <button id="t7Analyse"
+                class="ons-btn ons-btn--loader ons-u-mt-m"
+                type="submit"
+                aria-live="polite">
+          <span class="ons-btn__inner">
+            <span class="ons-btn__text">Analyse</span>
+            <svg class="ons-icon ons-u-ml-2xs"
+                 xmlns="http://www.w3.org/2000/svg"
+                 focusable="false"
+                 viewBox="0 0 100 100"
+                 preserveAspectRatio="xMidYMid"
+                 fill="currentcolor"
+                 role="img"
+                 aria-hidden="true">
+              <rect x="0" y="0" width="100" height="100" fill="none"></rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(0 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(30 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.08333333333333333s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(60 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.16666666666666666s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(90 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.25s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(120 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.3333333333333333s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(150 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.4166666666666667s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(180 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(210 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5833333333333334s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(240 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.6666666666666666s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(270 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.75s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(300 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.8333333333333334s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(330 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.9166666666666666s" repeatCount="indefinite" />
+              </rect>
+            </svg>
+          </span>
+        </button>
+      </form>
+      {# API Error - Hidden by default #}
+      <div id="t7ApiError"
+           class="ons-panel ons-panel--error ons-panel--no-title ons-u-d-no ons-u-mt-m"
+           role="alert">
+        <span class="ons-panel__assistive-text ons-u-vh">Error:</span>
+        <div class="ons-panel__body"></div>
+      </div>
+      <div class="ons-table-scrollable ons-table-scrollable--on">
+        <div class="ons-table-scrollable__content"
+             tabindex="0"
+             role="region"
+             aria-label="{{ aria_label }}">
+          <table id="t7previewTable" class="ons-table ons-u-mt-xl">
+          </table>
+        </div>
+      </div>
+    </section>
+    {# TAB CONTENT - VIEW RESULTS #}
+    <section id="mental-health-view-results" class="ons-tabs__panel">
+      <div class="ons-grid ons-u-mt-m">
+        <div class="ons-grid__col ons-col-12@m">
+          <div class="ons-grid ons-grid-flex ons-grid-flex--vertical-center ons-grid-flex--center">
+            <div class="ons-grid__col ons-col-auto">
+              {{ select.ons_select(id='t7groupDropdown', name='t7groupDropdown', label='Select a
+                            sub geography to plot results:', placeholder='Select an option', options=[]) }}
+            </div>
+            <div class="ons-grid__col ons-col-auto ons-u-mt-xl">
+              <a href="#0"
+                 role="button"
+                 id="t7downloadButtonRR"
+                 class="ons-btn ons-btn--download ons-btn--small ons-btn--secondary ons-btn--link ons-js-submit-btn">
+                <span class="ons-btn__inner">
+                  <svg class="ons-icon ons-u-mr-2xs"
+                       viewBox="0 0 12 12"
+                       xmlns="http://www.w3.org/2000/svg"
+                       focusable="false"
+                       fill="currentColor"
+                       role="img"
+                       aria-hidden="true">
+                    <path d="M5.6 9a.48.48 0 0 0 .7 0l3-3.2a.48.48 0 0 0 0-.7C9.3 5 9.2 5 9 5H7.5V.5A.47.47 0 0 0 7 0H5a.47.47 0 0 0-.5.5V5H3a.47.47 0 0 0-.5.5.37.37 0 0 0 .1.3Z" />
+                    <path d="M11.5 9H11a.47.47 0 0 0-.5.5v1h-9v-1A.47.47 0 0 0 1 9H.5a.47.47 0 0 0-.5.5v2a.47.47 0 0 0 .5.5h11a.47.47 0 0 0 .5-.5v-2a.47.47 0 0 0-.5-.5Z" />
+                  </svg>
+                  <span class="ons-btn__text">Relative risk of mortality</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="t7graph-text-plot" style="visibility: hidden">
+        <div class="ons-grid ons-grid--center">
+          <div class="ons-grid__col ons-col-12">
+            <div id="mentalHealthRRPlot" class="ons-u-mb-l"></div>
+            <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m">
+              <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+              <div class="ons-panel__body">
+                <p class="ons-u-fs-r">
+                  The above plot shows the relative risk of suicide (RR) (and 95% confidence
+                  intervals) associated with mean temperature for the input data period.
+                </p>
+                <p class="ons-u-fs-r">
+                  The RR indicates the likelihood of an individual dying by suicide during, or
+                  shortly after, exposure to a certain temperature. When a temperature has a
+                  relative risk of one, this means there is neither an increase nor a decrease in
+                  the likelihood of the individual dying during, or shortly after, exposure to that
+                  temperature, compared with a reference temperature. In this case, the reference
+                  temperature is where the suicide risk is lowest between the first and fiftieth
+                  percentiles of daily mean temperature for the associated geography. A relative
+                  risk of 1.1 denotes a 10% increase in suicide risk. A relative risk of below one
+                  may suggest that, in the context of the model, extreme heat is associated with a
+                  reduction in risk (an inverse relationship).
+                </p>
+              </div>
+            </div>
+            <!-- AR Plots -->
+            <div id="mentalHealthARYRPlot" class="ons-u-mt-l"></div>
+            <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m">
+              <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+              <div class="ons-panel__body">
+                <p class="ons-u-fs-r">
+                  The above plot shows the estimated yearly number of deaths per 100,000 population
+                  that are attributable to extreme heat, that is, that would not have occurred if
+                  there had been no exposure to that heat.
+                </p>
+                <p class="ons-u-fs-r">
+                  The extreme heat threshold is defined as the 97.5th percentile of daily
+                  temperature over the input data period for the associated geography.
+                </p>
+              </div>
+            </div>
+            <div id="mentalHealthARMPlot" class="ons-u-mt-l"></div>
+            <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m">
+              <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+              <div class="ons-panel__body">
+                <p class="ons-u-fs-r">
+                  The above plot shows the estimated number of deaths per 100,000 population that
+                  are attributable to extreme heat, that is, that would not have occurred if there
+                  had been no exposure to that heat. This is shown by calendar month to highlight
+                  potential seasonal patterns. The average temperature for each month over the input
+                  data period for the associated geography is also shown for context.
+                </p>
+                <p class="ons-u-fs-r">
+                  The extreme heat threshold is defined as the 97.5th percentile of daily
+                  temperature over the input data period for the associated geography.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+</div>

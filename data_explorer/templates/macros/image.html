@@ -1,0 +1,12 @@
+{# templates/macros/image.html #}
+{% macro image(caption, width=150, height=300, image_name="placeholder-card.png", alt="placeholder") -%}
+  <figure class="ons-image">
+    <img src="{{ url_for('static', filename='assets/' ~ image_name) }}"
+         alt="{{ alt }}"
+         loading="lazy"
+         class="ons-image__img"
+         width="{{ width }}"
+         height="{{ height }}" />
+    {% if caption %}<figcaption class="ons-image__caption">{{ caption }}</figcaption>{% endif %}
+  </figure>
+{%- endmacro %}

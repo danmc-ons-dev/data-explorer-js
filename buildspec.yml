@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --region us-west-2 ecr get-login-password | docker login --username AWS --password-stdin 142496269814.dkr.ecr.us-west-2.amazonaws.com
+      - aws eks update-kubeconfig --region us-west-2 --name dev-cluster --kubeconfig /root/.kube/config
+  build:
+    commands:
+      - echo Building the data-explorer Docker image...
+      - docker build -t data-explorer -f data-explorer.Dockerfile .
+      - echo Building the migrations Docker image...
+      - docker build -t data-explorer-migrations -f migrations.Dockerfile .
+  post_build:
+    commands:
+      - echo Tagging and pushing the data-explorer Docker image...
+      - VERSION=$(grep -oP '(?<=version=).+' setup.py | tr -d "'" | tr -d "," | tr -d '"')
+      - docker tag data-explorer:latest 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/data-explorer:$VERSION
+      - docker push 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/data-explorer:$VERSION
+      - echo Tagging and pushing the migrations Docker image...
+      - docker tag data-explorer-migrations:latest 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/data-explorer-migrations:$VERSION
+      - docker push 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/data-explorer-migrations:$VERSION
+      - echo Build completed on `date`
+      - echo Updating the Kubernetes deployment...
+      - chmod +x update_deployment.sh
+      - ./update_deployment.sh

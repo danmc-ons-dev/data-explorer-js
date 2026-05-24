@@ -1,0 +1,468 @@
+<!-- prettier-ignore -->
+{% import "macros/accordion.html" as acc %}
+{% import "macros/image.html" as image %}
+{% import "macros/buttons.html" as btn %}
+{% import "macros/cards.html" as cards %}
+{% import "macros/external_link.html" as link %}
+{% set title = "Vector-borne diseases" %}
+{% set topic_id = "vectorborne-diseases" %}
+{# TITLE #}
+<h1 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h1>
+{# INTRO PARAGRAPH #}
+<p class="ons-u-fs-r">
+  Climate change is leading to more extreme temperatures and rainfall. These changes promote the
+  spread of certain vector-borne diseases which are impacted by warmer temperatures, humidity, and
+  heavy rainfall. Malaria is a significant public health issue, particularly in tropical and
+  subtropical regions, and is highly impacted by these climatic changes.
+</p>
+{# INFO PANEL TOP #}
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      This topic area aims to quantify the health impacts of malaria attributable to extreme
+      temperatures and rainfall.
+    </p>
+  </div>
+</div>
+{# BUTTONS ONE (TOPIC INTRO, METHODOLOGY, METADATA) #}
+<!-- prettier-ignore -->
+{% set buttons = [
+  {
+    "text": "Topic Introduction",
+    "href": "https://zenodo.org/records/14051953",
+    "classes": ""
+  },
+  {
+    "text": "Methodology",
+    "href": "https://doi.org/10.5281/zenodo.14881886",
+    "classes": "ons-btn--secondary"
+  },
+  {
+    "text": "Metadata",
+    "href": "https://doi.org/10.5281/zenodo.14882093",
+    "classes": ""
+  }
+] %}
+<div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
+  {% for button in buttons %}
+    <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
+  {% endfor %}
+</div>
+{# ACCORDION ONE #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-one",
+group=topic_id ~ "-accordion",) }}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 1, "Impact Pathway", title_level=3) %}
+  {{ image.image(image_name='framework-vectorborne.png', width='100%', alt="Diagram showing pathways between climate change and malaria incidence. At the top left, climate drivers and hazards include increased frequency and intensity of extreme weather, extreme temperatures, floods, droughts and humidity shifts. At the top right, exposure and vulnerability include proximity to breeding sites and higher mosquito biting rates, and higher risk among children, pregnant women, and individuals with poor housing and limited healthcare access. These factors interact and flow downward toward physiological impacts and health outcomes. Physiological impacts include fever, anemia, severe malaria complications, pregnancy risks, organ damage, and drug resistance. Health outcomes include increased malaria cases, hospitalisations, deaths, developmental harm in children and maternal risks. Adaptation and mitigation measures—such as early warning systems, bed nets, spraying, community-based care, and public health education—are shown to intervene to reduce negative impacts.") }}
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicators", title_level=3) %}
+  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r--b">Two priority indicators developed within the vector-borne diseases topic are:</p>
+      <ul class="ons-list">
+        <li class="ons-list__item list-disc">Malaria incidence attributable to extreme temperature</li>
+        <li class="ons-list__item list-disc">Malaria incidence attributable to extreme rainfall</li>
+      </ul>
+    </div>
+  </div>
+  <p class="ons-u-fs-r ons-u-mt-m">
+    It was agreed to prioritise these indicators as they can provide regular, reliable, and comparable
+    data to monitor climate-related health impacts using state-of-the-art statistical methods.
+  </p>
+  <p class="ons-u-fs-r">
+    Further justification for the focus on this indicator is explained in the Topic introduction,
+    which also outlines supplementary and additional indicators that are not in scope for the current
+    SOSCHI framework but are recommended for future development.
+  </p>
+  <div class="ons-panel ons-panel--info ons-panel--no-title">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r--b">Malaria incidence attributable to extreme temperature</p>
+      <ul class="ons-list ons-list--dashed">
+        <li class="ons-list__item">Relative risk of malaria cases attributable to extreme temperature</li>
+        <li class="ons-list__item">Number of malaria cases attributable to extreme temperature</li>
+        <li class="ons-list__item">Fraction of malaria cases attributable to extreme temperature</li>
+        <li class="ons-list__item">Malaria cases per 100,000 population attributable to extreme temperature</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__two">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r--b">Malaria incidence attributable to extreme rainfall</p>
+      <ul class="ons-list ons-list--dashed">
+        <li class="ons-list__item">Relative risk of malaria cases attributable to extreme rainfall</li>
+        <li class="ons-list__item">Number of malaria cases attributable to extreme rainfall</li>
+        <li class="ons-list__item">Fraction of malaria cases attributable to extreme rainfall</li>
+        <li class="ons-list__item">Malaria cases per 100,000 population attributable to extreme rainfall</li>
+      </ul>
+    </div>
+  </div>
+  <p class="ons-u-fs-r ons-u-mt-m">
+    For guidance on the process for calculating these indicator metrics, see the Methodology section
+    below.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 3, "Policy Relevance", title_level=3) %}
+  <p class="ons-u-fs-r">
+    These indicators can give insights into how changes in extreme temperature and rainfall events
+    influence the transmission and burden of vector-borne diseases, and how these impacts vary
+    geographically and among the most vulnerable groups in society, informing local adaptation needs.
+  </p>
+  <p class="ons-u-fs-r">
+    While malaria incidence does not capture all pathways through which climate change affects health,
+    it is a well-established and sensitive indicator of vector-borne disease risk, particularly in
+    settings where proximity to mosquito breeding sites and high mosquito bites interact to increase
+    transmission risk.
+  </p>
+  <p class="ons-u-fs-r--b">This indicator can therefore:</p>
+  <ul class="ons-list">
+    <li class="ons-list__item list-disc">
+      Monitor and quantify the health burden associated with extreme rainfall and extreme temperature
+      through vector-borne disease outcomes.
+    </li>
+    <li class="ons-list__item list-disc">Inform national adaptation plans (NAPs) and resilience strategies</li>
+    <li class="ons-list__item list-disc">
+      Guide environmental and public health policy to reduce risks and improve outcomes
+    </li>
+  </ul>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 4, "Methodology", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The indicator uses epidemiological methods to examine short-term links between climate exposure
+    and vector-borne disease outcomes. The analysis uses a spatiotemporal Bayesian model combined with
+    a Distributed Lag Nonlinear Model (DLNM). This approach captures both nonlinear and delayed
+    effects of climate on monthly malaria cases while accounting for spatial and temporal patterns in
+    transmission.
+  </p>
+  <div class="ons-panel ons-panel--info ons-panel--no-title">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <h5 class="ons-u-fs-r--b">Understand the method</h5>
+      <p class="ons-u-fs-r">
+        Read the {{ link.external_link('https://doi.org/10.5281/zenodo.14881886', 'vector-borne
+         diseases: methodology') }} for details on the modelling approach, the data needed, and guidance
+        on interpreting results.
+      </p>
+    </div>
+  </div>
+  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <h5 class="ons-u-fs-r--b">Develop bespoke analyses</h5>
+      <p class="ons-u-fs-r">
+        For flexible, reproducible analysis or to adapt methods to your country or region, use the
+        Code Library and R package, which provides program code for the priority indicators.
+      </p>
+    </div>
+  </div>
+  <div class="ons-panel ons-panel--no-title ons-panel--info headline-indicators__two ons-u-mb-m">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <h5 class="ons-u-fs-r--b">No-code option for indicator analysis</h5>
+      <p class="ons-u-fs-r">
+        Use the Indicator tool if you want quick baseline estimates and simple charts without writing
+        code; it supports secure temporary uploads and downloadable outputs.
+      </p>
+    </div>
+  </div>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 5, "Data Requirements and Guidance", title_level=3) %}
+  <p class="ons-u-fs-r--b">The following data is needed for this indicator production:</p>
+  <ul class="ons-list">
+    <li class="ons-list__item list-disc">Monthly count of malaria cases from national administrative records.</li>
+    <li class="ons-list__item list-disc">Climate data from the National Meteorological Agency.</li>
+    <li class="ons-list__item list-disc">Population estimates from national statistical agencies.</li>
+  </ul>
+  <p class="ons-u-fs-r ons-u-mt-m">
+    Where this data is unavailable or observations are incomplete, proxy datasets may be used. Further
+    information on these potential sources as well as required variable names and formats are outlined
+    in section 2 of the {{ link.external_link('https://doi.org/10.5281/zenodo.14881886', 'Vector-borne
+     diseases: Methodology') }}
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}
+{# BUTTONS TWO (CODE LIBRARY, INDICATOR TOOLS) #}
+<div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.external('Code Library', 'https://github.com/onssoschi/climatehealth') }}
+  </div>
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.internal("Indicator Tools", url_for('data_bp.indicator_calculators') ~ '#' ~ topic_id,
+    "ons-btn--secondary" ) }}
+  </div>
+</div>
+{# ACCORDION TWO #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-two",
+group=topic_id ~ "-accordion-two",
+toggle_text_open="Show all FAQs",
+toggle_text_close="Hide all FAQs") }}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 1, "What is the relevance of statistics on malaria attributable to extreme temperature and extreme rainfall?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    Malaria is a climate-sensitive vector-borne disease, influenced by environmental conditions that
+    affect mosquito and parasite dynamics. Variations in temperature and rainfall can alter mosquito
+    survival, biting rates, and parasite development, thereby changing malaria transmission risk.
+  </p>
+  <p class="ons-u-fs-r">
+    These indicators quantify the portion of malaria burden associated with climate conditions that
+    increase risk on a monthly basis, helping guide vector control, public health planning, and
+    adaptation strategies. Malaria incidence is affected by multiple factors, and climate is one
+    component within this complex system.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "How are extreme temperature and extreme rainfall defined for this indicator?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    In this analysis, extreme temperature refers to the monthly maximum temperature, while extreme
+    rainfall refers to the total monthly rainfall. Extreme conditions are determined using relative
+    risk (RR) rather than rare or percentile-based weather events.
+  </p>
+  <p class="ons-u-fs-r">
+    Months where RR > 1 are considered harmful, meaning they increase malaria risk, while RR < 1
+    indicates months associated with lower risk. The RR is derived from a model linking monthly
+    malaria counts to climate conditions, so extremes represent health-relevant risk levels rather
+    than purely unusual weather. See the {{ link.external_link('https://doi.org/10.5281/zenodo.14881886', 'Vector-borne diseases:
+     Methodology') }} for more details.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "Are these direct counts of malaria cases caused by temperature or rainfall?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    No. These are model-based attribution estimates, not observed cases directly caused by climate.
+    The analysis evaluates the relationships between monthly malaria incidence and monthly maximum
+    temperature and cumulative rainfall, while accounting for delayed effects and regional and
+    seasonal variation.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "What does “attributable to extreme temperature or extreme rainfall” mean?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    “Attributable” indicates the number, rate, or fraction of malaria cases associated with months in
+    which climate conditions increase risk. Attribution is calculated only for months where RR > 1,
+    reflecting harmful temperature or rainfall conditions. It represents the estimated proportion of
+    malaria cases that could be prevented if climate risk factors were not within the harmful
+    temperature range (RR > 1), based on the modeled exposure-response relationship. See {{ link.external_link('https://doi.org/10.5281/zenodo.14881886', 'Vector-borne diseases:
+     Methodology') }} for more details.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "What statistical methods are used to estimate malaria attributable to extreme temperature and extreme rainfall?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The analysis uses a spatiotemporal Bayesian modeling framework combined with a Distributed Lag
+    Nonlinear Model (DLNM). This approach captures both nonlinear and delayed effects of climate on
+    monthly malaria cases while accounting for spatial and temporal patterns in transmission.
+  </p>
+  <p class="ons-u-fs-r">
+    The combination produces reliable relative risk and attributable burden estimates across multiple
+    locations and months using the R-INLA package. Depending on the dataset size, running the model
+    typically takes 3 to 5 minutes.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "How reliable are the estimates that are produced?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The estimates are strengthened by the model’s ability to handle variations in malaria incidence
+    and climate exposure across regions and months.
+  </p>
+  <p class="ons-u-fs-r--b">Key aspects of reliability include:</p>
+  <ul class="ons-list">
+    <li class="ons-list__item list-disc">
+      Combining information across locations and time to stabilize estimates in areas or months with
+      few cases.
+    </li>
+    <li class="ons-list__item list-disc">
+      Capturing delayed and nonlinear responses of malaria risk to temperature and rainfall,
+      reflecting cumulative effects.
+    </li>
+    <li class="ons-list__item list-disc">
+      Accounting for spatial and temporal correlations across neighboring regions and months.
+    </li>
+    <li class="ons-list__item list-disc">
+      Providing uncertainty estimates through credible intervals, which incorporate data variability
+      and model assumptions.
+    </li>
+  </ul>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "Are estimates available for locations or populations most at risk?", title_level=3) %}
+  <p class="ons-u-fs-r">
+    Yes, malaria indicators are produced at national, regional, and district levels, as well as for
+    key sub-populations, including children under five years of age. Estimates for the under-five
+    population are reliable because higher case counts provide stable modeling. As with all outputs,
+    credible intervals should be considered when interpreting results, particularly in smaller areas.
+  </p>
+  <p class="ons-u-fs-r">
+    It is based on the risk of suicide from the modelled temperature-suicide association above the
+    defined threshold of extreme heat. This threshold can be altered by a user if needed to
+    accommodate differing relationships.
+  </p>
+{% endcall %}
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}
+<p class="ons-u-fs-r ons-u-mt-l">
+  For broader questions that apply across the platform, please see our{{ link.internal_link(url_for('main_bp.faqs') , 'General FAQs' ) }}section.
+</p>
+{# RELATED TOPICS #}
+<h2 class="ons-u-fs--l ons-u-mt-xl">Related Topics</h2>
+<div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
+  <!-- prettier-ignore -->
+    {{ cards.relevant_pages("Temperature related health effects", "", [], "icons/temperature_related_illness.svg", title_href=url_for('data_bp.framework') ~ '#heat-and-cold', img_width=200, img_height=200, img_alt='Heat and cold icon') }}
+</div>
+<h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
+<p class="ons-u-fs-r">
+  The vector-borne diseases topic expert group was setup to review this topic and guide what we
+  measure and how we measure it. The group brings together internal and external specialists who
+  advise on indicators and methods, share subject knowledge so we build on existing work and good
+  practice, and help quality assure draft outputs before publication.
+</p>
+<!-- prettier-ignore -->
+{% set team_members = [
+  {
+    "name": "Abigail Osei Owusu",
+    "company": "Dodowa Health Research Centre"
+  },
+  {
+    "name": "Basil Tungbani",
+    "company": "Ghana Statistical Service"
+  },
+  {
+    "name": "Dr. Billy Bauzile",
+    "company": "The Swiss Tropical and Public Health Institute, Switzerland"
+  },
+  {
+    "name": "Dr. Cameline Orlendo",
+    "company": "The Swiss Tropical and Public Health Institute, Switzerland"
+  },
+  {
+    "name": "Dr. Christian Selinger",
+    "company": "The Swiss Tropical and Public Health Institute, Switzerland"
+  },
+  {
+    "name": "Dr. Eimear Cleary",
+    "company": "University of Southampton, UK"
+  },
+  {
+    "name": "Emil K. Kpo",
+    "company": "Ghana Statistical Service"
+  },
+  {
+    "name": "Dr. Emilie Pothin",
+    "company": "The Swiss Tropical and Public Health Institute, Switzerland"
+  },
+  {
+    "name": "Emmanuel Adusei",
+    "company": "Research and Development Division, Ghana Health Service"
+  },
+  {
+    "name": "Gianpaolo Pontiggia",
+    "company": "The Swiss Tropical and Public Health Institute, Switzerland"
+  },
+  {
+    "name": "Dr. Israel Ukawuba",
+    "company": "The Swiss Tropical and Public Health Institute, Switzerland"
+  },
+  {
+    "name": "Prof. Kofi A. Amegah",
+    "company": "Department of Biomedical Sciences, University of Cape Coast, Ghana"
+  },
+  {
+    "name": "Prof. Louis Asiedu",
+    "company": "Department of Statistics & Actuarial Science, University of Ghana"
+  },
+  {
+    "name": "Mary Pomaa Agyekum",
+    "company": "Dodowa Health Research Centre"
+  },
+  {
+    "name": "Prof. Marta Blangiardo",
+    "company": "Imperial College London, UK"
+  },
+  {
+    "name": "Dr. Monica Pirani",
+    "company": "Imperial College London, UK"
+  },
+  {
+    "name": "Dr. Naomi Kumi",
+    "company": "University of Energy and Natural Resources, Sunyani, Ghana"
+  },
+  {
+    "name": "Dr Patrick Ansah",
+    "company": "Navrongo Health Research Centre"
+  },
+  {
+    "name": "Richard J. Tetteh",
+    "company": "Kintampo Health Research Centre"
+  },
+  {
+    "name": "Solomon Nyame",
+    "company": "Kintampo Health Research Centre"
+  }
+] %}
+<!-- prettier-ignore -->
+{% set team_list_id = "ons-meet-the-team-" ~ topic_id ~ "-list" %}
+{# TEAM CARDS #}
+{% set members_count = team_members | length %}
+<div class="ons-team-cards ons-u-mt-xl"
+     role="region"
+     aria-label="{{ title }} team"
+     data-js="ons-team-cards">
+  <ul id="{{ team_list_id }}"
+      class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
+      data-js="ons-team-cards-list">
+    {% for member in team_members %}
+      <li class="ons-team-cards__item flex items-end">
+        <div class="ons-card">
+          <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
+          {% if member.company %}<p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>{% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  <button type="button"
+          class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
+          aria-label="Show next team members"
+          aria-controls="{{ team_list_id }}"
+          data-js="ons-team-cards-next">
+    <svg class="ons-icon"
+         viewBox="0 0 12 12"
+         xmlns="http://www.w3.org/2000/svg"
+         focusable="false"
+         aria-hidden="true"
+         role="img">
+      <path d="M4 2.5L8 6L4 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+</div>
+{# CLOSING TEXT - FINAL #}
+<div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      The framework topic documents are a final version produced as part of the SOSCHI project
+      (Wellcome grant no. 224682/Z/21/Z). Please note that as this is an emerging topic area,
+      indicators and methods are subject to change. Notices will be issued on this page to inform
+      users of any changes to the information captured.
+    </p>
+    <p class="ons-u-fs-r">
+      For more information on the selection criteria used for prioritising the SOSCHI topics and the
+      development process, see the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI
+      Framework Page' ) }}.
+    </p>
+    <p class="ons-u-fs-r">
+      We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
+      page can be used for official statistics reporting. See the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI Framework Page' ) }}for information
+      on the endorsement of the proposed indicators.
+    </p>
+  </div>
+</div>
+{# LAST UPDATED #}
+<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 28/02/2025</p>

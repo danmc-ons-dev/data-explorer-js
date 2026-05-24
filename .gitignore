@@ -1,0 +1,23 @@
+config.yml
+# The personal-aws overlay config.yml contains no secrets (dummy mode only) so we allow it.
+!k8s/overlays/personal-aws/config.yml
+.env
+.venv
+.vscode
+dist/
+flask_session/
+tests/__pycache__/
+data_explorer/__pycache__
+data_explorer/scripts/__pycache__/
+tests/functional/__pycache__/
+tests/unit/__pycache__/
+__pycache__/
+scripts/__pycache__/
+data_explorer/__pycache__/__main__/
+data_explorer/scripts/__pycache__/dummy_data/
+data_explorer/__init__copy.py
+explorer_venv/
+k8s/overlays/dev-cluster/config.yaml
+.prettierrc
+data_explorer_js/temp
+data_explorer/static/data/dummy_data/**

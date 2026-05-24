@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.69 56.69">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #cc8544;
+      }
+
+      .cls-3 {
+        fill: #f4bf96;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: #f4bf96;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.62px;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M51.65,12.93L30.04.45c-1.05-.61-2.34-.61-3.39,0L5.04,12.93c-1.05.61-1.69,1.72-1.69,2.94v24.96c0,1.21.65,2.33,1.69,2.94l21.61,12.48c1.05.61,2.34.61,3.39,0l21.61-12.48c1.05-.61,1.69-1.72,1.69-2.94V15.87c0-1.21-.65-2.33-1.69-2.94Z"/>
+  <g>
+    <g id="Artwork_64x64" data-name="Artwork 64x64">
+      <rect class="cls-2" x="16.54" y="37.63" width="4.27" height="5.22"/>
+      <rect class="cls-2" x="29.35" y="27.74" width="4.27" height="15.1"/>
+      <rect class="cls-2" x="22.95" y="34.03" width="4.27" height="8.81"/>
+      <rect class="cls-2" x="35.76" y="19.65" width="4.27" height="23.19"/>
+      <path class="cls-3" d="M42.43,43.95H14.14c-.44,0-.8-.37-.8-.83s.36-.83.8-.83h28.3c.44,0,.8.37.8.83s-.36.83-.8.83Z"/>
+    </g>
+    <g>
+      <path class="cls-4" d="M13.57,31.25s14.72-2.37,22.12-19.9l-3.77.71"/>
+      <line class="cls-4" x1="37.23" y1="14.67" x2="35.69" y2="11.35"/>
+    </g>
+  </g>
+</svg>

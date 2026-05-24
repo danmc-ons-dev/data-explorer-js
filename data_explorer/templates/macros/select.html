@@ -1,0 +1,70 @@
+{# macros/select.html #}
+{% macro ons_select(
+  id='select-example',
+  name='select',
+  label='Question topic',
+  options=[],
+  placeholder='Select an option',
+  selected=None,
+  disable_placeholder=False,
+  required=True,
+  hint=None,
+  error=None,
+  classes='',
+  attrs=None
+  ) %}
+  {# build aria-describedby targets #}
+  {% set described = [] %}
+  {% if hint %}
+    {% set _ = described.append(id ~ '-hint') %}
+  {% endif %}
+  {% if error %}
+    {% set _ = described.append(id ~ '-error') %}
+  {% endif %}
+  <div class="ons-field{% if error %} ons-field--error{% endif %}">
+    <label class="ons-label ons-grid__col--flex gap-2 items-center"
+           for="{{ id }}">
+      {{ label }}
+      {% if required %}<span class="ons-u-vh">(required)</span>{% endif %}
+      {% if hint %}
+        <button type="button"
+                class="ons-hint-toggle__icon"
+                aria-controls="{{ id }}-hint"
+                aria-expanded="false"
+                data-hint-toggle="{{ id }}">
+          <img src="/static/assets/icons/ons-icon-info-small.svg"
+               alt="information icon"
+               width="16"
+               height="16"
+               aria-hidden="true">
+          <span class="ons-u-vh">Show hint for {{ label }}</span>
+        </button>
+      {% endif %}
+    </label>
+    {% if hint %}
+      <div id="{{ id }}-hint"
+           class="ons-hint ons-label__description ons-input--with-description ons-u-vh">{{ hint }}</div>
+    {% endif %}
+    {% if error %}
+      <div id="{{ id }}-error"
+           class="ons-error-message"
+           role="alert"
+           aria-live="polite">{{ error }}</div>
+    {% endif %}
+    <select id="{{ id }}"
+            name="{{ name }}"
+            class="ons-input ons-input--select {{ classes }}{% if error %} ons-input--error{% endif %}"
+            {% if required %}required aria-required="true"{% endif %}
+            {% if described %}aria-describedby="{{ ' '.join(described) }}"{% endif %}
+            {% if attrs %}{{ attrs|xmlattr }}{% endif %}>
+      {% if placeholder %}
+        <option value=""
+                {% if disable_placeholder %}disabled{% endif %}
+                {% if selected is none %}selected{% endif %}>{{ placeholder }}</option>
+      {% endif %}
+      {% for value, text in options %}
+        <option value="{{ value }}" {% if selected == value %}selected{% endif %}>{{ text }}</option>
+      {% endfor %}
+    </select>
+  </div>
+{% endmacro %}

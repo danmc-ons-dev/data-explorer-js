@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-explorer
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: data-explorer
+  template:
+    metadata:
+      labels:
+        app: data-explorer
+    spec:
+      initContainers:
+        - name: migrate
+          image: data-explorer-migrations:latest # Replace with your migration image
+          imagePullPolicy: Never
+          env:
+            - name: POSTGRES_HOST
+              value: postgres
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+            - secretRef:
+                name: postgres-secret
+          ports:
+            - containerPort: 5432
+      containers:
+        - name: data-explorer
+          image: data-explorer:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+            - secretRef:
+                name: postgres-secret
+          ports:
+            - containerPort: 5000

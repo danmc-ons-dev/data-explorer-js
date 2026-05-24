@@ -1,0 +1,40 @@
+{# templates/macros/publication_list.html #}
+{% macro ons_publication_list(items) -%}
+  <ul class="ons-document-list ons-u-mt-l">
+    {%- for item in items %}
+      {%- set meta = [] %}
+      {%- if item.type %}{% set _ = meta.append(item.type) %}
+      {% endif %}
+      {%- if item.publisher %}{% set _ = meta.append(item.publisher) %}
+      {% endif %}
+      {%- if item.date %}{% set _ = meta.append(item.date) %}
+      {% endif %}
+      <li class="ons-document-list__item">
+        <div class="ons-document-list__item-content">
+          <div class="ons-document-list__item-header">
+            <h2 class="ons-document-list__item-title ons-u-fs-m ons-u-mt-no ons-u-mb-2xs">
+              <a href="{{ item.href }}"
+                 rel="external noopener noreferrer"
+                 target="_blank">
+                {{ item.title }}
+                <span class="ons-u-vh">, external link (opens in new tab)</span>
+              </a>
+            </h2>
+            {%- if meta %}
+              <ul class="ons-document-list__item-metadata ons-u-mb-2xs">
+                {%- for m in meta %}
+                  <li class="ons-document-list__item-attribute{{ ' ons-u-mr-no' if loop.first }}">
+                    {%- if loop.first -%}<span>{{ m }}
+                      {% if meta|length > 1 %},{% endif %}
+                    </span>{%- else -%}{{ m }}{%- endif -%}
+                  </li>
+                {%- endfor %}
+              </ul>
+            {%- endif %}
+          </div>
+          {%- if item.description %}<div class="ons-document-list__item-description">{{ item.description }}</div>{%- endif %}
+        </div>
+      </li>
+    {%- endfor %}
+  </ul>
+{%- endmacro %}

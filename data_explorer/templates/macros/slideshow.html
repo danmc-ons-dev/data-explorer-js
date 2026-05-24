@@ -1,0 +1,106 @@
+{# templates/macros/slideshow.html #}
+{% macro ons_slideshow(images=None, aria_label="Climate and health imagery") %}
+  {% set default_slides = [
+    {
+      "filename": "assets/pexels-pixabay-60013.jpg",
+      "alt": "Heat and Cold",
+      "caption": "Temperature-related health effects",
+      "anchor": "heat-and-cold",
+      "tabno": 1
+    },
+    {
+      "filename": "assets/malachi-brooks--HVh7BRp3ls-unsplash.jpg",
+      "alt": "Wildfires",
+      "caption": "Wildfires",
+      "anchor": "extreme-weather-events",
+      "tabno": 2
+    },
+    {
+      "filename": "assets/kelly-sikkema-_whs7FPfkwQ-unsplash.jpg",
+      "alt": "Flooding",
+      "caption": "Flooding",
+      "anchor": "extreme-weather-events",
+      "tabno": 2,
+      "inner_tab": "flooding-tab"
+    },
+    {
+      "filename": "assets/kristen-morith-IWpd8KixceA-unsplash.jpg",
+      "alt": "Air Pollution",
+      "caption": "Air pollution",
+      "anchor": "air-pollution-and-air-borne-diseases",
+      "tabno": 3
+    },
+    {
+      "filename": "assets/virus-8734360_1280.jpg",
+      "alt": "Airborne diseases",
+      "caption": "Airborne diseases",
+      "anchor": "air-pollution-and-air-borne-diseases",
+      "tabno": 3,
+      "inner_tab": "airborne-diseases-tab"
+    },
+    {
+      "filename": "assets/pexels-helen1-10451829.jpg",
+      "alt": "Waterborne diseases",
+      "caption": "Waterborne diseases",
+      "anchor": "waterborne-diseases",
+      "tabno": 4
+    },
+    {
+      "filename": "assets/pexels-jimbear-2382223.jpg",
+      "alt": "Vector-borne diseases",
+      "caption": "Vector-borne diseases",
+      "anchor": "vectorborne-diseases",
+      "tabno": 5
+    },
+    {
+      "filename": "assets/pexels-lagosfoodbank-8061688.jpg",
+      "alt": "Undernutrition",
+      "caption": "Undernutrition",
+      "anchor": "undernutrition",
+      "tabno": 6
+    },
+    {
+      "filename": "assets/pexels-daniel-reche-718241-3601097.jpg",
+      "alt": "Mental health",
+      "caption": "Mental health",
+      "anchor": "mental-health",
+      "tabno": 7
+    },
+    {
+      "filename": "assets/pexels-victormoragriega-28451983.jpg",
+      "alt": "Chemical contaminants",
+      "caption": "Chemical contaminants",
+      "anchor": "chemical-contaminants",
+      "tabno": 8
+    },
+    {
+      "filename": "assets/pexels-cottonbro-7579832.jpg",
+      "alt": "Healthcare systems and facilities",
+      "caption": "Healthcare systems and facilities",
+      "anchor": "healthcare-systems-and-facilities",
+      "tabno": 9
+    }
+  ] %}
+  {% set slides = images if images is not none else default_slides %}
+  <div class="ons-slideshow"
+       data-js="ons-slideshow"
+       role="group"
+       aria-label="{{ aria_label }}">
+    {% for slide in slides %}
+      <figure class="ons-image ons-slideshow__slide{% if loop.first %} active{% endif %}">
+        <a class="ons-slideshow__link"
+           href="{{ url_for("data_bp.framework") }}{% if slide.anchor %}#{{ slide.anchor }}{% endif %}"
+           {% if slide.tabno is not none or slide.inner_tab %} onclick="{% if slide.tabno is not none %}setTabNo({{ slide.tabno }});{% endif %}
+           {% if slide.inner_tab %}setInnerTabId('{{ slide.inner_tab }}');{% endif %}
+           "
+           {% endif %}
+           aria-label="Open {{ slide.caption or slide.alt }} in the framework">
+          <img class="ons-image__img"
+               src="{{ url_for('static', filename=slide.filename) }}"
+               alt="{{ slide.alt }}" />
+        </a>
+        {% if slide.caption %}<figcaption class="ons-image__caption">{{ slide.caption }}</figcaption>{% endif %}
+      </figure>
+    {% endfor %}
+  </div>
+{% endmacro %}

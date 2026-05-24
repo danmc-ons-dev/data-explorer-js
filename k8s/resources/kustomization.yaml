@@ -1,0 +1,7 @@
+resources:
+  # - "common-config"
+  - "postgres"
+  - "r-api"
+  - "data-explorer"
+
+namespace: data-explorer

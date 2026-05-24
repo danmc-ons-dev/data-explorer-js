@@ -1,0 +1,1 @@
+ALTER TABLE metadata ADD COLUMN dummy_data INT NOT NULL DEFAULT 0;

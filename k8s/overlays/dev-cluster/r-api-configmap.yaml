@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+data:
+  API_config.yml: |
+    default:
+      package:
+        # Set to TRUE if climatehealth is installed in the Docker image
+        # Set to FALSE if mounting the package source code
+        use_library: TRUE
+        climatehealth_path: "/app/climatehealth"
+      
+      api:
+        port: 8000
+        host: "0.0.0.0"

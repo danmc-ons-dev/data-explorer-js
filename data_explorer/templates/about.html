@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+{% from "macros/external_link.html" import external_link %}
+{% import "macros/cards.html" as cards %}
+{% import "macros/image.html" as image %}
+{% block head_extra %}
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+{% endblock %}
+{% block content %}
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Who are we and what do we do</h1>
+  <section class="ons-tabs ons-u-mt-m">
+    <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
+    <div class="ons-tabs__container">
+      <ul class="ons-tabs__list">
+        <li class="ons-tab__list-item">
+          <a href="#about-tab" class="ons-tab">About us</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#partners-tab" class="ons-tab">Partners</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#meet-the-team-tab" class="ons-tab">Meet the team</a>
+        </li>
+      </ul>
+    </div>
+    <!-- Subtab 1 -->
+    <div id="about-tab"
+         class="ons-tabs__panel"
+         role="tabpanel"
+         aria-labelledby="about-tab">
+      <h2 class="ons-u-fs-l ons-u-mt-m">Project Overview</h2>
+      <p class="ons-u-fs-r">
+        The impacts on health of rising temperatures, wildfires, extreme weather events and
+        other direct and indirect effects of climate change are a major global concern. The
+        most significant hazards and their impacts differ between countries and disaggregated
+        geographies, as do the possibilities and priorities for climate change adaptation.
+        National and local governments and other stakeholders need to have regular, reliable
+        and comparable data to monitor climate impacts and inform adaptation strategies, based
+        on a transparent and globally generalisable statistical framework.
+      </p>
+      <p class="ons-u-fs-r ons-u-mt-l">
+        Standards for Official Statistics on Climate-Health Interactions (SOSCHI) is a
+        four-year project (2022 to 2026), led by the UK Office for National Statistics and
+        funded by Wellcome (Grant number: 224682/Z/21/Z).
+      </p>
+      <p class="ons-u-fs-r ons-u-mt-l"></p>
+      <div class="ons-panel ons-panel--info ons-panel--no-title">
+        <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+        <div class="ons-panel__body">
+          <p class="ons-u-fs-r">
+            Our aim is to develop a framework of indicators based on state-of-the-art
+            statistical methods to measure climate- related health risks. To support global
+            reporting and monitoring, we are also developing a knowledge-sharing platform,
+            open-source tools, and R code. Our findings will also help highlight data gaps and
+            help set the agenda for future improvement of data sources and methods.
+          </p>
+        </div>
+      </div>
+      <p class="ons-u-fs-r ons-u-mt-m">
+        <strong class="ons-u-fs-r--b">Contact details:</strong>
+        Please email {{ external_link(href='mailto:climate.health@ons.gov.uk',
+         text='climate.health@ons.gov.uk') }}to be added to the mailing list for our
+        Stakeholder update.
+      </p>
+      <p class="ons-u-fs-r">
+        <strong class="ons-u-fs-r--b">Related Links:</strong>
+        {{ external_link(href='https://zenodo.org/communities/soschi/records', text='SOSCHI
+                records on Zenodo') }}
+      </p>
+      <div class="ons-grid ons-u-mt-xl">
+        <div class="ons-grid__col ons-col-4@s">
+            {{ cards.relevant_pages("SOSCHI Framework", "", [ { "text": "Framework landing page",
+                      "href": url_for('data_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('data_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('data_bp.framework') ~ '#waterborne-diseases' } ],
+            "icons/framework_overview_large_colour.svg" ) }}
+        </div>
+        <div class="ons-grid__col ons-col-4@s">
+            {{ cards.relevant_pages("Tools for
+                      implementation", "", [ { "text": "SOSCHI open-source R package", "href": url_for('main_bp.r_package') }, { "text":
+            "Online analysis tools", "href": url_for('data_bp.indicator_calculators') }, { "text":
+            "Additional resources", "href": url_for('main_bp.resources') } ], "icons/analysis_tools_large_colour.svg" ) }}
+        </div>
+        <div class="ons-grid__col ons-col-4@s">
+            {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
+                      diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+            "Health effects of wildfires", "href": url_for('data_bp.framework') ~
+            '#extreme-weather-events' }, { "text": "Mental Health", "href":
+            url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+            }}
+        </div>
+      </div>
+    </div>
+    <!-- Subtab 2 -->
+    <div id="partners-tab"
+         class="ons-tabs__panel ons-tabs__panel--hidden"
+         role="tabpanel"
+         aria-labelledby="partners-tab">
+      <h2 class="ons-u-fs-l ons-u-mt-m">Project Partners</h2>
+      <div class="ons-grid">
+        <div class="ons-grid__col ons-col-12@m ons-u-mt-m">
+          <p class="ons-u-fs-r">The project is a collaboration between:</p>
+          <ul class="ons-list">
+            <li class="ons-list__item list-disc">African Institute for Mathematical Sciences (AIMS), Research & Innovation Centre, Rwanda</li>
+            <li class="ons-list__item list-disc">
+              Cochrane Planetary Health Thematic Group , University of Alberta, Edmonton,
+              Canada
+            </li>
+            <li class="ons-list__item list-disc">Office for National Statistics (ONS), Newport, United Kingdom</li>
+            <li class="ons-list__item list-disc">
+              Regional Institute for Population Studies (RIPS), University of Ghana, Accra,
+              Ghana
+            </li>
+            <li class="ons-list__item list-disc">UK Health Security Agency (UKHSA) , London, United Kingdom</li>
+            <li class="ons-list__item list-disc">UN Global Platform, New York, United States of America</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ons-grid ons-grid--flex ons-u-mt-l">
+        <div class="ons-grid__col ons-grid__col--flex items-center flex-wrap">
+          {{ image.image(image_name="aims_research_new.png", alt="AIMS
+                    Logo") }} {{ image.image(image_name="cochrane_logo_stacked_rgb_0.png",
+           alt="Cochrane Logo") }} {{ image.image(image_name="ONS_Logo_Digital_Colour_English_RGB.png", alt="ONS Logo") }} {{ image.image(image_name="RIPS-GHANA.png", alt="RIPS Logo") }} {{ image.image(image_name="2021-logo-cloud-1.png", alt="UN Big Data Logo") }} {{ image.image(image_name="UK_Health_Security_Agency_Logo.svg.png", alt="UK Health Security Agency
+           Logo") }}
+        </div>
+      </div>
+    </div>
+    <!-- Subtab 3 -->
+    <div id="meet-the-team-tab"
+         class="ons-tabs__panel"
+         role="tabpanel"
+         aria-labelledby="meet-the-team-tab">
+      {% set team_data = team_data if team_data is defined else {} %} {% set team_groups = [
+       {"id": "soschi", "title": "Meet the SOSCHI Team", "members": team_data.get("soschi",
+       [])}, {"id": "expert-advisory", "title": "Expert Advisory Group", "members":
+       team_data.get("expertAdvisory", [])}, {"id": "egeccs", "title": "EG-ECCS sub-group",
+       "members": team_data.get("egeccs", [])}, {"id": "gss", "title": "UK GSS Environment
+       Theme sub-group members", "members": team_data.get("gss", [])} ] %}
+      {% for group in
+        team_groups %}
+        <h2 class="ons-u-fs-l {% if loop.first %}ons-u-mt-m{% else %}ons-u-mt-xl{% endif %}">{{ group.title }}</h2>
+        {% if loop.first %}
+          <p class="ons-u-fs-r">
+            The below list shows the core team as at the end of January 2026. It may not include
+            colleagues who worked on earlier phases of the project. We also thank the many
+            contributors across our partner organisations who supported SOSCHI during 2023 to 2025
+            but were no longer on the project at the time of publication. Finally, we acknowledge
+            the UN Global Platform team, led by Sean Lovell, for their support in developing the
+            Climate and Health Platform.
+          </p>
+        {% endif %}
+        {% set team_list_id = "ons-meet-the-team-" ~ group.id ~ "-list" %}
+        <div class="ons-team-cards ons-u-mt-m"
+             role="region"
+             aria-label="{{ group.title }}"
+             data-js="ons-team-cards">
+          <ul id="{{ team_list_id }}"
+              class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
+              data-js="ons-team-cards-list">
+            {% for member in group.members %}
+              <li class="ons-team-cards__item flex items-end">
+                <div class="ons-card">
+                  <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
+                  {% if member.company %}<p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>{% endif %}
+                  {% if member.title %}<p class="ons-u-fs-s">{{ member.title }}</p>{% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+          <button type="button"
+                  class="ons-team-cards__arrow"
+                  aria-label="Show next team members"
+                  aria-controls="{{ team_list_id }}"
+                  data-js="ons-team-cards-next">
+            <svg class="ons-icon"
+                 viewBox="0 0 12 12"
+                 xmlns="http://www.w3.org/2000/svg"
+                 focusable="false"
+                 aria-hidden="true"
+                 role="img">
+              <path d="M4 2.5L8 6L4 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      {% endfor %}
+      <h2 class="ons-u-fs-l ons-u-mt-xl">National User / Advisory Groups</h2>
+      <p class="ons-u-fs-r">
+        To best access national and local expertise and ensure buy-in from key stakeholders in
+        each partner country, the following groups were set up in Rwanda, Ghana and UK:
+      </p>
+      <ul class="ons-list">
+        <li class="ons-list__item list-disc">AIMS Advisory Group, Rwanda</li>
+        <li class="ons-list__item list-disc">RIPS Steering Group, Ghana</li>
+        <li class="ons-list__item list-disc">
+          Government Statistical Service (GSS) Environment Theme sub-group – Health and
+          wellbeing impacts of climate change, UK
+        </li>
+      </ul>
+      <p class="ons-u-fs-r">
+        These advisory groups provided: expertise on the country-specific context, including
+        their government structure; facilitated data collection; supported environment,
+        climate and health networks; as well as providing technical advice on framework and
+        platform content.
+      </p>
+    </div>
+  </section>
+  {% if show_health_status=="true" %}
+    {# System Information - build versions and health status #}
+    <!-- prettier-ignore-start -->
+    {% if component_versions or r_api_health %}
+      <section class="ons-u-mt-xl ons-u-mb-l">
+        <details class="ons-details">
+          <summary class="ons-details__summary">
+            <span class="ons-details__title">System Information</span>
+          </summary>
+          <div class="ons-details__content">
+            {# Build Version Table #}
+            {% if component_versions %}
+              <h4 class="ons-u-mt-s ons-u-mb-xs">Build Versions</h4>
+              <table class="ons-table ons-table--responsive ons-u-mt-xs">
+                <thead class="ons-table__head">
+                  <tr class="ons-table__row">
+                    <th scope="col" class="ons-table__header">Component</th>
+                    <th scope="col" class="ons-table__header">Version</th>
+                    <th scope="col" class="ons-table__header">Commit</th>
+                  </tr>
+                </thead>
+                <tbody class="ons-table__body">
+                  {% for item in component_versions %}
+                    <tr class="ons-table__row">
+                      <td class="ons-table__cell">{{ item.name }}</td>
+                      <td class="ons-table__cell">
+                        <code>{{ item.version }}</code>
+                      </td>
+                      <td class="ons-table__cell">
+                        <code>{{ item.sha }}</code>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% if build_meta %}
+                <p class="ons-u-fs-s ons-u-mt-s" style="color: #6c757d">
+                  {% if build_meta.build_number %}Build #{{ build_meta.build_number }}{% endif %}
+                  {%
+                  if build_meta.build_timestamp %} &middot; {{ build_meta.build_timestamp }}
+                {% endif
+                %}
+              </p>
+            {% endif %}
+          {% endif %}
+          {# Health Status #}
+          {% if r_api_health %}
+            <h4 class="ons-u-mt-m ons-u-mb-xs">Service Health</h4>
+            <div class="health-status-container">
+              <div class="health-status-indicator {{ r_api_health.css_class }}">
+                <span class="health-status-icon">{{ r_api_health.icon | safe }}</span>
+                <span class="health-status-text">
+                  <strong>R Analytics API:</strong>
+                  {{ r_api_health.text }}
+                </span>
+              </div>
+              {% if r_api_health.memory %}
+                <p class="ons-u-fs-s ons-u-mt-xs health-status-details">
+                  Memory:
+                  <code>{{ r_api_health.memory.used_mb }} MB</code>
+                  {% if r_api_health.memory.limit_mb and r_api_health.memory.limit_mb != 'N/A' %}
+                    /
+                    <code>{{ r_api_health.memory.limit_mb }} MB</code>
+                    limit
+                    {% if r_api_health.memory.percent_used and r_api_health.memory.percent_used
+                      != 'N/A' %}
+                      ({{ r_api_health.memory.percent_used }}%)
+                    {% endif %}
+                  {% endif %}
+                </p>
+              {% endif %}
+              {% if r_api_health.from_cache %}
+                <p class="ons-u-fs-xs ons-u-mt-xs health-status-cache-note">
+                  <em>Cached result from {{ r_api_health.checked_at }}</em>
+                </p>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </details>
+    </section>
+  {% endif %}
+{% endif %}
+<!-- prettier-ignore-end -->
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/slideshow.js') }}"
+          type="text/javascript"
+          defer></script>
+  <script src="{{ url_for('static', filename='js/onsSlideshow.js') }}"
+          type="text/javascript"
+          defer></script>
+  <script src="{{ url_for('static', filename='js/teamCards.js') }}"></script>
+{% endblock %}

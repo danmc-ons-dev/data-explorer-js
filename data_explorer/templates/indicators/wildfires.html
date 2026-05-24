@@ -1,0 +1,473 @@
+{# templates/indicators/wildfires.html #}
+<!-- prettier-ignore -->
+{% import "macros/table.html" as table %}
+{% import "macros/upload.html" as upload %}
+{% import "macros/select.html" as select %}
+{% import "macros/input.html" as input %}
+{% import "macros/radios.html" as radio %}
+{% import "macros/external_link.html" as link %}
+{% set tooltips = tooltips|default({}) %}
+<div class="innertab-content active-innercontent">
+  <div class="ons-grid">
+    <div class="ons-grid__col ons-col-12@m ons-u-mt-m">{% include "components/indicator_banner.html" %}</div>
+    <div class="ons-grid__col ons-col-12@m ons-u-mt-m">
+      <h1 class="ons-u-fs-xl">Health effects of extreme weather events - Wildfires</h1>
+      <p class="ons-u-fs-r">
+        This tool estimates deaths attributable to wildfire-related PM2.5 by applying a standard
+        time-stratified case-crossover approach with conditional Poisson regression model to your
+        mortality data.
+      </p>
+      <p class="ons-u-fs-r">
+        Full details of the methodology are provided in the
+        <a href="{{ url_for("data_bp.framework") }}#wildfires-tab"
+           onclick=" setTabNo(2); setInnerTabId('wildfires-tab'); "
+           class="ons-link ons-u-fs-r--b">Wildfires framework documentation</a>
+      </p>
+      <div class="ons-panel ons-panel--info ons-panel--no-title">
+        <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+        <div class="ons-panel__body">
+          <p class="ons-u-fs-r">Using user input data, this calculator returns the following results:</p>
+          <ul class="ons-list">
+            <li class="ons-list__item list-disc">
+              Relative risk of mortality for every 10 μg/m³ increase in wildfire‑related PM2.5.
+            </li>
+            <li class="ons-list__item list-disc">Number of deaths attributable to wildfire‑related PM2.5.</li>
+            <li class="ons-list__item list-disc">Deaths per 100,000 people attributable to wildfire‑related PM2.5.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {# TABS #}
+  <section class="ons-tabs ons-u-mt-m">
+    <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
+    <div class="ons-tabs__container">
+      <ul class="ons-tabs__list">
+        <li class="ons-tab__list-item">
+          <a href="#wildfires-select-file" class="ons-tab">Select File</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#wildfires-view-results" class="ons-tab">View Results</a>
+        </li>
+      </ul>
+    </div>
+    {# TAB CONTENT - SELECT FILE #}
+    <section id="wildfires-select-file" class="ons-tabs__panel">
+      <div class="ons-grid">
+        <div class="ons-grid__col ons-col-12@m">
+          <div class="ons-panel ons-panel--info ons-panel--no-title">
+            <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+            <div class="ons-panel__body">
+              <h4 class="ons-u-f-b">Wildfires indicator tool instructions</h4>
+              <ul class="ons-list">
+                <li class="ons-list__item list-disc">Select your input data (.csv) file</li>
+                <li class="ons-list__item list-disc">Select columns from your file to match the required columns in the dropdowns</li>
+                <li class="ons-list__item list-disc">Select a column in Region if required or set to none</li>
+              </ul>
+              <p class="inline-flex items-center gap-2 m-0">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-4 w-4 shrink-0 align-middle"
+                     viewBox="0 0 28 28"
+                     aria-hidden="true"
+                     focusable="false">
+                  <path d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 5.75C14.3461 5.75 14.6845 5.85264 14.9723 6.04493C15.26 6.23722 15.4843 6.51053 15.6168 6.8303C15.7492 7.15007 15.7839 7.50194 15.7164 7.84141C15.6489 8.18087 15.4822 8.4927 15.2374 8.73744C14.9927 8.98218 14.6809 9.14885 14.3414 9.21637C14.0019 9.2839 13.6501 9.24924 13.3303 9.11679C13.0105 8.98434 12.7372 8.76003 12.5449 8.47225C12.3526 8.18446 12.25 7.84612 12.25 7.5C12.25 7.03587 12.4344 6.59075 12.7626 6.26256C13.0908 5.93437 13.5359 5.75 14 5.75ZM16.5 21.25C16.5 21.3826 16.4473 21.5098 16.3536 21.6036C16.2598 21.6973 16.1326 21.75 16 21.75H12C11.8674 21.75 11.7402 21.6973 11.6465 21.6036C11.5527 21.5098 11.5 21.3826 11.5 21.25V20.25C11.5 20.1174 11.5527 19.9902 11.6465 19.8964C11.7402 19.8027 11.8674 19.75 12 19.75H12.5V12.75H12C11.8674 12.75 11.7402 12.6973 11.6465 12.6036C11.5527 12.5098 11.5 12.3826 11.5 12.25V11.25C11.5 11.1174 11.5527 10.9902 11.6465 10.8964C11.7402 10.8027 11.8674 10.75 12 10.75H15C15.1326 10.75 15.2598 10.8027 15.3536 10.8964C15.4473 10.9902 15.5 11.1174 15.5 11.25V19.75H16C16.1326 19.75 16.2598 19.8027 16.3536 19.8964C16.4473 19.9902 16.5 20.1174 16.5 20.25V21.25Z" fill="currentColor" />
+                </svg>
+                <span class="sr-only">Info:</span>
+                <span>Data uploaded is not stored</span>
+              </p>
+            </div>
+          </div>
+          <p class="ons-u-fs-r ons-u-mt-m">
+            Data must contain date, region (optional), temperature, population and a health outcome in the
+            following format:
+          </p>
+          <!-- prettier-ignore -->
+          {{ table.ons_table(headers=['Date (yyyy-mm-dd)', 'Region (Area)', 'Particulate Matter 2.5 (μg/m 3 )', 'Mean Temperature (°C)', 'Health Outcome (per day)', 'Population'], rows=[['2021-01-28','North West', '35', '20.5','190','2600000'],['2021-01-29','North West','40', '21.3', '210', '3200000']], id='wildfires-example-table', aria_label='Wildfires health example input table', scroll=True) }}
+        </div>
+        <div class="ons-grid__col ons-col-6@m">
+          {{ upload.ons_file_upload(id="t2csvInput", label="Upload data", text="File types accepted
+                    are .csv (max 40MB)") }}
+        </div>
+      </div>
+      {# FORM #}
+      <form method="POST"
+            action="{{ url_for('indicator_bp.wildfires_indicator') }}"
+            enctype="multipart/form-data">
+        <div class="ons-grid ons-u-mt-m">
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id="date_col", name='date_col', label='Date column',
+                            placeholder='Select an option', options=[], hint=tooltips.get('date_column') ) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='region_col', name='region_col', label='Region column',
+                            placeholder='Select an option', options=[], required=False,
+                            hint=tooltips.get('region_column') ) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='mean_temperature_col', name='mean_temperature_col',
+                            label='Mean temperature column', placeholder='Select an option', options=[],
+                            hint=tooltips.get('mean_temperature_column') ) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='health_outcome_col', name='health_outcome_col', label='Health
+                            outcome column', placeholder='Select an option', options=[],
+                            hint=tooltips.get('health_outcome_column') ) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='pm_25_col', name='pm_25_col', label='PM2.5 column',
+                            placeholder='Select an option', options=[], hint=tooltips.get('pm2.5_column') ) }}
+            </div>
+          </div>
+        </div>
+        {# Hidden #}
+        <p class="ons-u-fs-r ons-u-mt-m ons-u-vh">Advanced Model Parameters:</p>
+        <div class="ons-grid ons-u-mt-no ons-u-vh">
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ input.text_input(id='wildfire_lag', name='wildfire_lag', type='number',
+                            label='Wildfire exposure lag (days)', value='3',
+                            hint=tooltips.get('wildfire_exposure_lag_(days)') , autocomplete='off', required=True )
+              }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ input.text_input(id='temperature_lag', name='temperature_lag', type='number',
+                            label='Temperature lag (days)', value='1',
+                            hint=tooltips.get('temperature_lag_(days)') , autocomplete='off', required=True ) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ input.text_input(id='spline_temperature_lag', name='spline_temperature_lag',
+                            type='number', label='Spline temperature lag', value='0',
+                            hint=tooltips.get('spline_temperature_lag') , autocomplete='off', required=True ) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ input.text_input(id='spline_temperature_degrees_freedom',
+                            name='spline_temperature_degrees_freedom', type='number', label='Degrees of freedom
+                            for temperature splines', value='6',
+                            hint=tooltips.get('degrees_of_freedom_for_temperature_splines') , autocomplete='off',
+              required=True ) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {% set results_by_region_options = [{"value": true, "label": "Yes"}, {"value": false, "label": "No"}] %} {{ radio.radio_group("t2-results-by-region", "Produce results by
+               region?", results_by_region_options, selected=True) }}
+            </div>
+          </div>
+        </div>
+        <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m">
+          <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+          <div class="ons-panel__body">
+            <p class="ons-u-fs-r">
+              The default model in this page estimates mortality attributable to wildfire related
+              PM2.5 using a time-stratified case crossover design with a quasi-Poisson regression
+              model.
+            </p>
+            <p class="ons-u-fs-r">
+              Full details of the methodology are provided in the
+              <a href="{{ url_for("data_bp.framework") }}#wildfires-tab"
+                 onclick=" setTabNo(2); setInnerTabId('wildfires-tab'); "
+                 class="ons-link ons-u-fs-r--b">Wildfires framework documentation</a>
+            </p>
+            <p class="ons-u-fs-r">Default (baseline) model specification:</p>
+            <ul class="ons-list">
+              <li class="ons-list__item list-disc">
+                The required exposure parameters are
+                <ul class="ons-list ons-list--dashed">
+                  <li class="ons-list__item">Daily deaths counts</li>
+                  <li class="ons-list__item">Daily mean temperature</li>
+                  <li class="ons-list__item">Population (for the specific region)</li>
+                  <li class="ons-list__item">
+                    Daily wildfire PM2.5 (This can be obtained from
+                    a{{ link.external_link('https://fmi.b2share.csc.fi/records/t3pww-vhh10', 'global
+                    open dataset') }}. Users will need a region’s geographic coordinates to extract
+                    daily wildfire related-PM2.5.)
+                  </li>
+                </ul>
+              </li>
+              <li class="ons-list__item list-disc">
+                Additional confounding variables such as daily relative humidity and daily wind
+                speed may be included where data is available. However, these additional confounders
+                are only supported in model available
+                on{{ link.external_link('https://github.com/onssoschi/climatehealth', 'Github.') }}
+              </li>
+              <li class="ons-list__item list-disc">
+                The online indicator uses the following default settings. These can be adjusted in
+                the full model available on Github.
+                <ul class="ons-list ons-list--dashed">
+                  <li class="ons-list__item">
+                    Wildfire related-PM2.5 exposure lag : 3 days. This captures short-term delayed
+                    health effects of exposure.
+                  </li>
+                  <li class="ons-list__item">
+                    Temperature lag: 1. Number of days of lag in the temperature variable from which
+                    to generate spline. The spline function allows for non-linear relationship
+                    between temperature and health outcome. Here the spline is applied at 0
+                    (same-day temperature). And the spline uses 6 degrees of freedom.
+                  </li>
+                </ul>
+              </li>
+              <li class="ons-list__item list-disc">
+                Results calculated by this indicator are scaled to represent the relative risk
+                associated with a 10µg/m3 increase in wildfire PM2.5 concentration.
+              </li>
+            </ul>
+          </div>
+        </div>
+        {# Hidden #}
+        <div class="ons-u-vh" aria-hidden="true">
+          <label for="scale_factor_wildfire_pm" class="tooltip-label">
+            Scale factor for wildfire PM2.5
+            <a class="tooltip">
+              &#8505;
+              <span class="tooltiptext">
+                The value to divide the wildfire PM2.5 concentration variables by for alternative
+                interpretation of outputs. Corresponds to the unit increase in wildfire PM2.5 to
+                give the model estimates and relative risks (e.g. scale_factor = 10 corresponds to
+                estimates nd relative risks representing impacts of a 10 unit increase in wildfire
+                PM2.5). Setting this parameter to 0 or 1 leaves the variable unscaled.
+              </span>
+            </a>
+          </label>
+          <input type="number"
+                 id="scale_factor_wildfire_pm"
+                 value="10"
+                 class="border border-gray-300 p-1 w-full" />
+          <label>
+            Save figure?
+            <select name="save_fig" id="save_fig" class="border border-gray-300 p-1">
+              <option value="false" selected>No</option>
+              <option value="true">Yes</option>
+            </select>
+          </label>
+          <label>
+            Save CSV?
+            <select name="save_csv" id="save_csv" class="border border-gray-300 p-1">
+              <option value="false" selected>No</option>
+              <option value="true">Yes</option>
+            </select>
+          </label>
+          <label>
+            Output folder path:
+            <input type="text"
+                   name="output_folder_path"
+                   id="output_folder_path"
+                   value="/tmp"
+                   class="border border-gray-300 p-1 w-full" />
+          </label>
+          <div>
+            <label class="flex items-center space-x-2 mb-2">
+              <span class="font-medium">Join wildfire data?</span>
+              <select name="join_wildfire_data"
+                      id="join_wildfire_data"
+                      class="border border-gray-300 p-1">
+                <option value="false" selected>No</option>
+                <option value="true">Yes</option>
+              </select>
+            </label>
+            <div class="space-y-1">
+              <div>
+                <label for="ncdf_path" class="block mb-1">NetCDF path:</label>
+                <input type="text"
+                       name="ncdf_path"
+                       id="ncdf_path"
+                       placeholder="/path/to/wildfire.nc"
+                       class="border border-gray-300 p-2 w-full" />
+              </div>
+              <div>
+                <label for="shp_path" class="block mb-1">Shapefile path:</label>
+                <input type="text"
+                       name="shp_path"
+                       id="shp_path"
+                       placeholder="/path/to/regions.shp"
+                       class="border border-gray-300 p-2 w-full" />
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">
+              If 'Yes', the R code will extract daily mean PM2.5 for each region from the NetCDF +
+              shapefile data and merge it with your health CSV.
+            </p>
+          </div>
+        </div>
+        <button id="t2Analyse"
+                class="ons-btn ons-btn--loader ons-u-mt-m"
+                type="submit"
+                aria-live="polite">
+          <span class="ons-btn__inner">
+            <span class="ons-btn__text">Analyse</span>
+            <svg class="ons-icon ons-u-ml-2xs"
+                 xmlns="http://www.w3.org/2000/svg"
+                 focusable="false"
+                 viewBox="0 0 100 100"
+                 preserveAspectRatio="xMidYMid"
+                 fill="currentcolor"
+                 role="img"
+                 aria-hidden="true">
+              <rect x="0" y="0" width="100" height="100" fill="none"></rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(0 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(30 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.08333333333333333s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(60 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.16666666666666666s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(90 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.25s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(120 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.3333333333333333s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(150 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.4166666666666667s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(180 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(210 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5833333333333334s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(240 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.6666666666666666s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(270 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.75s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(300 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.8333333333333334s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(330 50 50) translate(0 -30)">
+              <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.9166666666666666s" repeatCount="indefinite" />
+              </rect>
+            </svg>
+          </span>
+        </button>
+      </form>
+      {# API Error - Hidden by default #}
+      <div id="t2ApiError"
+           class="ons-panel ons-panel--error ons-panel--no-title ons-u-d-no ons-u-mt-m"
+           role="alert">
+        <span class="ons-panel__assistive-text ons-u-vh">Error:</span>
+        <div class="ons-panel__body"></div>
+      </div>
+      <div class="ons-table-scrollable ons-table-scrollable--on">
+        <div class="ons-table-scrollable__content"
+             tabindex="0"
+             role="region"
+             aria-label="{{ aria_label }}">
+          <table id="t2previewTable" class="ons-table ons-u-mt-xl">
+          </table>
+        </div>
+      </div>
+    </section>
+    {# TAB CONTENT - VIEW RESULTS #}
+    <section id="wildfires-view-results" class="ons-tabs__panel">
+      <div class="ons-grid ons-u-mt-m">
+        <div class="ons-grid__col ons-col-12@m">
+          <div class="ons-grid ons-grid-flex ons-grid-flex--vertical-center ons-grid-flex--center">
+            <div class="ons-grid__col ons-col-auto layout-select-buttons">
+              {{ select.ons_select(id='t2groupDropdown', name='t2groupDropdown', label='Select a
+                            sub geography to plot results:', placeholder='Select an option', options=[]) }}
+              <div class="layout-buttons-row">
+                <button type="button"
+                        id="downloadWildfiresRR"
+                        class="ons-btn ons-btn--download ons-btn--small ons-btn--secondary ons-btn--link ons-js-submit-btn">
+                  <span class="ons-btn__inner">
+                    <svg class="ons-icon ons-u-mr-2xs"
+                         viewBox="0 0 12 12"
+                         xmlns="http://www.w3.org/2000/svg"
+                         focusable="false"
+                         fill="currentColor"
+                         role="img"
+                         aria-hidden="true">
+                      <path d="M5.6 9a.48.48 0 0 0 .7 0l3-3.2a.48.48 0 0 0 0-.7C9.3 5 9.2 5 9 5H7.5V.5A.47.47 0 0 0 7 0H5a.47.47 0 0 0-.5.5V5H3a.47.47 0 0 0-.5.5.37.37 0 0 0 .1.3Z" />
+                      <path d="M11.5 9H11a.47.47 0 0 0-.5.5v1h-9v-1A.47.47 0 0 0 1 9H.5a.47.47 0 0 0-.5.5v2a.47.47 0 0 0 .5.5h11a.47.47 0 0 0 .5-.5v-2a.47.47 0 0 0-.5-.5Z" />
+                    </svg>
+                    <span class="ons-btn__text">Related Risk Estimates from Wildfire smoke PM2.5</span>
+                  </span>
+                </button>
+                <button type="button"
+                        id="downloadWildfiresANAF"
+                        class="ons-btn ons-btn--download ons-btn--small ons-btn--secondary ons-btn--link ons-js-submit-btn">
+                  <span class="ons-btn__inner">
+                    <svg class="ons-icon ons-u-mr-2xs"
+                         viewBox="0 0 12 12"
+                         xmlns="http://www.w3.org/2000/svg"
+                         focusable="false"
+                         fill="currentColor"
+                         role="img"
+                         aria-hidden="true">
+                      <path d="M5.6 9a.48.48 0 0 0 .7 0l3-3.2a.48.48 0 0 0 0-.7C9.3 5 9.2 5 9 5H7.5V.5A.47.47 0 0 0 7 0H5a.47.47 0 0 0-.5.5V5H3a.47.47 0 0 0-.5.5.37.37 0 0 0 .1.3Z" />
+                      <path d="M11.5 9H11a.47.47 0 0 0-.5.5v1h-9v-1A.47.47 0 0 0 1 9H.5a.47.47 0 0 0-.5.5v2a.47.47 0 0 0 .5.5h11a.47.47 0 0 0 .5-.5v-2a.47.47 0 0 0-.5-.5Z" />
+                    </svg>
+                    <span class="ons-btn__text">Attributable Deaths And Attributable Fractions</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {# PLOTS #}
+      <div id="wildfiresResults"
+           class="ons-grid__col ons-col-12@m"
+           style="visibility: hidden">
+        <!-- RR Plot -->
+        <div id="wildfiresRRPlot" class="ons-u-mt-m"></div>
+        <div id="graph-text-box"
+             class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-s">
+          <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+          <div class="ons-panel__body">
+            <p class="ons-u-fs-n">
+              This above plot shows the relative risk of mortality (RR) (and 95% confidence
+              intervals) associated with each 10μg/m3 increase in wildfire-related PM2.5
+              concentration for the input data period, for each lag period.
+            </p>
+            <p class="ons-u-fs-n">
+              The RR is the likelihood of an individual dying during, or shortly after, exposure to
+              a 10μg/m3 increase in wildfire-related PM2.5. When the RR is 1, this means there is
+              neither an increase or decrease in the likelihood of the individual dying during, or
+              shortly after, exposure to the increase in wildfire-related PM2.5 exposure. A RR of
+              1.10 denotes a 10% increase in the risk of dying.
+            </p>
+          </div>
+        </div>
+        <!-- AN Plot -->
+        <div id="wildfiresAnPlot" class="ons-u-mt-m" hidden></div>
+        <div id="wildfiresAnDesc"
+             class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-s"
+             hidden>
+          <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+          <div class="ons-panel__body">
+            <p class="ons-u-fs-n">
+              The estimated number of deaths that are attributable to wildfire-related PM2.5, that
+              is, that would not have occurred if there had been no exposure to an increase in
+              wildfire-related PM2.5 concentration.
+            </p>
+          </div>
+        </div>
+        <!-- AR Plot -->
+        <div id="wildfiresAfPlot" class="ons-u-mt-m" hidden></div>
+        <div id="wildfiresAfDesc"
+             class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-s"
+             hidden>
+          <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+          <div class="ons-panel__body">
+            <p class="ons-u-fs-n">
+              The estimated number of deaths per 100,000 population that are attributable to
+              wildfire-related PM2.5, that is, that would not have occurred if there had been no
+              exposure to an increase in wildfire-related PM2.5 concentration.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+</div>

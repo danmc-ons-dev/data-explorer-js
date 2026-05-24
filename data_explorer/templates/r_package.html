@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% import "macros/accordion.html" as acc %}
+{% import "macros/buttons.html" as btn %}
+{% import "macros/cards.html" as cards %}
+{% import "macros/external_link.html" as link %}
+{% import "macros/timeline.html" as timeline %}
+{% block content %}
+  {% set topic_id = "r-package" %}
+  {% set option_1_timeline_items = [
+    {
+      "heading": "Prepare input csv"
+    },
+    {
+      "heading": "1. Run descriptive statistics",
+      "subheading": "descriptive_stats function",
+      "list_items": [
+        "(see section 3.3)"
+      ]
+    },
+    {
+      "heading": "2. Run analysis",
+      "subheading": "do_analysis function",
+      "list_items": [
+        "Includes statistical modelling",
+        "(see section 3.4)",
+        "Includes model validation (for specific indicators)"
+      ]
+    },
+    {
+      "heading": "3. View and interpret results",
+      "list_items": [
+        "(see section 4)"
+      ]
+    }
+  ] %}
+  {% set option_2_timeline_items = [{'heading': 'Prepare input csv'}, {'heading': {'text': '1. Descriptive statistics', 'highlight': True}, 'list_items': ['(currently not available, see section 3.3)']}, {'heading': '2. Run analysis', 'subheading': 'Runs baseline statistical modelling', 'list_items': ['(see section 3.4)', {'text': 'Model validation', 'highlight': True}, '(currently not available, see section 3.4)']}, {'heading': '3. View and interpret results', 'list_items': ['(see section 4)']}] %}
+  <h1 class="ons-u-fs-xl ons-u-mt-l">R Package</h1>
+  <p class="ons-u-fs-r ons-u-mb-s">
+    This page signposts to the climatehealth R package (available via the SOSCHI GitHub or the CRAN
+    repository in Rstudio). It also includes guidance to help users understand the two options
+    available to run the analysis of the SOSCHI indicators, depending on your level of technical
+    experience and the flexibility required.
+  </p>
+  <p class="ons-u-fs-r">
+    Both approaches start with the same input - a prepared excel (.csv) file following the data
+    template and data preparation guidance as per the indicator methodology documentation (see sections
+    2.3 and 3.2, respectively).
+  </p>
+  <p class="ons-u-fs-r">Please choose one of the two paths:</p>
+  {{ acc.accordion_start(id=topic_id ~ "-accordion-one", group=topic_id ~ "-accordion") }}
+  {% call acc.accordion_item(topic_id ~ "-accordion", 1, "Option 1: R package pathway - recommended", title_level=2) %}
+    <div class="ons-panel ons-panel--info ons-panel--no-title">
+      <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+      <div class="ons-panel__body">
+        <p class="ons-u-fs-r">
+          <strong class="ons-u-fs-r--b">Intended users:</strong>
+          Users who can read, edit and run scripts in R to use pre-built functions.
+        </p>
+        <p class="ons-u-fs-r ons-u-mb-no">
+          Requires R installation and installing climatehealth package - please refer to
+          {{ link.external_link('https://github.com/onssoschi/climatehealth', 'climatehealth CRAN documentation.') }}
+        </p>
+      </div>
+    </div>
+    <p class="ons-u-fs-r--b ons-u-mt-m">Key features:</p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">Run the full analysis using developed analysis functions for each indicator</li>
+      <li class="ons-list__item list-disc">Allows users to configure analysis parameters</li>
+      <li class="ons-list__item list-disc">Includes descriptive statistics function</li>
+      <li class="ons-list__item list-disc">Statistical model validation is included for selected indicators</li>
+    </ul>
+    <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m ons-u-mb-l">
+      <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+      <div class="ons-panel__body">
+        <p class="ons-u-fs-r--b">Important notes</p>
+        <p class="ons-u-fs-r">
+          Guidance on sensitivity analysis and using model validation information to iterate
+          development is provided in section 3.6 and 3.7 of the methodology document.
+        </p>
+        <p class="ons-u-fs-r ons-u-mb-no">See section 6.2 of the methodology document for guidance on function parameters.</p>
+      </div>
+    </div>
+    <div class="ons-u-mb-l">{{ btn.external('Climatehealth GitHub', 'https://github.com/onssoschi/climatehealth') }}</div>
+    {{ timeline.ons_timeline(option_1_timeline_items) }}
+  {% endcall %}
+  <!-- prettier-ignore -->
+  {% call acc.accordion_item(topic_id ~ "-accordion", 2, "Option 2: Online Indicator tools pathway", title_level=2) %}
+    <div class="ons-panel ons-panel--info ons-panel--no-title">
+      <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+      <div class="ons-panel__body">
+        <p class="ons-u-fs-r">
+          <strong class="ons-u-fs-r--b">Intended users:</strong>
+          Users who do not want to write analysis code and wish to run a limited set of indicator
+          analysis using a web interface.
+        </p>
+      </div>
+    </div>
+    <p class="ons-u-fs-r--b ons-u-mt-m">Key features:</p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">Runs a predefined, baseline statistical model</li>
+      <li class="ons-list__item list-disc">Currently available for suicides attributable to extreme temperatures</li>
+      <li class="ons-list__item list-disc">Currently available for mortality attributable to wildfire-related PM2.5</li>
+      <li class="ons-list__item list-disc">
+        Currently available for malaria incident cases attributable to extreme temperature and
+        extreme precipitation
+      </li>
+    </ul>
+    <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m ons-u-mb-l">
+      <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+      <div class="ons-panel__body">
+        <p class="ons-u-fs-r--b">Important notes</p>
+        <p class="ons-u-fs-r">
+          Please note that these indicator tools are still in development, so there may be some
+          inconsistencies between the methods included in the publicly available GitHub code/R package,
+          and those described in the corresponding SOSCHI topic document(s).
+        </p>
+        <p class="ons-u-fs-r">
+          It is strongly advised to run descriptive statistics separately following guidelines set in
+          the methods documentation (section 3.3).
+        </p>
+        <p class="ons-u-fs-r">
+          Statistical model validation is not available in the online tool (see section 3.7 of
+          methodology document).
+        </p>
+        <p class="ons-u-fs-r ons-u-mb-no">
+          See section 6.1 of the methodology document for more information on using the indicator tool.
+        </p>
+      </div>
+    </div>
+    <div class="ons-u-mb-l">{{ btn.internal("Indicator Tools", url_for('data_bp.indicator_calculators') ) }}</div>
+    {{ timeline.ons_timeline(option_2_timeline_items) }}
+  {% endcall %}
+  {{ acc.accordion_end() }}
+  <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l ons-u-mb-l">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r--b">GENERAL GUIDANCE</p>
+      <ul class="ons-list">
+        <li class="ons-list__item list-disc">
+          Always prepare and check input data (respective indicator guidance in section 2.3 and 3.2
+          of the methodology document)
+        </li>
+        <li class="ons-list__item list-disc">Always review descriptive statistics before modelling</li>
+        <li class="ons-list__item list-disc">Always interpret results using the indicator methodology document.</li>
+        <li class="ons-list__item list-disc">
+          Always review model validation metrics to assess the quality of the statistical model
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="ons-grid ons-u-mt-xl">
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("SOSCHI Framework", "", [ { "text": "Framework landing page",
+              "href": url_for('data_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('data_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('data_bp.framework') ~ '#waterborne-diseases' } ],
+        "icons/framework_overview_large_colour.svg" ) }}
+    </div>
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
+              diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+        "Health effects of wildfires", "href": url_for('data_bp.framework') ~
+        '#extreme-weather-events' }, { "text": "Mental Health", "href":
+        url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+        }}
+    </div>
+  </div>
+{% endblock %}

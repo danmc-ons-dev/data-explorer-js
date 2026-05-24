@@ -1,0 +1,513 @@
+<!-- prettier-ignore -->
+{% import "macros/accordion.html" as acc %}
+{% import "macros/image.html" as image %}
+{% import "macros/buttons.html" as btn %}
+{% import "macros/cards.html" as cards %}
+{% import "macros/external_link.html" as link %}
+{% set title = "Mental health" %}
+{% set topic_id = "mental-health" %}
+{# TITLE #}
+<h1 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h1>
+{# INTRO PARAGRAPH #}
+<p class="ons-u-fs-r">
+  Climate change is leading to more frequent and extreme climate-related hazards that influence
+  mental health outcomes. Direct impacts on mental health can arise from increased exposure to
+  extreme temperatures and extreme weather events. Indirect impacts can be due to displacement,
+  malnutrition, conflict, climate-related economic and social losses, along with anxiety and
+  distress associated with worry about climate change.
+</p>
+{# INFO PANEL TOP #}
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      This topic area aims to quantify the mental health impacts, currently focused on suicides
+      attributable to extreme temperatures.
+    </p>
+  </div>
+</div>
+{# BUTTONS ONE (TOPIC INTRO, METHODOLOGY, METADATA) #}
+<!-- prettier-ignore -->
+{% set buttons = [
+  {
+    "text": "Topic Introduction",
+    "href": "https://zenodo.org/records/14049912",
+    "classes": ""
+  },
+  {
+    "text": "Methodology",
+    "href": "https://zenodo.org/records/14050225",
+    "classes": "ons-btn--secondary"
+  },
+  {
+    "text": "Metadata",
+    "href": "https://zenodo.org/records/14051476",
+    "classes": ""
+  }
+] %}
+<div
+  class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1"
+>
+  {% for button in buttons %}
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.external(button.text, button.href, button.classes) }}
+  </div>
+  {% endfor %}
+</div>
+{# ACCORDION ONE #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-one",
+group=topic_id ~ "-accordion",) }}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 1, "Impact Pathway", title_level=3) %}
+  {{ image.image(image_name='framework-mental-health.png', width='100%', alt="Diagram showing pathways between climate change and mental health impacts. At the top left, climate drivers and hazards include increased frequency and intensity of extreme weather, extreme temperatures, floods, droughts, wildfires, and storms. At the top right, exposure and vulnerability include direct or repeated climate hazard exposure and socio‑economic factors such as health status, gender, age, and occupation. These factors interact and flow downward toward physiological impacts and health outcomes. Physiological impacts include limited labour capacity, cognitive impairment, sleep deprivation, and reduced happiness and wellbeing. Health outcomes include PTSD, anxiety, depression, suicide, and substance abuse. Adaptation and mitigation measures—such as health system planning, preparedness, and public health awareness campaigns—are shown intervening to reduce negative impacts.") }}
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicators", title_level=3) %}
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      The priority indicator developed within the mental health topic is suicides attributable to
+      extreme heat.
+    </p>
+  </div>
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">
+  It was agreed to prioritise this indicator as defining exposure is simpler for extreme heat than
+  other extreme weather events, as ambient temperature data across countries and regions are
+  generally widely available. While suicide was selected as a health outcome due to its clearer
+  diagnostic coding and more consistent reporting compared to hospitalisations for example.
+</p>
+<p class="ons-u-fs-r">
+  Further justification for the focus on this indicator is explained in the Topic introduction,
+  which also outlines supplementary and additional indicators that are not in scope for the current
+  SOSCHI framework but are recommended for future development.
+</p>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">Percentage of suicides attributable to extreme heat.</p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">Number of suicides attributable to extreme heat.</p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">Suicide rate per 100,000 population attributable to extreme heat.</p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">Relative risk of suicide associated with temperature.</p>
+  </div>
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">
+  For guidance on the process for calculating these indicator metrics, see the Methodology section
+  below.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 3, "Policy Relevance", title_level=3) %}
+<p class="ons-u-fs-r">
+  This indicator can give insights into how more frequent and intense hot days may be impacting
+  mental health and how this varies geographically and among the most vulnerable groups in society,
+  informing local adaptation needs.
+</p>
+<p class="ons-u-fs-r">
+  While suicide is not a direct measure of the incidence or prevalence of mental health conditions,
+  it is a useful proxy for some types of mental health challenges which may be exacerbated by
+  extreme heat.
+</p>
+<p class="ons-u-fs-r--b">This indicator can therefore:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    Monitor and quantify, to some extent, the mental health impacts of extreme heat
+  </li>
+  <li class="ons-list__item list-disc">
+    Inform national adaptation plans (NAPs) and resilience strategies
+  </li>
+  <li class="ons-list__item list-disc">
+    Guide environmental and public health policy to reduce risks and improve outcomes
+  </li>
+</ul>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 4, "Methodology", title_level=3) %}
+<p class="ons-u-fs-r">
+  The indicator uses epidemiological methods to examine short-term links between daily temperature
+  and suicide deaths. A time stratified case crossover design is combined with a distributed lag
+  non-linear model (DLNM) to assess the relative risk of suicide by temperature exposure. Further
+  estimation using this relationship is done to attribute suicides to extreme heat exposure.
+</p>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Understand the method</h5>
+    <p class="ons-u-fs-r">
+      Read the {{ link.external_link('https://doi.org/10.5281/zenodo.14050224', 'suicides attributed
+      to extreme heat: methodology') }} for details on the modelling approach, the data needed, and
+      guidance on interpreting results.
+    </p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Develop bespoke analyses</h5>
+    <p class="ons-u-fs-r">
+      For flexible, reproducible analysis or to adapt methods to your country or region, use the
+      Code Library and R package, which provides program code for the priority indicators.
+    </p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--no-title ons-panel--info headline-indicators__two ons-u-mb-m">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">No-code option for indicator analysis</h5>
+    <p class="ons-u-fs-r">
+      Use the Indicator tool if you want quick baseline estimates and simple charts without writing
+      code; it supports secure temporary uploads and downloadable outputs.
+    </p>
+  </div>
+</div>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 5, "Data Requirements and Guidance", title_level=3) %}
+<p class="ons-u-fs-r--b">The following data is needed for this indicator production:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    Daily mortality data on suicides from national administrative records.
+  </li>
+  <li class="ons-list__item list-disc">Population estimates from national statistical agencies.</li>
+  <li class="ons-list__item list-disc">
+    Daily mean temperature and other optional climatic variables from government meteorological
+    offices
+  </li>
+</ul>
+<p class="ons-u-fs-r ons-u-mt-m">
+  Where this data is unavailable or observations are incomplete, proxy datasets may be used. Further
+  information on these potential sources as well as required variable names and formats are outlined
+  in section 2 of the {{ link.external_link('https://doi.org/10.5281/zenodo.14050224', 'Suicides
+  attributed to extreme heat: Methodology') }}
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}
+{# BUTTONS TWO (CODE LIBRARY, INDICATOR TOOLS) #}
+<div
+  class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1"
+>
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.external('Code Library', 'https://github.com/onssoschi/climatehealth') }}
+  </div>
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.internal("Indicator Tools", url_for('data_bp.indicator_calculators') ~ '#' ~ topic_id,
+    "ons-btn--secondary" ) }}
+  </div>
+</div>
+{# ACCORDION TWO #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-two",
+group=topic_id ~ "-accordion-two",
+toggle_text_open="Show all FAQs",
+toggle_text_close="Hide all FAQs") }}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 1, "What is the relevance of statistics on suicides attributable to extreme heat?", title_level=3) %}
+<p class="ons-u-fs-r">
+  While suicide is not a direct measure of the incidence or prevalence of mental health conditions,
+  it is a useful proxy for some types of mental health challenges which may be exacerbated by
+  extreme heat. These estimates can give insights into how more frequent and intense hot days may be
+  impacting mental health and can help to inform adaptation needs. However, it is important to be
+  aware that the exact mechanism by which heat affects the risk of suicide is not yet understood.
+</p>
+<p class="ons-u-fs-r">
+  These estimates can give insights into how more frequent and intense hot days may be impacting
+  mental health and can help to inform adaptation needs. However, it is important to be aware that
+  the exact mechanism by which heat affects the risk of suicide is not yet understood.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "Why was this indicator prioritised over developing other mental health indicators?", title_level=3) %}
+<p class="ons-u-fs-r">
+  It was agreed with our expert advisory group that the mental health impacts of extreme heat are a
+  sensible place to start. Defining exposure is simpler for extreme heat than other extreme weather
+  events, while ambient temperature data across countries and regions are generally widely
+  available. Adaptation of commonly applied methods in existing studies could also be done.
+</p>
+<p class="ons-u-fs-r">
+  Suicides as an outcome was selected to be focused on over hospitalisations due to its clearer
+  diagnostic coding and more consistent reporting. However, it is important to be aware of national
+  differences in suicide occurrence and recording which may relate to legal, cultural and other
+  differences.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "How can I run the indicator analysis?", title_level=3) %}
+<p class="ons-u-fs-r">
+  The indicator analysis can be run using the online platform tool, or the ‘climatehealth’ R
+  package. Please note that the R package provides users with more flexibility to update the
+  parameters specified in the analysis pipeline. Please see the {{
+  link.external_link('https://doi.org/10.5281/zenodo.14050224', 'Suicides attributed to extreme
+  heat: Methodology') }} for more detail.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "Can I use weekly or monthly data?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Due to the nature of the case-crossover methodology, the indicator will only work with daily input
+  data.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "How is extreme heat defined?", title_level=3) %}
+<p class="ons-u-fs-r">
+  As a default in the model, extreme heat is defined as days where the temperature was in the top
+  2.5% (97.5th percentile and above) of daily temperatures. This is based on the temperature
+  distribution over the whole time series provided for each geographical area. The word ‘extreme’
+  therefore refers to the relative rarity of these higher temperatures to the corresponding area,
+  not to an absolute value, which would vary across the world.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "Are these direct counts of suicides caused by heat?", title_level=3) %}
+<p class="ons-u-fs-r">
+  No, these are estimates based on a statistical model. These are produced by modelling the
+  association between daily suicide occurrences and daily mean temperature. This association is then
+  used to estimate the attribution to extreme heat. As these are modelled estimates there are
+  uncertainty around the statistics that should be considered in any interpretation of results.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "What does 'attributable to extreme heat' mean in this context?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Dependent on the type of estimate, this is the number, rate (per 100,000 population) or proportion
+  of suicides that would not have occurred if there had been no exposure to extreme heat.
+</p>
+<p class="ons-u-fs-r">
+  It is based on the risk of suicide from the modelled temperature-suicide association above the
+  defined threshold of extreme heat. This threshold can be altered by a user if needed to
+  accommodate differing relationships.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 8, "What do negative attributable numbers mean?", title_level=3) %}
+<p class="ons-u-fs-r">
+  A negative attributable number can suggest that, in the context of the model, extreme heat is
+  associated with a reduction in suicide rates, indicating an inverse relationship. Though any
+  uncertainty around these estimates should be considered in this interpretation.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 9, "How reliable are the estimates that are produced?", title_level=3) %}
+<p class="ons-u-fs-r">
+  The analysis uses daily suicide counts to model temperature-related impacts. As suicide is
+  generally relatively infrequent as a cause of death in the population as a whole, numbers can be
+  low, especially at sub-national levels, contributing to uncertainty around the estimates.
+  Confidence intervals and statistics on model validation should be considered when interpreting
+  results.
+</p>
+<p class="ons-u-fs-r">
+  More information on data and methodological limitations can be found in {{
+  link.external_link('https://doi.org/10.5281/zenodo.14050224', 'Suicides attributed to extreme
+  heat: Methodology') }}
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 10, "Are there estimates available looking at populations most at risk?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Users can run the analysis on sub-populations such as by age group or sex. This is providing they
+  have the relevant variables, as set out in the data template in {{
+  link.external_link('https://doi.org/10.5281/zenodo.14050224', 'Suicides attributed to extreme
+  heat: Methodology') }}
+</p>
+<p class="ons-u-fs-r">
+  However, users should be aware that breaking down estimates into smaller groups can limit the
+  reliability of statistical modelling and potentially lead to wide uncertainty in the estimates
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}
+<p class="ons-u-fs-r ons-u-mt-l">
+  For broader questions that apply across the platform, please see our{{
+  link.internal_link(url_for('main_bp.faqs') , 'General FAQs' ) }}section.
+</p>
+{# RELATED TOPICS #}
+<h2 class="ons-u-fs--l ons-u-mt-xl">Related Topics</h2>
+<div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
+  <!-- prettier-ignore -->
+    {{ cards.relevant_pages("Temperature related health effects", "", [], "icons/temperature_related_illness.svg", title_href=url_for('data_bp.framework') ~ '#heat-and-cold', img_width=200, img_height=200, img_alt='Heat and cold icon') }}
+  <!-- prettier-ignore -->
+    {{ cards.relevant_pages("Health effects of extreme weather events - Flooding", "", [], "icons/extreme_weather.svg", title_href=url_for('data_bp.framework') ~ '#flooding-tab', img_width=200, img_height=200, img_alt='Flooding icon') }}
+  <!-- prettier-ignore -->
+    {{ cards.relevant_pages("Health effects of extreme weather events - Wildfires", "", [], "icons/wildfires.svg", title_href=url_for('data_bp.framework') ~ '#wildfires-tab', img_width=200, img_height=200, img_alt='Wildfires icon') }}
+</div>
+<h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
+<p class="ons-u-fs-r">
+  The mental health topic expert group is one of ten groups set up during discovery to review
+  climate and health topics and guide what we measure and how we measure it. The group brings
+  together internal and external specialists who advise on indicators and methods, share subject
+  knowledge so we build on existing work and good practice, and help quality assure draft outputs
+  before publication.
+</p>
+<!-- prettier-ignore -->
+{% set team_members = [
+  {
+    "name": "Dr. Alessandro Massazza",
+    "company": "United for Global Mental Health"
+  },
+  {
+    "name": "Prof. Masahiro Hashizume",
+    "company": "University of Tokyo, Japan"
+  },
+  {
+    "name": "Dr. Yoonhee Kim",
+    "company": "University of Tokyo, Japan"
+  },
+  {
+    "name": "Dr. Elaine Flores Ramos",
+    "company": "London School of Hygiene and Tropical Medicine, UK"
+  },
+  {
+    "name": "Dr. Kelton Minor",
+    "company": "University of Copengagen"
+  },
+  {
+    "name": "Dr. Anya Gopfert",
+    "company": "UK Health Security Agency"
+  },
+  {
+    "name": "Prof. Julian Eaton",
+    "company": "London School of Hygiene and Tropical Medicine, UK"
+  },
+  {
+    "name": "Prof. Sonja Ayeb Karlsson",
+    "company": "University College London (UCL), UK"
+  },
+  {
+    "name": "Dr. Joshua Wortzel",
+    "company": "Yale School of Medicine, USA"
+  },
+  {
+    "name": "Prof. Ann John",
+    "company": "Swansea University, UK"
+  },
+  {
+    "name": "Dr. Emma Lawrance",
+    "company": "Imperial College London, UK"
+  },
+  {
+    "name": "Dr. Piumee Bandara",
+    "company": "World Health Organisation (WHO)"
+  },
+  {
+    "name": "Dr. Sandersan Onie",
+    "company": "World Health Organisation (WHO)"
+  },
+  {
+    "name": "Kanza Ahmed",
+    "company": "UK Health Security Agency"
+  },
+  {
+    "name": "Dr. Lisa Page",
+    "company": "Brighton and Sussex Medical School, UK"
+  },
+  {
+    "name": "Dr. Isabel Fletcher",
+    "company": "Wellcome"
+  },
+  {
+    "name": "Jessica Newberry Le Vay",
+    "company": "University of Oxford, UK"
+  },
+  {
+    "name": "Dr. Emma Sharland",
+    "company": "Office for National Statistics, UK"
+  },
+  {
+    "name": "Klaudia Rzepnicka",
+    "company": "Office for National Statistics, UK"
+  }
+] %}
+<!-- prettier-ignore -->
+{% set team_list_id = "ons-meet-the-team-" ~ topic_id ~ "-list" %}
+{# TEAM CARDS #}
+{% set members_count = team_members | length %}
+<div
+  class="ons-team-cards ons-u-mt-xl"
+  role="region"
+  aria-label="{{ title }} team"
+  data-js="ons-team-cards"
+>
+  <ul
+    id="{{ team_list_id }}"
+    class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
+    data-js="ons-team-cards-list"
+  >
+    {% for member in team_members %}
+    <li class="ons-team-cards__item flex items-end">
+      <div class="ons-card">
+        <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
+        {% if member.company %}
+        <p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  <button
+    type="button"
+    class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
+    aria-label="Show next team members"
+    aria-controls="{{ team_list_id }}"
+    data-js="ons-team-cards-next"
+  >
+    <svg
+      class="ons-icon"
+      viewBox="0 0 12 12"
+      xmlns="http://www.w3.org/2000/svg"
+      focusable="false"
+      aria-hidden="true"
+      role="img"
+    >
+      <path
+        d="M4 2.5L8 6L4 9.5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </button>
+</div>
+{# CLOSING TEXT - FINAL #}
+<div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      The framework topic documents are a final version produced as part of the SOSCHI project
+      (Wellcome grant no. 224682/Z/21/Z). Please note that as this is an emerging topic area,
+      indicators and methods are subject to change. Notices will be issued on this page to inform
+      users of any changes to the information captured.
+    </p>
+    <p class="ons-u-fs-r">
+      For more information on the selection criteria used for prioritising the SOSCHI topics and the
+      development process, see the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI
+      Framework Page' ) }}.
+    </p>
+    <p class="ons-u-fs-r">
+      We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
+      page can be used for official statistics reporting. See the{{
+      link.internal_link(url_for('data_bp.framework') , 'SOSCHI Framework Page' ) }}for information
+      on the endorsement of the proposed indicators.
+    </p>
+  </div>
+</div>
+{# LAST UPDATED #}
+<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 28/02/2025</p>

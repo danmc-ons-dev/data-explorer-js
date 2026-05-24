@@ -1,0 +1,34 @@
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: unified-route
+spec:
+  http:
+    - name: data-explorer-indicator-calculators
+      match:
+        hosts:
+          - climate-health.dev.officialstatistics.org
+        paths:
+          - /*
+      backends:
+        - serviceName: data-explorer-service
+          servicePort: 80
+      plugins:
+        - enable: true
+          name: basic-auth
+    - backends:
+        - serviceName: r-api-1-1
+          servicePort: 80
+      match:
+        hosts:
+          - climate-health.dev.officialstatistics.org
+        paths:
+          - /r/*
+      name: r-api-route
+      plugins:
+        - config:
+            regex_uri:
+              - ^/r/(.*)
+              - /$1
+          enable: true
+          name: proxy-rewrite

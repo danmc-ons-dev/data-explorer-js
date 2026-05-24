@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59.53 59.53">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #092d4c;
+        stroke-miterlimit: 10;
+        stroke-width: 2.67px;
+      }
+
+      .cls-2 {
+        fill: #092d4c;
+      }
+    </style>
+  </defs>
+  <g id="Circle">
+    <circle class="cls-1" cx="29.76" cy="29.76" r="28.35"/>
+  </g>
+  <g>
+    <g id="Artwork_64x64" data-name="Artwork 64x64">
+      <circle class="cls-2" cx="29.6" cy="15.36" r="5.18"/>
+      <path class="cls-2" d="M35.08,22.04h-11.28c-2.06,0-1.66,2.86-1.66,4.87l-.97,20.97s3.08,1.36,8.52,1.47c4.81.09,8.34-1.35,8.34-1.35l-.29-21.51c.08-2.17-.27-4.44-2.66-4.44Z"/>
+    </g>
+    <path class="cls-2" d="M13.51,41.1l7.37-17c1.99-4.17,8.08-1.26,6.08,2.91,0,0-8.61,16.4-8.61,16.4-1.65,2.99-6.12.84-4.84-2.31h0Z"/>
+    <path class="cls-2" d="M41.09,43.41l-8.61-16.4c-2-4.16,4.09-7.08,6.08-2.91,0,0,7.37,17,7.37,17,1.29,3.16-3.18,5.29-4.84,2.31h0Z"/>
+  </g>
+</svg>

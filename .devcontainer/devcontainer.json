@@ -1,0 +1,78 @@
+{
+    // -------------------------------------------------------------------------
+    // Climate Health Data Explorer — Codespaces Review Environment
+    //
+    // PURPOSE: Lets stakeholders review UI changes on any branch before merge.
+    //
+    // DEVELOPER STEPS (each review session):
+    //   1. On GitHub, open the branch you want reviewed
+    //   2. Click Code → Codespaces → "Create codespace on <branch>"
+    //      (or resume an existing one — the URL stays stable until deleted)
+    //   3. Wait for the container to build and dependencies to install (~2 min)
+    //   4. In the terminal run:  python -m data_explorer
+    //   5. A notification will appear for port 5001 — click "Open in Browser"
+    //      to verify it works, then copy that URL and send it to the stakeholder
+    //
+    // STAKEHOLDER STEPS:
+    //   1. Click the link
+    //   2. Log in with their GitHub account (org membership gates access)
+    //   3. Navigate the site — no setup needed on their end
+    //
+    // NOTES:
+    //   - App runs in dummy mode: no database or R API required
+    //   - ENABLE_FULL_UI=true shows all topics and sections for full review
+    //   - The Codespace URL is stable while the Codespace exists; it does NOT
+    //     change when the Codespace sleeps and wakes
+    //   - Free GitHub plan includes 120 core-hours/month per org
+    // -------------------------------------------------------------------------
+
+    "name": "Data Explorer — Stakeholder Review",
+
+    // Official Microsoft Python 3.9 image matches the production Dockerfile
+    "image": "mcr.microsoft.com/devcontainers/python:3.9-bullseye",
+
+    // Install all Python dependencies once the container is ready
+    "postCreateCommand": "pip install --no-cache-dir -r requirements.txt",
+
+    // Forward port 5001 (Flask default from __main__.py)
+    "forwardPorts": [5001],
+    "portsAttributes": {
+        "5001": {
+            "label": "Data Explorer App",
+            // "notify" prompts the developer in the Ports panel rather than
+            // auto-opening a browser tab, keeping the developer in control
+            "onAutoForward": "notify",
+            // "org" restricts access to GitHub organisation members only.
+            // This means stakeholders must be signed into GitHub with their
+            // org account — no public exposure.
+            "visibility": "org"
+        }
+    },
+
+    // Configure the app for review mode via environment variables.
+    // These replace the need for a config.yml file in the Codespace.
+    "remoteEnv": {
+        // Run in dummy mode — no database connection needed
+        "DUMMY_MODE": "true",
+        // Show all framework topics and indicator sections (full review mode)
+        "ENABLE_FULL_UI": "true",
+        // Keep migrations off — no database is running
+        "RUN_MIGRATIONS": "false",
+        // Hide the R API health notice banner (R API is not running, by design)
+        "SHOW_SYSTEM_HEALTH_NOTICE": "false",
+        // Debug mode off for a clean stakeholder view (no debug error pages)
+        "DEBUG_MODE": "false",
+        // A fixed session key is fine here — this is a review-only environment,
+        // not production. Do not reuse this value anywhere else.
+        "SECRET_KEY": "codespace-review-only-not-for-production-use"
+    },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // Python language support
+                "ms-python.python"
+            ]
+        }
+    }
+}

@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% import "macros/buttons.html" as btn %}
+{% import "macros/publications_list.html" as list %}
+{% import "macros/external_link.html" as link %}
+{% block content %}
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Implementation case-studies</h1>
+  <p class="ons-u-fs-r">
+    The SOSCHI topic documents have been developed across three partner countries – Ghana, Rwanda and
+    the United Kingdom. This has provided useful lessons, which may inform global implementation of
+    the SOSCHI framework.
+  </p>
+  <!-- prettier-ignore -->
+  {% set partner_buttons = [
+    {
+      "text": "Ghana Framework Implementation",
+      "href": "",
+      "classes": ""
+    },
+    {
+      "text": "UK Framework Implementation",
+      "href": "",
+      "classes": "ons-btn--secondary"
+    },
+    {
+      "text": "Rwanda Framework Implementation",
+      "href": "",
+      "classes": ""
+    }
+  ] %}
+  <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1 ons-u-mb-l">
+    {% for button in partner_buttons %}
+      <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
+    {% endfor %}
+  </div>
+  <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r">
+        Please note that there may be some inconsistencies between the indicators and methods reported
+        in the analysis publication, and the generic methods outlined in the SOSCHI framework topic
+        documents.
+      </p>
+      <p class="ons-u-fs-r--b">There are two main reasons for this:</p>
+      <ol class="ons-list">
+        <li class="ons-list__item list-disc">
+          The generalisable SOSCHI framework methods have been adapted to ensure relevance and
+          application in the specific context described.
+        </li>
+        <li class="ons-list__item list-disc">
+          There have been ongoing developments to the proposed methods, which are currently not
+          reflected in the scope of the SOSCHI framework.
+        </li>
+      </ol>
+    </div>
+  </div>
+  <section class="ons-tabs ons-u-mt-m">
+    <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
+    <div class="ons-tabs__container">
+      <ul class="ons-tabs__list">
+        <li class="ons-tab__list-item">
+          <a href="#resources-publications" class="ons-tab">Publications</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#resources-guidance-videos" class="ons-tab">Guidance Videos</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#resources-policy-briefs" class="ons-tab">Policy Briefs</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#resources-news" class="ons-tab">News</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#resources-conference-events" class="ons-tab">Conference & Events</a>
+        </li>
+      </ul>
+    </div>
+    <section id="resources-publications" class="ons-tabs__panel">
+      <h2 class="ons-u-fs-l ons-u-mt-l">Publications</h2>
+      {{ list.ons_publication_list([ { "href":
+            "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/suicidesintheunitedkingdom/2024registrations#suicides-attributable-to-extreme-heat",
+            "title": "Suicides in England and Wales: 1981 to 2024", "type": "Bulletin", "publisher": "ONS",
+            "date": "3 October 2025", "description": "Short-term impact of heat on suicides by providing
+            estimates of the excess risk of suicide attributable to higher outdoor temperatures." }, {
+            "href": "https://journals.sagepub.com/doi/10.1177/18747655251342655", "title": "Climate change
+            and global health outcome indicators: A scoping review.", "type": "Statistical Journal",
+            "publisher": "Cochrane Planetary Health Thematic Group", "date": "2025", "description":
+            "Identifies globally defined indicators of the impacts of climate change on human health to
+            inform the design of official statistics." }, { "href":
+            "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/articles/climaterelatedmortalityandhospitaladmissionsenglandandwales/1988to2022",
+            "title": "Climate-related mortality, England and Wales: 1988 to 2022", "type": "Bulletin",
+            "publisher": "ONS", "date": "22 September 2023", "description": "Relative risk of death
+            associated with temperature for England and Wales from 1988 to 2022." } ]) }}
+    </section>
+    <section id="resources-guidance-videos"
+             class="ons-tabs__panel ons-tabs__panel--hidden">
+      <h2 class="ons-u-fs-l ons-u-mt-l">Guidance Videos</h2>
+    </section>
+    <section id="resources-policy-briefs"
+             class="ons-tabs__panel ons-tabs__panel--hidden">
+      <h2 class="ons-u-fs-l ons-u-mt-l">Policy Briefs</h2>
+    </section>
+    <section id="resources-news" class="ons-tabs__panel ons-tabs__panel--hidden">
+      <h2 class="ons-u-fs-l ons-u-mt-l">News and Social Media</h2>
+      <p class="ons-u-fs-r">
+        For the latest information, follow
+        <a href="https://www.linkedin.com/company/soschi-projectuk/"
+           class="ons__link"
+           target="_blank">SOSCHI Project UK | LinkedIn</a>
+        for quick updates on releases, webinars and highlights from partners.
+      </p>
+      <p class="ons-u-fs-r"></p>
+      <ul class="ons-list">
+        <li class="ons-list__item list-disc">
+          <a href="https://content.govdelivery.com/accounts/UKONS/bulletins/40048dd"
+             class="ons-list__link"
+             target="_blank">February 2025 special SOSCHI conference edition</a>
+        </li>
+        <li class="ons-list__item list-disc">
+          <a href="https://content.govdelivery.com/accounts/UKONS/bulletins/40048dd"
+             class="ons-list__link"
+             target="_blank">December 2025 edition</a>
+        </li>
+        <li class="ons-list__item list-disc">
+          <a href="https://content.govdelivery.com/accounts/UKONS/bulletins/3f606ad"
+             class="ons-list__link"
+             target="_blank">October 2025 edition</a>
+        </li>
+        <li class="ons-list__item list-disc">
+          <a href="https://content.govdelivery.com/accounts/UKONS/bulletins/3f606ad"
+             class="ons-list__link"
+             target="_blank">June 2025 edition</a>
+        </li>
+      </ul>
+    </section>
+    <section id="resources-conference-events"
+             class="ons-tabs__panel ons-tabs__panel--hidden">
+      <h2 class="ons-u-fs-l ons-u-mt-l">Conferences and Events</h2>
+      <div class="ons-panel ons-panel--info ons-panel--no-title">
+        <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+        <div class="ons-panel__body">
+          <h4 class="ons-u-f-b">Previous and upcoming events:</h4>
+          <ul class="ons-list">
+            <li class="ons-list__item list-disc">
+              The United Nations {{ link.external_link(href='https://unfccc.int/cop29', text='Climate
+               Change Conference') }} (UNFCCC COP 29) - Baku, Azerbaijan - 11 to 22 November 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              {{ link.external_link(href='https://www.uneca.org/eca-events/fourth-global-expert-forum-producers-and-users-disaster-related-statistics',
+                            text='4th Global Expert Forum for Producers and Users of Disaster-related Statistics') 
+              }} - Addis Ababa, Ethiopia - 28 October to 1 November 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              Climate and Health Africa Conference - Harare, Zimbabwe - 29 to 31 October 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              United Nations Economic Commission for Europe (UNECE) {{ link.external_link(href='https://unece.org/environment/documents/2024/10/presentations/statistical-framework-climate-and-health-impacts-data',
+               text='Joint Task Force on Environmental Statistics and Indicators') }} - Geneva,
+              Switzerland - 17 to 18 October 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              {{ link.external_link(href='https://unstats.un.org/unsd/envstats/fdes/EGES11/15UK%20ONS_climate_health.pdf',
+                            text='Expert Group on Environment and Climate Change Statistics (EG-ECCS) PDF document') }} - New York, USA - 15 October 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              Turning Science into Action: Shaping indicators to Advance Health-Protective Policies in
+              a Changing Climate - Bellagio, Italy - 8 to 12 October 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              {{ link.external_link(href='https://www.lse.ac.uk/international-development/research/british-society-for-population-studies/annual-conference',
+                            text='The British Society for Population Studies Annual Conference') }} - Bath, UK - 9
+              to 11 September 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              United Nations Economic Commission for Europe (UNECE) {{ link.external_link(href='https://unece.org/info/events/event/386092', text='Expert Forum for Producers of
+               Climate Change-related Statistics') }} - Geneva, Switzerland - 29 to 30 August 2024
+            </li>
+            <li class="ons-list__item list-disc">Global Health Security Conference - Sydney, Australia - 18 to 21 June 2024</li>
+            <li class="ons-list__item list-disc">
+              United Nations 8th {{ link.external_link(href='https://unstats.un.org/bigdata/events/2024/conference/agenda/day4-sessions/climate-change-health/',
+               text='International Conference on Big Data & Data Science for Official Statistics') }}
+              - Bilbao, Spain - 10 to 14 June 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              55th Session {{ link.external_link(href='https://unstats.un.org/UNSDWebsite/statcom/session_55/side-events/UN55SC-Concept_note_ONS_UK.pdf',
+               text='United Nations Statistical Commission') }} - New York, USA - 28 February to 3
+              March 2024
+            </li>
+            <li class="ons-list__item list-disc">
+              The United Nations {{ link.external_link(href='https://www.who.int/news-room/events/detail/2023/11/30/default-calendar/cop28-health-pavilion',
+               text='Climate Change Conference') }} (UNFCCC COP 28) - Dubai, United Arab Emirates - 30
+              November to 12 December 2023
+            </li>
+            <li class="ons-list__item list-disc">
+              {{ link.external_link(href='https://unece.org/sites/default/files/2023-08/S4_3_UK_CC%26amp%3BHealth_VIngole.pdf',
+                            text='United Nations Economic Commission for Europe') }} (UNECE) Expert Forum for
+              Producers and Users of Climate Change-Related Statistics - Geneva, Switzerland - 28 to
+              30 August 2023
+            </li>
+            <li class="ons-list__item list-disc">
+              {{ link.external_link(href='https://twitter.com/UKinRwanda/status/1684866526283788288?s=20',
+                            text='AIMS Rwanda project launch') }} - Kigali, Rwanda - 28 July 2023
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </section>
+{% endblock %}

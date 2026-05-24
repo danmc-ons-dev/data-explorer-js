@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-explorer
+spec:
+  template:
+    spec:
+      initContainers:
+      - name: migrate
+        imagePullPolicy: Always
+      containers:
+      - name: data-explorer
+        imagePullPolicy: Always

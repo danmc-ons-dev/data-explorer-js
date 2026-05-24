@@ -1,0 +1,67 @@
+{# templates/macros/input.html #}
+{% macro text_input(
+  id,
+  label,
+  name=None,
+  type='text',
+  value='',
+  placeholder='',
+  required=False,
+  disabled=False,
+  autocomplete=None,
+  hint=None,
+  error=None,
+  classes='',
+  attrs=None
+  ) -%}
+  {# build aria-describedby targets #}
+  {% set described = [] %}
+  {% if hint %}
+    {% set _ = described.append(id ~ '-hint') %}
+  {% endif %}
+  {% if error %}
+    {% set _ = described.append(id ~ '-error') %}
+  {% endif %}
+  <div class="ons-field{% if error %} ons-field--error{% endif %}">
+    <label class="ons-label" for="{{ id }}">
+      {{ label }}
+      {% if required %}<span class="ons-u-vh">(required)</span>{% endif %}
+      {% if hint %}
+        <button type="button"
+                class="ons-hint-toggle__icon"
+                aria-controls="{{ id }}-hint"
+                aria-expanded="false"
+                data-hint-toggle="{{ id }}">
+          <img src="/static/assets/icons/ons-icon-info-small.svg"
+               alt="information icon"
+               width="16"
+               height="16"
+               aria-hidden="true">
+          <span class="ons-u-vh">Show hint for {{ label }}</span>
+        </button>
+      {% endif %}
+    </label>
+    {% if hint %}
+      <div id="{{ id }}-hint"
+           class="ons-hint ons-label__description ons-input--with-description ons-u-vh">{{ hint }}</div>
+    {% endif %}
+    {% if error %}
+      <div id="{{ id }}-error"
+           class="ons-error-message"
+           role="alert"
+           aria-live="polite">{{ error }}</div>
+    {% endif %}
+    <input class="ons-input ons-input--text ons-input-type__input {{ classes }}{% if error %} ons-input--error{% endif %}"
+           id="{{ id }}"
+           name="{{ name or id }}"
+           type="{{ type }}"
+           value="{{ value }}"
+           {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+           {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+           {% if required %}required aria-required="true"{% endif %}
+           {% if disabled %}disabled aria-disabled="true"{% endif %}
+           {% if error %}aria-invalid="true"{% endif %}
+           {% if described %}aria-describedby="{{ ' '.join(described) }}"{% endif %}
+           {% if attrs %}{{ attrs|xmlattr }}{% endif %} />
+  </div>
+{%- endmacro %}

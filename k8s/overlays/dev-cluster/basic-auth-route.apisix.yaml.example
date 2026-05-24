@@ -1,0 +1,31 @@
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixRoute
+metadata:
+  name: oidc-route
+  namespace: ons-data-explorer
+spec:
+  http:
+    - name: oidc
+      match:
+        hosts:
+          - "climate-health.dev.officialstatistics.org"
+        paths:
+          - "/*"
+      backends:
+        - serviceName: data-explorer-service
+          servicePort: 80
+      plugins:
+        - name: basic-auth
+          enable: true
+---
+apiVersion: apisix.apache.org/v2
+kind: ApisixConsumer
+metadata:
+  name: dev-user
+  namespace: ons-data-explorer
+spec:
+  authParameter:
+    basicAuth:
+      value:
+        username: climate-health
+        password: [PASSWORD]

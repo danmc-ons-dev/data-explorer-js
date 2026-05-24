@@ -1,0 +1,329 @@
+{# templates/components/header/header.html #}
+<header class="ons-header ons-header--basic">
+  <div class="ons-browser-banner">
+    <div class="ons-container">
+      <p class="ons-browser-banner__content">
+        <span class="ons-browser-banner__lead">This website no longer supports your browser.</span>
+        <span class="ons-browser-banner__cta">
+          You can
+          <a class="ons-browser-banner__link"
+             href="https://www.ons.gov.uk/help/browsers">upgrade your browser to the latest version</a>
+          .
+        </span>
+      </p>
+    </div>
+  </div>
+  <div class="ons-header__top">
+    <div class="ons-container">
+      <div class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless">
+        <div class="ons-grid__col ons-col-auto ons-header__logo-wrap ons-u-flex-no-grow">
+          <a class="ons-header__org-logo-link" href="/">
+            <div class="ons-header__org-logo ons-header__org-logo--large">
+              <img class="ons-image"
+                   src="{{ url_for('static', filename='assets/SOSCHI_LOGO_WEBSITE_ONLY.png') }}"
+                   alt="SOSCHI logo"
+                   width="300"
+                   height="100" />
+            </div>
+            <div class="ons-header__org-logo ons-header__org-logo--small">
+              <img class="ons-image"
+                   src="{{ url_for('static', filename='assets/SOSCHI_LOGO_WEBSITE_ONLY.png') }}"
+                   alt="SOSCHI logo"
+                   width="150"
+                   height="80" />
+            </div>
+          </a>
+        </div>
+        <div class="ons-grid__col ons-col-auto ons-header__menu-links ons-u-ml-auto">
+          <div class="ons-header__links ons-grid__col">
+            <button type="button"
+                    class="ons-btn ons-u-fs-s--b ons-js-toggle-nav-menu button-nav ons-btn--menu"
+                    aria-label="Toggle menu"
+                    aria-controls="menu-links"
+                    aria-expanded="false"
+                    aria-disabled="false">
+              <span class="ons-btn__inner">
+                <svg class="ons-icon ons-u-mr-2xs"
+                     viewBox="0 0 8 13"
+                     xmlns="http://www.w3.org/2000/svg"
+                     focusable="false"
+                     fill="currentColor"
+                     role="img"
+                     aria-hidden="true">
+                  <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -1.59)" />
+                </svg>
+                <span class="ons-btn__text">Menu</span>
+              </span>
+            </button>
+          </div>
+          <nav class="ons-js-nav-menu ons-header-nav-menu ons-u-pt-l ons-u-d-no"
+               id="menu-links"
+               aria-label="Main menu"
+               aria-hidden="true">
+            <div class="ons-container">
+              <ul class="ons-grid ons-list ons-list--bare">
+                <li class="ons-grid__col ons-col-4@m ons-u-mb-no ons-header-nav-menu__col">
+                  <h2 class="ons-u-fs-s--b ons-header-nav-menu__heading">
+                    <a href="/framework" class="ons-header-nav-menu__link subtab">Statistical framework</a>
+                  </h2>
+                  {% set framework_hashes = allowed_framework_hashes | default([]) %}
+                  <ul class="ons-list ons-list--bare ons-header-nav-menu__groupItem-list">
+                    {% if "soschi" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#soschi" class="ons-header-nav-menu__link subtab">SOSCHI framework</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "waterborne-diseases" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#waterborne-diseases"
+                             class="ons-header-nav-menu__link subtab">Waterborne diseases</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "vectorborne-diseases" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#vectorborne-diseases"
+                             class="ons-header-nav-menu__link subtab">Vector-borne diseases</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "heat-and-cold" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#heat-and-cold"
+                             class="ons-header-nav-menu__link subtab">Temperature-related health effects</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "mental-health" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#mental-health"
+                             class="ons-header-nav-menu__link subtab">Mental health</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "air-pollution-tab" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#air-pollution-tab"
+                             class="ons-header-nav-menu__link subtab">Health effects of air pollution</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "wildfires-tab" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#wildfires-tab"
+                             class="ons-header-nav-menu__link subtab">Health effects of wildfires</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "airborne-diseases-tab" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#airborne-diseases-tab"
+                             class="ons-header-nav-menu__link subtab">Health effects of airborne diseases</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "undernutrition" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#undernutrition"
+                             class="ons-header-nav-menu__link subtab">Undernutrition</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "flooding-tab" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#flooding-tab"
+                             class="ons-header-nav-menu__link subtab">Health effects of flooding</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "healthcare-systems-and-facilities" in framework_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/framework#healthcare-systems-and-facilities"
+                             class="ons-header-nav-menu__link subtab">Healthcare systems and facilities</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </li>
+                <li class="ons-grid__col ons-col-4@m ons-u-mb-no ons-header-nav-menu__col">
+                  <h2 class="ons-u-fs-s--b ons-header-nav-menu__heading">
+                    <a href="/indicator_calculators" class="ons-header-nav-menu__link">Indicator tools</a>
+                  </h2>
+                  {% set indicator_hashes = allowed_indicator_calculator_hashes | default([]) %}
+                  <ul class="ons-list ons-list--bare ons-header-nav-menu__groupItem-list">
+                    {% if "waterborne-diseases" in indicator_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/indicator_calculators#waterborne-diseases"
+                             class="ons-header-nav-menu__link subtab">Waterborne diseases</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "vectorborne-diseases" in indicator_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/indicator_calculators#vectorborne-diseases"
+                             class="ons-header-nav-menu__link subtab">Vector-borne diseases</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "heat-and-cold" in indicator_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/indicator_calculators#heat-and-cold"
+                             class="ons-header-nav-menu__link subtab">Temperature-related health effects</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "mental-health" in indicator_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/indicator_calculators#mental-health"
+                             class="ons-header-nav-menu__link subtab">Mental health</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "extreme-weather-events" in indicator_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/indicator_calculators#extreme-weather-events"
+                             class="ons-header-nav-menu__link subtab">Health effects of wildfires</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                    {% if "descriptive-statistics" in indicator_hashes %}
+                      <li class="ons-u-mb-no">
+                        <p class="ons-u-fs-s ons-header-nav-menu_text">
+                          <a href="/indicator_calculators#descriptive-statistics"
+                             class="ons-header-nav-menu__link subtab">Descriptive statistics</a>
+                        </p>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </li>
+                <li class="ons-grid__col ons-col-4@m ons-u-mb-no ons-header-nav-menu__col">
+                  <a href="/r_package" class="ons-header-nav-menu__link">
+                    <h2 class="ons-u-fs-s--b ons-header-nav-menu__heading active">Climate-Health R Package</h2>
+                    <p class="ons-u-fs-s ons-header-nav-menu_text">
+                      Use this open-source tool to run analysis of the SOSCHI indicators using your
+                      own data
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="wrapper-bottom">
+              <div class="ons-container ons-u-pt-l ons-u-pb-l">
+                <ul class="ons-grid ons-list ons-list--bare">
+                  <li class="ons-grid__col ons-col-4@m ons-u-mb-no ons-header-nav-menu__col pr-4">
+                    <a href="/resources" class="ons-header-nav-menu__link">
+                      <h2 class="ons-u-fs-s--b ons-header-nav-menu__heading">Additional Resources</h2>
+                      <p class="ons-u-fs-s ons-header-nav-menu_text">
+                        Analysis publications, news, events and additional guidance to support
+                        users’ implementation of the SOSCHI framework
+                      </p>
+                    </a>
+                  </li>
+                  <li class="ons-grid__col ons-col-4@m ons-u-mb-no ons-header-nav-menu__col pr-4">
+                    <a href="/faqs" class="ons-header-nav-menu__link">
+                      <h2 class="ons-u-fs-s--b ons-header-nav-menu__heading">FAQs</h2>
+                      <p class="ons-u-fs-s ons-header-nav-menu_text">
+                        Get quick answers to common questions about the Climate‑Health Platform,
+                        including the SOSCHI framework, indicator tools, data requirements, and how
+                        to interpret results.
+                      </p>
+                    </a>
+                  </li>
+                  <li class="ons-grid__col ons-col-4@m ons-u-mb-no ons-header-nav-menu__col pr-4">
+                    <a href="/about" class="ons-header-nav-menu__link">
+                      <h2 class="ons-u-fs-s--b ons-header-nav-menu__heading">About us</h2>
+                      <p class="ons-u-fs-s ons-header-nav-menu_text">
+                        Meet the team, partners and external experts involved in developing the
+                        SOSCHI framework
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <div class="ons-header__links ons-grid__col ons-header__menu-link">
+            <button type="button"
+                    class="ons-btn ons-u-fs-s--b ons-js-toggle-header-search ons-btn--close ons-btn--search-icon ons-btn--search"
+                    aria-label="Toggle search"
+                    aria-controls="search"
+                    aria-expanded="false"
+                    aria-disabled="false">
+              <span class="ons-btn__inner">
+                <svg class="ons-icon ons-u-mr-2xs"
+                     viewBox="0 0 12 12"
+                     xmlns="http://www.w3.org/2000/svg"
+                     aria-hidden="true"
+                     fill="currentColor"
+                     role="img">
+                  <path d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0 0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z" />
+                </svg>
+                <span class="ons-btn__text"></span>
+              </span>
+            </button>
+          </div>
+          <nav class="ons-js-header-search ons-header-nav-search ons-u-d-no"
+               id="search"
+               aria-label="Nav Search"
+               aria-hidden="true">
+            <div class="ons-container">
+              <form class="ons-header-nav-search__input"
+                    method="get"
+                    action="{{ url_for('main_bp.search') }}"
+                    role="search">
+                <div class="ons-field">
+                  <label class="ons-label"
+                         for="ons-site-search"
+                         id="header-search-input-label">Search</label>
+                  <span class="ons-grid-flex ons-grid-flex--vertical-top ons-input_search-button ons-input__button--header-search">
+                    <input type="search"
+                           id="ons-site-search"
+                           class="ons-input ons-input--text ons-input-type__input ons-search__input ons-input--header-search ons-input--w-full"
+                           name="q"
+                           placeholder="Search the site"
+                           enterkeyhint="search"
+                           inputmode="search"
+                           maxlength="200"
+                           value="{{ request.args.get('q', '') }}" />
+                    <button type="submit" class="ons-btn ons-search__btn ons-btn--header-search">
+                      <span class="ons-btn__inner">
+                        <svg class="ons-icon"
+                             viewBox="0 0 12 12"
+                             xmlns="http://www.w3.org/2000/svg"
+                             aria-hidden="true"
+                             fill="currentColor"
+                             role="img">
+                          <path d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0 0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z" />
+                        </svg>
+                        <span class="ons-btn__text ons-u-vh@2xs@s">
+                          <span class="ons-u-vh">Search</span>
+                        </span>
+                      </span>
+                    </button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

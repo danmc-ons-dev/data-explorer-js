@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% import "macros/slideshow.html" as slideshow %}
+{% import "macros/cards.html" as cards %}
+{% block head_extra %}
+  <script src="{{ url_for('static', filename='js/onsSlideshow.js') }}"
+          type="text/javascript"
+          defer></script>
+  <script>sessionStorage.removeItem("tabno");</script>
+{% endblock %}
+{% block content %}
+  <h1 class="ons-u-fs-xl ons-u-mt-l">
+    Welcome to the Standards for Official Statistics on Climate-Health Interactions (SOSCHI)
+    Climate and Health Platform.
+  </h1>
+  <p class="ons-u-fs-r">
+    Equipping producers of official statistics with the knowledge and tools to understanding
+    climate-related impacts on health, and support evidence-based adaptation strategies to
+    reduce the human cost of climate change.
+  </p>
+  <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
+    <div class="ons-grid__col ons-col-auto ons-u-mt-s">
+      <a href="{{ url_for("data_bp.framework") }}"
+         class="ons-btn ons-btn--link ons-js-submit-btn"
+         aria-live="polite"
+         role="button">
+        <span class="ons-btn__inner">
+          <span class="ons-btn__text">Explore the SOSCHI Statistical Framework</span>
+        </span>
+      </a>
+    </div>
+    <div class="ons-grid__col ons-col-auto ons-u-mt-s">
+      <a href="{{ url_for('main_bp.r_package') }}"
+         class="ons-btn ons-btn--link ons-btn--secondary ons-js-submit-btn"
+         role="button"
+         aria-live="polite">
+        <span class="ons-btn__inner">
+          <span class="ons-btn__text">Produce these indicators using the SOSCHI tools</span>
+        </span>
+      </a>
+    </div>
+  </div>
+  <div class="ons-slideshow-wrapper w-full ons-u-mt-m">{{ slideshow.ons_slideshow() }}</div>
+  <h2 class="ons-u-fs-xl">What is SOSCHI?</h2>
+  <p class="ons-u-fs-r">
+    Standards for Official Statistics on Climate-Health Interactions (SOSCHI) is a statistical
+    framework, including a set of indicators to measure climate-related health impacts. The
+    aim is to support regular reporting and monitoring at international, national and
+    potentially sub-national levels.
+  </p>
+  <p class="ons-u-fs-r ons-u-mt-m">
+    This is a knowledge-sharing platform to guide users to produce their own indicator
+    metrics. Our learning resources provide guidance on climate-health indicators, input data
+    sources, methods and statistical modelling tools, so users can implement the SOSCHI
+    statistical framework using their own input data.
+  </p>
+  <div class="ons-grid ons-u-mt-xl">
+    <div class="ons-grid__col ons-col-4@s">
+      {{ cards.relevant_pages("SOSCHI Framework", "", [ { "text": "Framework landing page",
+            "href": url_for('data_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('data_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('data_bp.framework') ~ '#waterborne-diseases' } ],
+      "icons/framework_overview_large_colour.svg" ) }}
+    </div>
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("Tools for
+        implementation", "", [ { "text": "SOSCHI open-source R package", "href": url_for('main_bp.r_package') }, { "text":
+        "Online analysis tools", "href": url_for('data_bp.indicator_calculators') }, { "text":
+        "Additional resources", "href": url_for('main_bp.resources') } ], "icons/analysis_tools_large_colour.svg" ) }}
+    </div>
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
+              diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+        "Health effects of wildfires", "href": url_for('data_bp.framework') ~
+        '#wildfires-tab' }, { "text": "Mental Health", "href":
+        url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+        }}
+    </div>
+  </div>
+{% endblock %}

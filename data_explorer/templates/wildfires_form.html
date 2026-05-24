@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Wildfires Indicator</title>
+        <!-- Tailwind and other styles -->
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+              rel="stylesheet" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+              rel="stylesheet" />
+        <link href="{{ url_for('static', filename='css/styles.css') }}"
+              rel="stylesheet" />
+        <!-- Optional JS for header/footer components -->
+        <script src="{{ url_for('static', filename='js/header.js') }}" defer></script>
+        <script src="{{ url_for('static', filename='js/footer.js') }}" defer></script>
+    </head>
+    <body class="bg-gray-200">
+        <!-- Header -->
+        <header-component>
+        </header-component>
+        <div class="bg-gray-100">
+            <div class="container mx-auto w-2/3 bg-white p-6 rounded-lg shadow-lg space-y-7 my-10">
+                <div class="bg-blue-200 py-5 px-5 rounded">
+                    <h1 class="text-2xl font-bold">Wildfires Indicator</h1>
+                    <p class="text-lg mt-2">
+                        This tool calculates health impacts of wildfire-related PM2.5 using
+                        a time-stratified case-crossover approach. You can optionally join
+                        NetCDF + shapefile data to your health data if you don't already
+                        have wildfire PM2.5 in your CSV.
+                    </p>
+                </div>
+                <!-- Form to POST to your Flask route for wildfires -->
+                <form action="{{ url_for('indicator_bp.wildfires_indicator') }}"
+                      method="POST"
+                      enctype="multipart/form-data"
+                      class="space-y-6">
+                    <!-- CSV upload for health data -->
+                    <div>
+                        <label class="block mb-1 font-medium">Health data CSV:</label>
+                        <input required
+                               type="file"
+                               name="file"
+                               accept=".csv"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-lg p-2 w-full" />
+                        <p class="text-sm text-gray-600 mt-1">
+                            Must contain date, region (optional), temperature, and a health
+                            outcome column.
+                        </p>
+                    </div>
+                    <!-- Optional NetCDF + Shapefile -->
+                    <div class="bg-gray-50 p-3 rounded">
+                        <label class="flex items-center space-x-2 mb-2">
+                            <span class="font-medium">Join wildfire data?</span>
+                            <select name="join_wildfire_data" class="border border-gray-300 p-1">
+                                <option value="false" selected>No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </label>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block mb-1">NetCDF path:</label>
+                                <input type="text"
+                                       name="ncdf_path"
+                                       placeholder="/path/to/wildfire.nc"
+                                       class="border border-gray-300 p-2 w-full" />
+                            </div>
+                            <div>
+                                <label class="block mb-1">Shapefile path:</label>
+                                <input type="text"
+                                       name="shp_path"
+                                       placeholder="/path/to/regions.shp"
+                                       class="border border-gray-300 p-2 w-full" />
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">
+                            If 'Yes', the R code will extract daily mean PM2.5 for each region
+                            from the NetCDF + shapefile data and merge it with your health CSV.
+                        </p>
+                    </div>
+                    <!-- Column mappings -->
+                    <div class="space-y-2">
+                        <label class="block mb-1 font-medium">Date column:</label>
+                        <input type="text"
+                               name="date_col"
+                               value="date"
+                               class="bg-gray-50 border border-gray-300 text-lg p-2 w-full" />
+                        <label class="block mb-1 font-medium">Region column (optional):</label>
+                        <input type="text"
+                               name="region_col"
+                               placeholder="regnames"
+                               class="bg-gray-50 border border-gray-300 text-lg p-2 w-full" />
+                        <label class="block mb-1 font-medium">Mean temperature column:</label>
+                        <input type="text"
+                               name="mean_temperature_col"
+                               value="tmean"
+                               class="bg-gray-50 border border-gray-300 text-lg p-2 w-full" />
+                        <label class="block mb-1 font-medium">Health outcome column:</label>
+                        <input type="text"
+                               name="health_outcome_col"
+                               value="health_outcome"
+                               class="bg-gray-50 border border-gray-300 text-lg p-2 w-full" />
+                    </div>
+                    <!-- Lag options -->
+                    <div class="space-y-3 bg-gray-50 p-3 rounded">
+                        <label class="font-semibold block">Lag Options:</label>
+                        <div>
+                            <label class="block">wildfire_lag (days):</label>
+                            <input type="number"
+                                   name="wildfire_lag"
+                                   value="3"
+                                   class="border border-gray-300 p-2 w-full" />
+                        </div>
+                        <div>
+                            <label class="block">temperature_lag (days):</label>
+                            <input type="number"
+                                   name="temperature_lag"
+                                   value="1"
+                                   class="border border-gray-300 p-2 w-full" />
+                        </div>
+                        <div>
+                            <label class="block">spline_temperature_lag:</label>
+                            <input type="number"
+                                   name="spline_temperature_lag"
+                                   value="0"
+                                   class="border border-gray-300 p-2 w-full" />
+                        </div>
+                        <div>
+                            <label class="block">spline_temperature_degrees_freedom:</label>
+                            <input type="number"
+                                   name="spline_temperature_degrees_freedom"
+                                   value="6"
+                                   class="border border-gray-300 p-2 w-full" />
+                        </div>
+                    </div>
+                    <!-- Scale factor & toggles -->
+                    <div class="space-y-3 bg-gray-50 p-3 rounded">
+                        <label class="block">
+                            Scale factor for wildfire PM2.5:
+                            <input type="text"
+                                   name="scale_factor_wildfire_pm"
+                                   value="10"
+                                   class="border border-gray-300 p-1 w-full" />
+                        </label>
+                        <label class="block">
+                            Save figure?
+                            <select name="save_fig" class="border border-gray-300 p-1">
+                                <option value="false" selected>No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </label>
+                        <label class="block">
+                            Save CSV?
+                            <select name="save_csv" class="border border-gray-300 p-1">
+                                <option value="false" selected>No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </label>
+                        <label class="block">
+                            Output folder path:
+                            <input type="text"
+                                   name="output_folder_path"
+                                   value="/tmp"
+                                   class="border border-gray-300 p-1 w-full" />
+                        </label>
+                    </div>
+                    <!-- Optional VIF and model summaries -->
+                    <div class="flex space-x-6">
+                        <div>
+                            <label>Print VIF?</label>
+                            <select name="print_vif" class="border border-gray-300 p-1">
+                                <option value="false" selected>No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Print model summaries?</label>
+                            <select name="print_model_summaries" class="border border-gray-300 p-1">
+                                <option value="false" selected>No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Submit -->
+                    <button type="submit"
+                            class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-500 transition">
+                        Analyze
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer-component>
+        </footer-component>
+    </body>
+</html>

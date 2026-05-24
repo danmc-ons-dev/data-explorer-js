@@ -1,0 +1,356 @@
+<!-- prettier-ignore -->
+{% import "macros/accordion.html" as acc %}
+{% import "macros/timeline.html" as timeline %}
+{% import "macros/image.html" as image %}
+{% import "macros/buttons.html" as btn %}
+{% import "macros/cards.html" as cards %}
+{% import "macros/external_link.html" as link %}
+{% import "macros/table.html" as table %}
+{% set title = "SOSCHI Framework Overview" %}
+{% set topic_id = "soschi-framework" %}
+{% set timeline_items = [
+  {
+    "heading": "Discovery Phase (2022 - 2023)",
+    "subheading": "ONS Climate and Health team begin",
+    "list_items": [
+      "Project scoped",
+      "Partner selection and onboarding"
+    ]
+  },
+  {
+    "heading": "Alpha Phase (2023 - 2024)",
+    "subheading": "First draft of statistical framework and platform",
+    "list_items": [
+      "Topic expert group established",
+      "Internal testing with project partners"
+    ]
+  },
+  {
+    "heading": "Beta Phase (2024 - 2025)",
+    "subheading": "Further refinement of framework and platform",
+    "list_items": [
+      "Selected indicator calculators online",
+      "Testing with beyond partner countries",
+      "Feedback from experts and global users"
+    ]
+  },
+  {
+    "heading": "Launch (2025 - 2026)",
+    "subheading": "Final drafts signed off",
+    "list_items": [
+      "Work with UN and key stakeholders",
+      "Launch platform and publish framework"
+    ]
+  }
+] %}
+{# TITLE #}
+<h1 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h1>
+{# INTRO PARAGRAPH #}
+<p class="ons-u-fs-r">
+  The SOSCHI Framework Report provides an overview of the indicators and methods to guide users in
+  measuring the impacts of climate on health.
+</p>
+<p class="ons-u-fs-r">
+  The framework covers a wide range of health-related topics which are affected by climate change,
+  namely temperature-related illness, mental health, health effects of extreme weather events
+  (wildfire and floods), water-borne diseases, vector-borne diseases, health effects of air
+  pollution and air-borne diseases, under-nutrition and food-borne diseases, and healthcare systems
+  and facilities.
+</p>
+{# ACCORDION #}
+<!-- prettier-ignore -->
+{{ acc.accordion_start(id=topic_id ~ "-accordion-one",
+group=topic_id ~ "-accordion",) }}
+{% call acc.accordion_item(topic_id ~ "-accordion", 1, "Climate-Health Impact Pathways", title_level=3) %}
+  {{ image.image(image_name='framework-soschi.png', width='100%', alt="Diagram showing overview of SOSCHI framework") }}
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Framework development process", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The SOSCHI framework has been developed by ONS in collaboration with partners from the African
+    Institute for Mathematical Studies (AIMS) in Rwanda, and the Regional Institute for Population
+    Studies (RIPS) in Ghana and with input from the UK Health Security Agency, the Cochrane Planetary
+    Health Theme Group, and a large number of leading subject experts.
+  </p>
+  <p class="ons-u-fs-r">
+    See the {{ link.internal_link(url_for('main_bp.about') , 'About us' ) }}page for more information.
+  </p>
+  <p class="ons-u-fs-r">
+    Figure 1 illustrates the timeline and stages of the SOSCHI project. The activities that defined
+    the earlier stages of the project are described in detail in the previously published Discovery
+    Phase Report and Alpha phase report.
+  </p>
+  {# TIMELINE HERE #}
+  <!-- prettier-ignore -->
+  {{ timeline.ons_timeline(timeline_items) }}
+  <p class="ons-u-fs-r">
+    The involvement of experts and users throughout the development process has ensured that proposed
+    indicators are based on state-of-the-art statistical methods and can be implemented beyond the
+    project partner countries.
+  </p>
+  <p class="ons-u-fs-r">
+    The “topic pages” also include information on the specific experts engaged in the development of
+    the SOSCHI framework.
+  </p>
+  <!-- prettier-ignore -->
+  {% set framework_buttons = [
+    {
+      "text": "Discovery Report",
+      "href": "https://zenodo.org/records/14035603",
+      "classes": ""
+    },
+    {
+      "text": "Alpha Report",
+      "href": "https://zenodo.org/records/14051723",
+      "classes": "ons-btn--secondary"
+    }
+  ] %}
+  <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1 ons-u-mb-l">
+    {% for button in framework_buttons %}
+      <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
+    {% endfor %}
+  </div>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 3, "Guidance and tools to support
+  user implementation", title_level=3) %}
+  <p class="ons-u-fs-r">
+    If you want to produce any of the indicator metrics included in the
+    SOSCHI framework, you will first need to identify and prepare the input data sources. Once the
+    input data is in the required structure, you can either use the {{ link.external_link('https://github.com/onssoschi/climatehealth', 'R
+     code') }}or{{ link.internal_link(url_for('data_bp.indicator_calculators') , 'indicator tool' )
+    }}for selected topics, to produce selected climate-health indicator metrics for your country or
+    area.
+  </p>
+  <p class="ons-u-fs-r">
+    Additional guidance is available to support users (e.g. topic documents, guidance videos etc). The
+    available guidance and tools available for each topic in the SOSCHI framework are summarised in
+    the table below.
+  </p>
+  <p class="ons-u-fs-r--b">The guidance tools include:</p>
+  <ul class="ons-list ons-u-mb-l">
+    <li class="ons-list__item list-disc">
+      <strong>Topic introduction:</strong>
+      state of knowledge on the topic and rationale of topic and indicator selection
+    </li>
+    <li class="ons-list__item list-disc">
+      <strong>Methods documents:</strong>
+      outline of statistical approaches to measure the headline indicator
+    </li>
+    <li class="ons-list__item list-disc">
+      <strong>Metadata sheets:</strong>
+      summary of the headline indicator metrics and their component parts to support user
+      implementation
+    </li>
+    <li class="ons-list__item list-disc">
+      <strong>R code:</strong>
+      Open-source {{ link.external_link('https://github.com/onssoschi/climatehealth', 'R code') }} available in the SOSCHI GitHub repository, for
+      users to use in their offline workflow and allows more flexibility to adapt the methods for
+      measuring climate-health indicator metrics for their local context using their own data
+    </li>
+    <li class="ons-list__item list-disc">
+      <strong>Online tool:</strong>
+      Ready to use analysis tool for measuring climate-health indicator metrics on this platform,
+      based on the generic model using their own data upload, no prior knowledge of R coding required
+    </li>
+  </ul>
+  <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mb-m">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r">
+        The SOSCHI framework topics are at a different stage of readiness. The first six selected
+        topics in the table below have been prioritised, with more comprehensive guidance to support
+        users in implementing these to produce indicator metrics based on the input data sources from
+        their country.
+      </p>
+    </div>
+  </div>
+  <div class="ons-u-mb-s flex flex-col items-end">
+    <p id="table-key" class="ons-u-fw-b ons-u-mb-2xs">Key</p>
+    <ul class="ons-list ons-list--bare ons-u-mb-no flex flex-row flex-wrap justify-end gap-4"
+        aria-labelledby="table-key">
+      <li class="flex items-center">
+        <img class="ons-icon ons-u-mr-2xs"
+             src="{{ url_for('static', filename='assets/icons/tick.svg') }}"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
+        <span>Included</span>
+      </li>
+      <li class="flex items-center">
+        <img class="ons-icon ons-u-mr-2xs"
+             src="{{ url_for('static', filename='assets/icons/in-progress.svg') }}"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
+        <span>In progress</span>
+      </li>
+      <li class="flex items-center">
+        <img class="ons-icon ons-u-mr-2xs"
+             src="{{ url_for('static', filename='assets/icons/cross.svg') }}"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
+        <span>Not included</span>
+      </li>
+    </ul>
+  </div>
+  <!-- prettier-ignore -->
+  {{ table.ons_table(headers=['Framework topics', 'Alpha Version', 'Final Version', 'R Package', 'Indicator Tool'],
+    rows=[[
+    'Waterborne diseases (diarrhea)',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not included'}
+    ],[
+    'Vector-borne diseases (malaria)',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not included'}
+    ],[
+    'Temperature related health effects',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not included'}
+    ],[
+    'Mental health (suicide)',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/in-progress.svg', 'icon_alt': 'In progress'}
+    ],[
+    'Health effects of air pollution',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'}
+    ],[
+    'Health effects of extreme weather (wildfire smoke)',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/in-progress.svg', 'icon_alt': 'In progress'}
+    ],[
+    'Airborne diseases (cerebrospinal meningitis)',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'}
+    ],[
+    'Undernutrition and food-borne diseases',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'}
+    ],[
+    'Health effects of extreme weather events (flooding)',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'}
+    ],[
+    'Heathcare systems and facilities',
+    {'icon': 'icons/tick.svg', 'icon_alt': 'Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'},
+    {'icon': 'icons/cross.svg', 'icon_alt': 'Not Included'}
+    ]],
+    id='soschi-project-overview-table',
+    aria_label='SOSCHI Project Overview Table',
+    scroll=True) }}
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 4, "Partner country implementation of the framework", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The aim of the SOSCHI Framework is to support National Statistics Offices (NSOs) in systematic
+    monitoring of climate change outcomes and help to build relevant expert capacity globally,
+    especially in low- and middle-income countries’ (LMIC) statistical institutions.
+  </p>
+  <p class="ons-u-fs-r">
+    The work has been developed collaboratively between partners in Ghana, Rwanda and the UK so that
+    experience and priorities in Africa, where some of the worst climate change impacts are already
+    evident, are central to the development. For each of these partner countries, implementation plans
+    have been published, to share experiences and lessons learned to inform global implementation.
+  </p>
+  <!-- prettier-ignore -->
+  {# TODO: ADD LINKS TO FRAMEWORK BUTTONS #}
+  {% set partner_buttons = [
+    {
+      "text": "Ghana Framework Implementation",
+      "href": "",
+      "classes": ""
+    },
+    {
+      "text": "UK Framework Implementation",
+      "href": "",
+      "classes": "ons-btn--secondary"
+    },
+    {
+      "text": "Rwanda Framework Implementation",
+      "href": "",
+      "classes": ""
+    }
+  ] %}
+  <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1 ons-u-mb-l">
+    {% for button in partner_buttons %}
+      <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
+    {% endfor %}
+  </div>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion", 5, "UN endorsement of the SOSCHI framework", title_level=3) %}
+  <p class="ons-u-fs-r">
+    The main benefit of the SOSCHI framework, and its contribution to this field, is providing
+    National Statistics Organisations (NSOs) and other government institutions with harmonised
+    indicators, validated methods and practical tools, to improve the monitoring of climate change
+    impacts on health.
+  </p>
+  <div class="ons-panel ons-panel--info ons-panel--no-title">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      <p class="ons-u-fs-r">
+        We are seeking endorsement of the SOSCHI framework by the UN Statistical Commission to become
+        part of the authoritative UN Global Set of Climate Change Statistics and Indicators. This
+        activity is being progressed through the UN Expert Group on Environment and Climate Change
+        Statistics (EG-ECCS).
+      </p>
+    </div>
+  </div>
+  <p class="ons-u-fs-r ons-u-mt-m">
+    The 12th meeting of the EG-ECCS was held in London, 23-25 September 2025, with support from UK-ONS
+    through the Wellcome funding for this project. The SOSCHI framework was covered as part of the
+    plenary on the review of prioritised health impacts of climate change topics (see section 5.3 of
+    the Final Report). The participants expressed strong support for the proposed indicator
+    methodologies and expanding the scope of health-related climate metrics. The group agreed to
+    update the metadata of the Global Set accordingly, this will be progressed further through the 57
+    th UNSC in February 2026.
+  </p>
+  {{ image.image(image_name='egeccs_event.jfif', width='100%', alt="Diagram showing overview of SOSCHI
+    framework") }}
+  <p class="ons-u-fs-r">
+    See the{{ link.internal_link(url_for('main_bp.about') , 'about us' ) }}page for more information on
+    those countries and institutions involved in the EG-ECCS climate-health sub-group, and the “events
+    page” for information on our global engagement. For more information on our global stakeholder
+    engagement, see the SOSCHI framework report (section 3.3: Relationship to other frameworks).
+  </p>
+{% endcall %}
+<div class="ons-grid ons-u-mt-xl">
+  <div class="ons-grid__col ons-col-4@s">
+      {{ cards.relevant_pages("Tools for
+      implementation", "", [ { "text": "SOSCHI open-source R package", "href": url_for('main_bp.r_package') }, { "text":
+      "Online analysis tools", "href": url_for('data_bp.indicator_calculators') }, { "text":
+      "Additional resources", "href": url_for('main_bp.resources') } ], "icons/analysis_tools_large_colour.svg" ) }}
+    </div>
+    <div class="ons-grid__col ons-col-4@s">
+        {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
+              diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+        "Health effects of wildfires", "href": url_for('data_bp.framework') ~ '#wildfires-tab' }, { "text": "Mental Health", "href":
+        url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+        }}
+    </div>
+</div>
+<!-- prettier-ignore -->
+{{ acc.accordion_end() }}

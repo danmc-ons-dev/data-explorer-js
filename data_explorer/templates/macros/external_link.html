@@ -1,0 +1,12 @@
+{# templates/macros/external_link.html #}
+{% macro external_link(href, text) %}
+  <a href="{{ href }}"
+     class="ons-external-link"
+     target="_blank"
+     rel="noopener">
+    <span class="ons-external-link__text">{{ text }}</span>
+  </a>
+{% endmacro %}
+{% macro internal_link(href, text) %}
+  <a class="ons-link" href="{{ href }}">{{ text }}</a>
+{% endmacro %}

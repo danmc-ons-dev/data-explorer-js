@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: flaskdb
+  POSTGRES_USER: flaskuser
+  HOST: postgres
+  DBNAME: flaskdb
+  USER: flaskuser
+  PORT: "5432"
+  HEAT_API_URL: "http://r-api/regression"

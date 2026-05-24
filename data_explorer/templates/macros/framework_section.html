@@ -1,0 +1,80 @@
+<!-- prettier-ignore -->
+{% import "macros/external_link.html" as link %}
+{# templates/macros/framework_section.html #}
+<!-- prettier-ignore -->
+{% macro framework_section(title, intro_paragraphs, info_panel_paragraphs, buttons, image=None) %}
+  <h2 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h2>
+  <!-- prettier-ignore -->
+  {% if intro_paragraphs is string %}
+    {% set intro_paragraphs = [intro_paragraphs] %}
+  {% endif %}
+  {% for paragraph in intro_paragraphs %}<p class="ons-u-fs-r ons-u-mt-m">{{ paragraph }}</p>{% endfor %}
+  <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m">
+    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+    <div class="ons-panel__body">
+      {% if info_panel_paragraphs is string %}
+        {% set info_panel_paragraphs = [info_panel_paragraphs] %}
+      {% endif %}
+      {% for paragraph in info_panel_paragraphs %}<p class="ons-u-fs-r">{{ paragraph }}</p>{% endfor %}
+    </div>
+  </div>
+  {% if image %}
+    {% if image is string %}
+      {% set image_data = {"src": image, "caption": None, "alt":
+            title} %}
+    {% else %}
+      {% set image_data = image %}
+    {% endif %}
+    <figure class="ons-image ons-u-mt-m">
+      <img class="ons-image__img"
+           src="{{ url_for('static', filename=image_data.src) }}"
+           alt="{{ image_data.alt or title }}" />
+      {% if image_data.caption %}<figcaption class="ons-image__caption">{{ image_data.caption }}</figcaption>{% endif %}
+    </figure>
+  {% endif %}
+  <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
+    {% for button in buttons %}
+      {% if button.href and button.label %}
+        <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+          <a href="{{ button.href }}" target="_blank" rel="noopener noreferrer" class="ons-btn ons-btn--link ons-js-submit-btn {% if loop.index % 2 == 0 %}ons-btn--secondary{% endif %}
+          " aria-live="polite" role="button">
+          <span class="ons-btn__inner">
+            <span class="ons-btn__text">{{ button.label }}</span>
+            <svg class="ons-icon ons-u-ml-2xs"
+                 viewBox="0 0 12 12"
+                 xmlns="http://www.w3.org/2000/svg"
+                 focusable="false"
+                 aria-hidden="true"
+                 role="img">
+              <path d="M13.5,9H13a.5.5,0,0,0-.5.5v3h-9v-9h3A.5.5,0,0,0,7,3V2.5A.5.5,0,0,0,6.5,2h-4a.5.5,0,0,0-.5.5v11a.5.5,0,0,0,.5.5h11a.5.5,0,0,0,.5-.5v-4A.5.5,0,0,0,13.5,9Z" transform="translate(-2 -1.99)" />
+              <path d="M8.83,7.88a.51.51,0,0,0,.71,0l2.31-2.32,1.28,1.28A.51.51,0,0,0,14,6.49v-4a.52.52,0,0,0-.5-.5h-4A.51.51,0,0,0,9,2.52a.58.58,0,0,0,.14.33l1.28,1.28L8.12,6.46a.51.51,0,0,0,0,.71Z" transform="translate(-2 -1.99)" />
+            </svg>
+          </span>
+          <span class="ons-btn__new-window-description ons-u-vh">(opens in a new window)</span>
+        </a>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{# CLOSING TEXT - ALPHA #}
+<div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      The framework topic documents are an alpha version produced as part of the SOSCHI project
+      (Wellcome grant no. 224682/Z/21/Z). Please note that as this is an emerging topic area,
+      indicators and methods are subject to change. Notices will be issued on this page to inform
+      users of any changes to the information captured. For more information on the selection
+      criteria used for prioritising the SOSCHI topics, see the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI Framework Page' ) }}for more
+      information on the development process.
+    </p>
+    <p class="ons-u-fs-r">
+      The proposed indicators and methods described on this page are not fully ready for
+      implementation within official statistics reporting. The current version has been shared in
+      line with our open-source values – to encourage collaboration, transparency and accessibility
+      allowing users to freely, use, modify and update these guidance materials and tools developed
+      as part of the SOSCHI project.
+    </p>
+  </div>
+</div>
+{% endmacro %}

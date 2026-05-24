@@ -1,0 +1,1583 @@
+{% extends "base.html" %}
+{% block head_extra %}
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link href="{{ url_for('static', filename='css/MultiSelect.css') }}"
+        rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/leaflet-easyprint@2.1.9/libs/leaflet.min.css"
+        rel="stylesheet" />
+  <script src="{{ url_for('static', filename='js/MultiSelect.js') }}"></script>
+{% endblock %}
+{% block content %}
+  <!-- Tab Content for Sub-Tab 0 Descriptive Statistics -->
+    <div id="descriptive-statistics"
+         class="subtab-content space-y-3 px-5 py-3 ons-page__container ons-container">
+      <div class="bg-blue-200 p-5 rounded shadow-lg">
+        <h1 class="text-2xl font-bold">Descriptive Statistics</h1>
+      </div>
+      <div class="flex-1 bg-gray-300 rounded-lg">
+        <!-- Tab Pane links -->
+        <div class="tab rounded-t-lg">
+          <button class="tablinks rounded-t-lg"
+                  onclick="openPane(event, 'DescStatsSelectFile')"
+                  id="DescStatsSelectFileTab">Select File</button>
+          <button class="tablinks rounded-t-lg"
+                  onclick="openPane(event, 'DescStatsViewResults')"
+                  id="DescStatsViewResultsTab">View Results</button>
+        </div>
+        <div id="DescStatsSelectFile" class="tabcontent rounded-lg">
+          <div class="flex flex-wrap justify-center">
+            <!-- Left Pane -->
+            <div class="my-6 mx-3 space-y-3">
+              <!-- Instructions -->
+              <div class="bg-gray-400 p-3 mb-2 rounded shadow-lg max-w-screen-md">
+                <p class="font-semibold">Descriptive Stats Tool Instructions</p>
+                <ul class="ml-6"
+                    style="list-style-type: decimal;
+                           padding-top: 6px;
+                           padding-bottom: 6px"
+                    type="1">
+                  <li>Upload your raw dataset via the UI below</li>
+                  <li>Enter your dataset metadata, including a name for your dataset</li>
+                  <li>
+                    Select the plots that you wish to output, along with their associated
+                    settings
+                  </li>
+                  <li>Generate your descriptive statistics and download the resultant .zip file</li>
+                </ul>
+              </div>
+              <!-- File Upload -->
+              <div class="max-w-screen-md inline-flex space-x-3">
+                <div>
+                  <input required
+                         type="file"
+                         accept=".csv"
+                         name="file"
+                         id="t0csvInput"
+                         class="border text-gray-900 rounded block p-1" />
+                  <label for="t0csvInput" class="mt-1 text-gray-600 pb-1">Upload your .csv file (max 40MB)</label>
+                </div>
+                <button id="t0Analyse" class="analyse-button">Generate Descriptive Stats</button>
+                <div class="spinner" id="t0spinner" style="visibility: hidden"></div>
+                <div id="t0apiMessage" class="text-sm pl-10"></div>
+              </div>
+              <h1 id="t0tableTitle" class="text-xl mb-2" style="display: none">Your CSV data (first 5 rows)</h1>
+              <div id="t0tableDiv"
+                   class="mt-3 max-w-screen-md overflow-x-auto"
+                   style="display: none">
+                <div>
+                  <table id="t0previewTable" class="border-gray">
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Form -->
+            <form method="POST"
+                  action="{{ url_for('indicator_bp.descriptive_stats') }}"
+                  enctype="multipart/form-data"
+                  class="flex flex-wrap justify-center">
+              <!-- Middle Pane -->
+              <div class="my-6 mx-3 space-y-3" style="width: 400px">
+                <!-- Metadata -->
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="font-semibold block">Dataset Metadata</p>
+                  <div>
+                    <label for="t0Title" class="tooltip-label">
+                      Dataset Name
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The name of the dataset</span>
+                      </a>
+                    </label>
+                    <input required
+                           type="text"
+                           name="t0Title"
+                           id="t0TitleBox"
+                           placeholder="Enter your dataset title"
+                           aria-describedby="helper-text4"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 block w-full" />
+                  </div>
+                  <div>
+                    <label for="t0AggCol" class="tooltip-label">
+                      Dissaggregation Column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">
+                          The name of the column used to dissaggregate the dataset into subsets.
+                          <br />
+                          E.g., Region
+                        </span>
+                      </a>
+                    </label>
+                    <select name="t0AggCol"
+                            id="t0AggCol"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option value="no_column">No Dissaggregation</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="t0DepCol" class="tooltip-label">
+                      Dependent Column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The name of the dependent column in your dataset</span>
+                      </a>
+                    </label>
+                    <select name="t0DepCol"
+                            id="t0DepColName"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"></select>
+                  </div>
+                  <div>
+                    <label for="t0IndCol" class="tooltip-label">
+                      Independent Column(s)
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The independent column(s) in your dataset</span>
+                      </a>
+                    </label>
+                    <select name="t0IndCol"
+                            id="t0IndColName"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"
+                            style="max-height: 24px"
+                            multiple
+                            data-multi-select></select>
+                  </div>
+                </div>
+                <!-- Plotting Options -->
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="font-semibold block">Plotting Options</p>
+                  <div>
+                    <div>
+                      <label class="tooltip-label">
+                        Independent vs Dependent Variable Scatter
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">
+                            Whether or not to output a scatter plot showing the independent
+                            variable(s) against the dependent variables.
+                          </span>
+                        </a>
+                      </label>
+                      <br />
+                      <label for="plotScat" class="switch">
+                        <input type="checkbox" name="plotScat" id="plotScat" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="tooltip-label">
+                        Distribution Histograms
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">Whether or not to plot column distributions.</span>
+                        </a>
+                      </label>
+                      <br />
+                      <label for="plotDist" class="switch">
+                        <input type="checkbox" name="plotDist" id="plotDist" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="tooltip-label">
+                        Moving Average
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">Whether or not to output moving average plots.</span>
+                        </a>
+                      </label>
+                      <br />
+                      <label for="plotMA" class="switch">
+                        <input type="checkbox" name="plotMA" id="plotMA" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="tooltip-label">
+                        Plot Correlation Matrix
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">Whether or not to plot a correlation matrix.</span>
+                        </a>
+                      </label>
+                      <br />
+                      <label for="plotCor" class="switch">
+                        <input type="checkbox" name="plotCor" id="plotCor" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="tooltip-label">
+                        Plot NA Counts
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">Whether or not to output a bar chart showing NA counts.</span>
+                        </a>
+                      </label>
+                      <br />
+                      <label for="plotNA" class="switch">
+                        <input type="checkbox" name="plotNA" id="plotNA" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- RIGHT PANE -->
+              <div class="my-6 mx-3 space-y-3" style="width: 400px">
+                <!-- Correlation -->
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="font-semibold block">Correlation Matrix</p>
+                  <div>
+                    <label for="t0CorMethodCol" class="tooltip-label">
+                      Method
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The correlation method to use while generating the correlation matrix</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t0CorMethod"
+                            id="t0CorMethodCol"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option selected value="pearson">Pearson</option>
+                      <option value="spearman">Spearman</option>
+                      <option value="kendall">Kendall</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Column Distributions -->
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="font-semibold block">Distributions</p>
+                  <div>
+                    <label for="t0ColDist" class="tooltip-label">
+                      Column(s)
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column(s) to plot distribution(s) for</span>
+                      </a>
+                    </label>
+                    <select name="t0ColDist"
+                            id="t0ColDistCols"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"
+                            style="max-height: 24px"
+                            multiple
+                            data-multi-select></select>
+                  </div>
+                </div>
+                <!-- Moving Average -->
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="font-semibold block">Moving Average</p>
+                  <div>
+                    <label for="t0DateCol" class="tooltip-label">
+                      Timeseries Column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing the timerseries used for the moving average</span>
+                      </a>
+                    </label>
+                    <select name="t0DateCol"
+                            id="t0DateCol"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"></select>
+                  </div>
+                  <div>
+                    <label for="t0maCols" class="tooltip-label">
+                      Moving Average Column(s)
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The columns to plot the moving average for against the timeseries</span>
+                      </a>
+                    </label>
+                    <select name="t0maCols"
+                            id="t0maColsList"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"
+                            style="max-height: 24px"
+                            multiple
+                            data-multi-select></select>
+                  </div>
+                  <div>
+                    <label for="t0maSides" class="tooltip-label">
+                      Moving Average Sides
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">
+                          The number of sides to use in MA calculations.
+                          <br />
+                          <br />
+                          Using 2 sides will split the number of days used for the moving
+                          average across both sides of the point (e.g., two days before, two
+                          days ahead).
+                        </span>
+                      </a>
+                    </label>
+                    <select name="t0maSides"
+                            id="t0maSidesOption"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="t0maDays" class="tooltip-label">
+                      Moving Average Days #
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The number of days to calcualte the moving average over</span>
+                      </a>
+                    </label>
+                    <input type="number"
+                           name="t0maDays"
+                           id="t0maDaysVal"
+                           value="10"
+                           aria-describedby="helper-text4"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 block w-full" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="DescStatsViewResults" class="tabcontent rounded-lg">
+          <div class="my-6 space-y-8">
+            <!-- Download buttons -->
+            <div class="flex flex-wrap mt-2 justify-center">
+              <div class="mb-2">
+                <button id="t0downloadButton"
+                        class="w-52 h-20 text-xl px-4 py-2 bg-gray-600 text-white rounded hover:bg-blue-500 transition">
+                  Descriptive Stats &nbsp;
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Tab Content for Sub-Tab 1 Heat and Cold -->
+    <div id="heat-and-cold"
+         class="subtab-content space-y-3 px-5 py-3 ons-page__container ons-container">
+      <indicator-banner></indicator-banner>
+      <!-- Blue Banner -->
+      <div class="bg-blue-200 p-5 rounded shadow-lg">
+        <h1 class="text-2xl font-bold">Heat- and cold-related mortality Indicator</h1>
+        <p class="text-lg mt-2">
+          This calculator returns the relative mortality risk attributable to non-optimal
+          outdoor heat and cold for a given time series. This is estimated using a distributed
+          lag non-linear model (DLNM). Full details of the methodology will be provided in the
+          <a href="{{ url_for("data_bp.framework") }}#heat-and-cold"
+             onclick="setTabNo(1)"
+             class="text-blue-800 dark:text-blue-500 hover:underline">Heat and Cold framework documentation</a>
+          .
+        </p>
+        <h2 class="mt-2 mb-1 text-lg text-black">This calculator returns the following data:</h2>
+        <ul class="space-y-1 text-black text-lg list-disc list-inside">
+          <li>
+            Relative risk for the temperature-mortality association per disaggregated geography
+            or aggregated across geographies.
+          </li>
+          <li>
+            Number of deaths attributable to non-optimal outdoor heat and cold per disaggregated
+            geography or aggregated across geographies.
+          </li>
+          <li>
+            Deaths per 100,000 population attributable to non-optimal outdoor heat and cold per
+            disaggregated geography or aggregated across geographies.
+          </li>
+        </ul>
+      </div>
+      <!-- File and Results Tabs -->
+      <div class="flex-1 bg-gray-300 rounded-lg">
+        <!-- Tab Pane links -->
+        <div class="tab rounded-t-lg">
+          <button class="tablinks rounded-t-lg"
+                  onclick="openPane(event, 'HeatAndColdSelectFile')"
+                  id="defaultOpen">Select File</button>
+          <button class="tablinks rounded-t-lg"
+                  onclick="openPane(event, 'HeatAndColdViewResults')"
+                  id="HeatAndColdViewResultsTab">View Results</button>
+        </div>
+        <!-- Tab Pane content Heat and Cold Select File -->
+        <div id="HeatAndColdSelectFile" class="tabcontent rounded-lg">
+          <div class="flex flex-wrap justify-center">
+            <!-- Left Pane -->
+            <div class="my-6 mx-3 space-y-3 overflow-x-auto">
+              <!-- Instructions -->
+              <div class="bg-gray-400 p-3 mb-2 rounded shadow-lg max-w-screen-md">
+                <p class="font-semibold">Heat and cold indicator tool instructions</p>
+                <ul class="ml-6"
+                    style="list-style-type: decimal;
+                           padding-top: 6px;
+                           padding-bottom: 6px"
+                    type="1">
+                  <li>
+                    Obtain and prepare data following the guidance in sections 2 and 3.2 of the
+                    methodology document
+                  </li>
+                  <li>Upload your data (.csv) file</li>
+                  <li>
+                    If disaggregating by geography, then also select a column to match the
+                    'sub-geography' dropdown box
+                  </li>
+                  <li>Select additional independent variables, if required</li>
+                  <li>
+                    Choose the number of lag days (number of days after the exposure event to
+                    consider in the model)
+                  </li>
+                  <li>
+                    Calculate your results, and interpret your outputs using guidance in section
+                    4 of the methodology document
+                  </li>
+                </ul>
+                <p>
+                  &#8505;
+                  <span class="italic">Uploaded data is not stored</span>
+                </p>
+              </div>
+              <div class="max-w-screen-md">
+                <p class="text-lg">Please provide data in the following format:</p>
+                <div class="flex">
+                  <table class="text-left items-center text-center rtl:text-right text-black border-gray">
+                    <thead class="text-sm text-black bg-gray-200">
+                      <tr>
+                        <th class="px-2 py-2 bg-gray-300" style="width: 150px">Date (yyyy-mm-dd)</th>
+                        <th class="px-2 py-2 bg-gray-300" style="width: 150px">Region (Area)</th>
+                        <th class="px-2 py-2 bg-gray-300" style="width: 150px">Mean Temperature (&deg;C)</th>
+                        <th class="px-2 py-2 bg-gray-300" style="width: 150px">Number of Deaths (per day)</th>
+                        <th class="px-2 py-2 bg-gray-300" style="width: 150px">Population</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-white px-3 py-3 bg-gray-50 text-sm">
+                        <td class="px-2 py-2 bg-white">2021-01-28</td>
+                        <td class="px-2 py-2 bg-white">North West</td>
+                        <td class="px-2 py-2 bg-white">20.5</td>
+                        <td class="px-2 py-2 bg-white">190</td>
+                        <td class="px-2 py-2 bg-white">45000</td>
+                      </tr>
+                      <tr class="border-white px-2 py-2 bg-white text-sm">
+                        <td class="px-2 py-2 bg-white">2021-01-29</td>
+                        <td class="px-2 py-2 bg-white">North West</td>
+                        <td class="px-2 py-2 bg-white">21.3</td>
+                        <td class="px-2 py-2 bg-white">210</td>
+                        <td class="px-2 py-2 bg-white">45000</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- CSV upload for heat and cold data -->
+              <div class="max-w-screen-md">
+                <input required
+                       type="file"
+                       accept=".csv"
+                       name="file"
+                       id="csvInput"
+                       class="border text-gray-900 rounded block p-1" />
+                <label for="csvInput" class="mt-1 text-gray-600 pb-1">Upload your .csv file (max 40MB)</label>
+              </div>
+              <h1 id="tableTitle" class="text-xl mb-2" style="display: none">Your CSV data (first 5 rows)</h1>
+              <div id="tableDiv" class="mt-3 max-w-screen-md" style="display: none">
+                <div>
+                  <table id="previewTable" class="border-gray">
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Right Pane -->
+            <div class="flex-none my-6 mx-3" style="width: 400px">
+              <!-- Form -->
+              <form method="POST"
+                    action="{{ url_for('indicator_bp.heat_and_cold_indicator') }}"
+                    enctype="multipart/form-data"
+                    class="space-y-3">
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="collapsible-options">Column Selection</p>
+                  <div class="collapsible-content">
+                    <div>
+                      <label for="deathsCol" class="tooltip-label">
+                        Deaths counts column
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">The dependent variable containing the daily death counts.</span>
+                        </a>
+                      </label>
+                      <select required
+                              type="text"
+                              name="deaths"
+                              id="deathsCol"
+                              aria-describedby="helper-text2"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                        <option disabled selected value="">Select the column containing daily death counts</option>
+                      </select>
+                      <p id="helper-text2" class="text-gray-500 hidden">Select the column containing daily death counts.</p>
+                    </div>
+                    <div>
+                      <label for="t1dateCol" class="tooltip-label">
+                        Date column
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">
+                            The variable indicating the date of the deaths that have occured.
+                            Date must be formatted as YYYY-MM-DD.
+                          </span>
+                        </a>
+                      </label>
+                      <select required
+                              type="text"
+                              name="time"
+                              id="t1dateCol"
+                              aria-describedby="helper-text4"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                        <option disabled selected value="">Select the date column (format yyyy-mm-dd)</option>
+                      </select>
+                      <p id="helper-text4" class="text-gray-500 hidden">Select the date column (format yyyy-mm-dd).</p>
+                    </div>
+                    <div>
+                      <label for="tempCol" class="tooltip-label">
+                        Temperature column
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">The exposure variable containing the raw temperature value.</span>
+                        </a>
+                      </label>
+                      <select required
+                              type="text"
+                              name="temp"
+                              id="tempCol"
+                              aria-describedby="helper-text6"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                        <option disabled selected value="">Select daily mean or max temp column</option>
+                      </select>
+                      <p id="helper-text6" class="text-gray-500 hidden">
+                        Select the daily mean or maximum temperature column, depending on your
+                        methodology.
+                      </p>
+                    </div>
+                    <div>
+                      <label for="popCol" class="tooltip-label">
+                        Population estimate column
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">
+                            The population variable containing raw counts of population
+                            estimates for each date.
+                          </span>
+                        </a>
+                      </label>
+                      <select required
+                              type="text"
+                              name="pop"
+                              id="popCol"
+                              aria-describedby="helper-text8"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                        <option disabled selected value="">Select the column containing population counts</option>
+                      </select>
+                      <p id="helper-text8" class="text-gray-500 hidden">Select the column containing population counts.</p>
+                    </div>
+                    <div>
+                      <label for="countryCol" class="tooltip-label">
+                        Country
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">
+                            The country that your outputs represent.
+                            <br />
+                            NOTE: This currently has no operational use and is a placeholder for
+                            future functionality.
+                          </span>
+                        </a>
+                      </label>
+                      <select type="text"
+                              name="country"
+                              id="countryCol"
+                              aria-describedby="helper-text10"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"
+                              disabled>
+                        <option disabled selected value="">Coming soon...</option>
+                      </select>
+                      <p id="helper-text10" class="text-gray-500 hidden">Select the country that this data represents.</p>
+                    </div>
+                    <div>
+                      <label for="subgeoCol" class="tooltip-label">
+                        Sub-geography column
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">
+                            The variable containing the names of dissagregated geographical
+                            regions.
+                          </span>
+                        </a>
+                      </label>
+                      <select type="text"
+                              name="subgeo"
+                              id="subgeoCol"
+                              aria-describedby="helper-text11"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                        <option disabled selected value="">Select the column of sub-geographies if required</option>
+                      </select>
+                      <p id="helper-text11" class="text-gray-500 hidden">
+                        Select the column of sub-geographies (e.g. regions, provinces, local
+                        authorities, counties),
+                        <br />
+                        or leave as 'No column selected' if None.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="collapsible-options">Additional Options</p>
+                  <div class="collapsible-content">
+                    <div class="block text-gray-900 dark:text-white">
+                      <label for="addIndVar" class="tooltip-label">Add additional independent variables</label>
+                      <br />
+                      <input id="addIndVar"
+                             type="checkbox"
+                             onclick="DoCheckUncheckDisplay(this, 'independentOptions')"
+                             style="margin: 0" />
+                      Add variable
+                    </div>
+                    <div id="independentOptions" style="display: none">
+                      <div>
+                        <label for="ind1Col" class="block text-gray-900">First additional independent variable:</label>
+                        <select type="text"
+                                name="ind1"
+                                id="ind1Col"
+                                aria-describedby="helper-text12"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"></select>
+                        <p id="helper-text12" class="text-gray-500 hidden">Select an additional independent variable</p>
+                      </div>
+                      <div>
+                        <input id="ivcb1"
+                               type="checkbox"
+                               onclick="DoCheckUncheckDisplay(this, 'independentOptions2')"
+                               style="margin: 0" />
+                        <label for="ivcb1">Add variable</label>
+                      </div>
+                      <div id="independentOptions2" style="display: none">
+                        <div>
+                          <label for="ind2Col" class="block text-gray-900">Second additional independent variable:</label>
+                          <select type="text"
+                                  name="ind2"
+                                  id="ind2Col"
+                                  aria-describedby="helper-text13"
+                                  class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"></select>
+                          <p id="helper-text13" class="text-gray-500 hidden">Select an additional independent variable</p>
+                        </div>
+                        <div>
+                          <input id="ivcb2"
+                                 type="checkbox"
+                                 onclick="DoCheckUncheckDisplay(this, 'independentOptions3')"
+                                 style="margin: 0" />
+                          <label for="ivcb2">Add variable</label>
+                        </div>
+                        <div id="independentOptions3" style="display: none">
+                          <div>
+                            <label for="ind3Col" class="block text-gray-900">Third additional independent variable:</label>
+                            <select type="text"
+                                    name="ind3"
+                                    id="ind3Col"
+                                    aria-describedby="helper-text14"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"></select>
+                            <p id="helper-text14" class="text-gray-500 hidden">Select an additional independent variable</p>
+                          </div>
+                          <div>
+                            <input id="ivcb3"
+                                   type="checkbox"
+                                   onclick="DoCheckUncheckDisplay(this, 'independentOptions4')"
+                                   style="margin: 0" />
+                            <label for="ivcb3">Add variable</label>
+                          </div>
+                          <div id="independentOptions4" style="display: none">
+                            <div>
+                              <label for="ind4Col" class="block text-gray-900">Fourth additional independent variable:</label>
+                              <select type="text"
+                                      name="ind4"
+                                      id="ind4Col"
+                                      aria-describedby="helper-text15"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"></select>
+                              <p id="helper-text15" class="text-gray-500 hidden">Select an additional independent variable</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="block text-gray-900 dark:text-white">
+                      <p class="tooltip-label">Disaggregate by sub-geography</p>
+                      <label for="disaggCheck" class="block text-gray-900 dark:text-white">
+                        <input type="checkbox" name="disagg" id="disaggCheck" onclick="setCheckboxState1()" disabled />
+                        Disaggregate
+                      </label>
+                      <p id="disagg" class="text-gray-500 hidden">
+                        Select whether you want to disaggregate the results by
+                        sub-geography.
+                      </p>
+</div> -->
+                    <div class="block text-gray-900 dark:text-white">
+                      <h1 class="tooltip-label">Meta-analysis (pool disaggregated estimates)</h1>
+                      <label for="metaCheck" class="switch">
+                        <input type="checkbox" name="meta" id="metaCheck" disabled />
+                        <span class="slider round"></span>
+                      </label>
+                      <p id="meta" class="text-gray-500 hidden">Select whether you want to perform meta-analysis (see Framework).</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="collapsible-options">Additional Model Parameters</p>
+                  <div class="collapsible-content">
+                    <div>
+                      <label for="rrDistLength" class="block text-gray-900">
+                        Number of years for the calculation of relative risk distribution
+                      </label>
+                      <input required
+                             type="number"
+                             id="rrDistLength"
+                             name="rrdist"
+                             min="0"
+                             max="15"
+                             value="0"
+                             class="bg-gray-50 border border-gray-300 text-gray-900 block w-full" />
+                      <p id="helper-text16" class="text-gray-500 hidden">Select to 0 to use full range in data. Must be 15 or less.</p>
+                    </div>
+                    <div>
+                      <label for="outputYear" class="block text-gray-900">Year to calculate output for</label>
+                      <input required
+                             type="number"
+                             name="outputyear"
+                             id="outputYear"
+                             min="0"
+                             value="0"
+                             class="bg-gray-50 border border-gray-300 text-gray-900 block w-full" />
+                      <p id="helper-text17" class="text-gray-500 hidden">
+                        Set as 0 to use most recent year (all of the data).
+                        <br />
+                        The output is the average of the output year and the previous 5 years.
+                      </p>
+                    </div>
+                    <div>
+                      <label for="lag" class="block text-gray-900">Number of days in lag</label>
+                      <input required
+                             type="number"
+                             name="lag"
+                             id="lag"
+                             min="5"
+                             max="40"
+                             value="21"
+                             class="bg-gray-50 border border-gray-300 text-gray-900 block w-full" />
+                      <p id="helper-text18" class="text-gray-500 hidden">
+                        Select the number of days to include in the lag e.g. wind speed,
+                        humidity (min 5; max 40).
+                        <br />
+                        See Framework for more information.
+                      </p>
+                    </div>
+                    <div class="hidden">
+                      <label for="seasonal" class="block text-gray-900">Seasonal degrees of freedom:</label>
+                      <input required
+                             type="number"
+                             name="seasonal"
+                             id="seasonal"
+                             min="2"
+                             max="12"
+                             value="8"
+                             class="bg-gray-50 border border-gray-300 text-gray-900 block w-full" />
+                      <p id="helper-text19" class="text-gray-500 hidden">
+                        Select the seasonal degrees of freedom e.g. 8 for United Kingdom.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="collapsible-options">Additional Plotting Options</p>
+                  <div class="collapsible-content">
+                    <div>
+                      <label class="tooltip-label">
+                        MMT based line colour
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">
+                            Selecting this option will colour the RR curve based on cold (below
+                            MMT) and hot (above MMT).
+                            <br />
+                            <br />
+                            MMT: The minimum mortality temperature where relative risk for the
+                            geography is lowest. Temperatures above and blow the MMT are
+                            considered non-optimal.
+                          </span>
+                        </a>
+                      </label>
+                      <br />
+                      <label for="mmtBasedLine" class="switch">
+                        <input type="checkbox" name="mmtBasedLine" id="mmtBasedLine" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="tooltip-label">
+                        Plot Optimal Temperature Range
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">
+                            OTR: The optimal temperature range is where the relative risk is
+                            between or equal to 1 and 1.1. Temperatures outside of the OTR are
+                            considered non-optimal.
+                          </span>
+                        </a>
+                      </label>
+                      <br />
+                      <label for="plotOTR" class="switch">
+                        <input type="checkbox" name="plotOTR" id="plotOTR" checked="true" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="tooltip-label">
+                        Plot MMT line
+                        <a class="tooltip">
+                          &#8505;
+                          <span class="tooltiptext">
+                            MMT: The minimum mortality temperature where relative risk for the
+                            geography is lowest. Temperatures above and blow the MMT are
+                            considered non-optimal.
+                          </span>
+                        </a>
+                      </label>
+                      <br />
+                      <label for="plotMMT" class="switch">
+                        <input type="checkbox" name="plotMMT" id="plotMMT" checked="true" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-xl flex items-center">
+                  <button id="uploadBtn" class="analyse-button">Analyse</button>
+                  <div class="spinner" style="visibility: hidden"></div>
+                  <div id="apiMessage" class="text-sm pl-10"></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Tab Pane content Heat and Cold View Results -->
+        <div id="HeatAndColdViewResults" class="tabcontent rounded-lg">
+          <div class="my-6 space-y-8">
+            <!-- Region and download buttons panel -->
+            <div class="flex flex-wrap my-4 justify-center">
+              <!-- Sub Geography Select -->
+              <div class="mr-6 mb-4">
+                <label for="groupDropdown"
+                       class="mb-3 block font-semibold text-gray-900 dark:text-gray-400">
+                  Select a sub-geography to plot results:
+                </label>
+                <select type="file"
+                        id="groupDropdown"
+                        aria-describedby="helper-text2"
+                        class="bg-gray-50 border block border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </select>
+              </div>
+              <!-- Download buttons -->
+              <div class="flex flex-wrap mt-2 justify-center">
+                <div class="mb-2 mr-2">
+                  <button id="downloadButtonRR"
+                          class="w-52 h-20 text-xl px-4 py-2 bg-gray-600 text-white rounded hover:bg-blue-500 transition">
+                    Relative risk
+                    <br />
+                    of mortality &nbsp;
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="mb-2 mr-2">
+                  <button id="downloadButtonRate"
+                          class="w-52 h-20 text-xl py-2 bg-gray-600 text-white rounded hover:bg-blue-500 transition">
+                    Mortality rate &nbsp;
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="mb-2 mr-2">
+                  <button id="downloadButtonDeaths"
+                          class="w-52 h-20 text-xl py-2 bg-gray-600 text-white rounded hover:bg-blue-500 transition">
+                    Mortality values &nbsp;
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <!-- <div class="mb-2">
+                  <button id="downloadButtonDescStats" class="w-52 h-20 text-xl px-4 py-2 bg-gray-600 text-white rounded hover:bg-blue-500 transition">
+                    Descriptive Stats &nbsp; <i class="fa fa-download" aria-hidden="true"></i>
+                  </button>
+                </div> -->
+              </div>
+            </div>
+            <!-- Graphs panel -->
+            <div id="heatAndColdResultsPlot"
+                 class="flex flex-col space-y-10 mx-auto"
+                 style="visibility: hidden">
+              <div id="graph-text-map"
+                   class="bg-gray-400 bg-opacity-80 p-2 sm:mx-2 md:mx-4 sm:p-6 md:py-6 md:px-12 rounded shadow-lg hidden">
+                <p class="text-lg">
+                  These maps show the rate of mortality per 100,000 population attributed to
+                  extreme cold (left) and hot days (right)
+                  <span id="output_year_map"></span>
+                  . Extreme cold and hot days are days when the mean daily temperature is below
+                  the 2.5th (cold) and above the 97.5th percentile (hot) over the previous 5-15
+                  years. The attributable rate of mortality is divided into quartiles; the value
+                  ranges for these quartiles are presented in the legend. Note: The threshold
+                  for extreme heat and cold varies among regions.
+                </p>
+              </div>
+              <div class="flex justify-center gap-x-5 items-center pb-5 hidden">
+                <div id="map1" class="w-1/2 h-96"></div>
+                <div id="map2" class="w-1/2 h-96"></div>
+              </div>
+              <!-- <hr style="height: 1px;
+            border: none;
+            color: #333;
+            background-color: #333" /> -->
+              <div id="plotlyLine"
+                   class="sm:mx-20 md:mx-120"
+                   style="aspect-ratio: 12 / 5"></div>
+              <div id="graph-text-plot"
+                   class="bg-gray-400 bg-opacity-80 p-2 sm:mx-2 md:mx-4 sm:p-6 md:py-6 md:px-12 rounded shadow-lg">
+                <p class="text-lg">
+                  The above plot shows the temperature related relative risk of mortality (RR)
+                  in the data for
+                  <span id="output_region_plot"></span>
+                  . RR is the likelihood of an individual dying during or shortly after exposure
+                  to a given temperature with respect to the reference temperature. If one
+                  geography is used, he reference temperature is the mean temperature across the
+                  full time series. If multiple geographies are used and a meta-analysis is ran,
+                  the reference temperature is the minimum mortality temperature (MMT), where
+                  the RR is lowest. An RR of greater than 1 means there is an increase in the
+                  likelihood of an individual dying. The shaded area above and below the curve
+                  represent 95% confidence intervals. The optimal temperature range is the
+                  temperature range where RR is between and equal to 1 and 1.1.
+                </p>
+              </div>
+              <div id="plotlyBarRate"
+                   class="sm:mx-20 md:mx-120"
+                   style="aspect-ratio: 12 / 5"></div>
+              <div id="graph-text-bar"
+                   class="bg-gray-400 bg-opacity-80 p-2 sm:mx-2 md:mx-4 sm:p-6 md:py-6 md:px-12 rounded shadow-lg">
+                <p class="text-lg">
+                  This plot shows the rate of mortality per 100,000 population attributed to
+                  extreme cold (blue) and hot (red) days for
+                  <span id="output_region_bar"></span>
+                  <span id="output_year_bar"></span>
+                  . Extreme cold and hot days are days when the mean daily temperature is below
+                  the 2.5th (cold) and above the 97.5th (hot) percentile over the previous 5-15
+                  years. Note: The threshold for extreme heat and cold varies among regions.
+                </p>
+              </div>
+              <div id="plotlyBarDeaths"
+                   class="sm:mx-20 md:mx-120"
+                   style="aspect-ratio: 12 / 5"></div>
+              <div id="graph-text-bar"
+                   class="bg-gray-400 bg-opacity-80 p-2 sm:mx-2 md:mx-4 sm:p-6 md:py-6 md:px-12 rounded shadow-lg">
+                <p class="text-lg">
+                  The above plot shows the number of deaths attributable to high-intensity heat
+                  (red) and cold (blue) in
+                  <span id="output_region_bar">for</span>
+                  <span id="output_year_bar"></span>
+                  . High-intensity hot and cold days are defined as days where the mean daily
+                  temperature is above the 97.5th or below the 2.5th percentiles for heat and
+                  cold, respectively. The percentiles are determined by the distribution of mean
+                  temperature observed in [geography] across all years in the time series.
+                </p>
+              </div>
+              <div id="apiError" style="display: none" class="text-xl bg-red-300"></div>
+              <!-- <div id="apiResults"></div> -->
+            </div>
+            <!-- Graphs panel -->
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Tab Content for Sub-Tab 2 Extreme Events -->
+  <div id="extreme-weather-events"
+       class="subtab-content ons-page__container ons-container">
+    <!-- Tab Content for Sub-Tab 2-1 -->
+    {% include "indicators/wildfires.html" %}
+  </div>
+  <!-- Sub-Tab 2.1 -->
+  <!-- Tab Content for Sub-Tab 2-2 -->
+  <div id="flooding" class="innertab-content">
+    <div class="m-6 bg-gray-300 bg-opacity-80 py-8 px-12 text-gray-900 rounded overflow-y-auto">
+      <h1 class="text-4xl font-bold pt-3">Flooding</h1>
+      <p class="text-3xl mt-3">
+        This is some sample text for the flooding indicator but will not be displayed as there
+        is no hyperlink to this section.
+      </p>
+      <div>
+        <a href="https://zenodo.org/communities/soschi/records?q=&l=list&p=1&s=10&sort=newest"
+           target="_blank"
+           class="flex-none h-14 w-80 inline-flex justify-center items-center mt-6 py-3 px-5 font-bold text-center text-xl rounded-lg bg-white hover:bg-gray-200 focus:ring-4 focus:ring-blue-300"
+           style="color: #003c57">
+          SOSCHI Zenodo Page &nbsp;
+          <i class="fa fa-external-link" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- Tab Content for Sub-Tab 7 Mental Health -->
+  {% include "indicators/mental_health.html" %}
+  <!-- Tab Content for Sub-Tab 4 Waterborne -->
+    <div id="waterborne-diseases"
+         class="subtab-content space-y-3 px-5 py-3 ons-page__container ons-container">
+      <indicator-banner></indicator-banner>
+      <!-- Blue Banner -->
+      <div class="bg-blue-200 p-5 rounded shadow-lg">
+        <h1 class="text-2xl font-bold">Waterborne Diseases Indicator</h1>
+        <p class="text-lg mt-2">
+          Work in progress. View the
+          <a href="{{ url_for("data_bp.framework") }}#waterborne-diseases"
+             onclick="setTabNo(4)"
+             class="text-blue-800 dark:text-blue-500 hover:underline">Waterborne Diseases framework documentation</a>
+          .
+        </p>
+        <h2 class="mt-2 mb-1 text-lg text-black">This calculator returns the following data:</h2>
+        <ul class="space-y-1 text-black text-lg list-disc list-inside">
+          <li>Attributable numbers and fractions</li>
+          <li>Relative Risk Breakdowns</li>
+          <li>Yearly Spatial Random Effects</li>
+          <li>VIF Analysis</li>
+        </ul>
+      </div>
+      <div class="flex-1 bg-gray-300 rounded-lg">
+        <!-- Tab Pane links -->
+        <div class="tab rounded-t-lg">
+          <button class="tablinks rounded-t-lg"
+                  onclick="openPane(event, 'WaterborneSelectFile')"
+                  id="WaterborneSelectFileTab">Select File</button>
+          <button class="tablinks rounded-t-lg"
+                  onclick="openPane(event, 'WaterborneViewResults')"
+                  id="WaterborneViewResultsTab">View Results</button>
+        </div>
+        <!-- Tab Pane content Waterborne Select File -->
+        <div id="WaterborneSelectFile" class="tabcontent rounded-lg">
+          <!-- Use flex with flex-row to keep panes side by side -->
+          <div class="flex flex-row flex-wrap justify-center">
+            <!-- Left Pane -->
+            <div class="my-6 mx-3 space-y-3">
+              <!-- Instructions -->
+              <div class="bg-gray-400 p-3 mb-2 rounded shadow-lg max-w-screen-md">
+                <p class="font-semibold">Waterborne indicator tool instructions</p>
+                <ul class="ml-6"
+                    style="list-style-type: decimal;
+                           padding-top: 6px;
+                           padding-bottom: 6px"
+                    type="1">
+                  <li>Obtain and prepare health, climate and map data</li>
+                  <li>Upload your datasets through the UI below</li>
+                  <li>Select the remaining columns that haven't been automatically filled</li>
+                  <li>Adjust the model parameters to customise your analysis</li>
+                  <li>Calculate your results and download the resultant .zip file</li>
+                </ul>
+                <p>
+                  &#8505;
+                  <span class="italic">Uploaded data is not stored</span>
+                </p>
+              </div>
+              <div class="max-w-screen-md">
+                <p class="text-lg">Data must contain columns for date, temperature, diarrhea cases, etc.:</p>
+                <div>
+                  <table class="text-left items-center text-center rtl:text-right text-black-500 border-gray">
+                    <thead class="text-sm text-black bg-gray-200">
+                      <tr>
+                        <th class="px-2 py-2 bg-gray-300">Date (yyyy-mm-dd)</th>
+                        <th class="px-2 py-2 bg-gray-300">Region (Area)</th>
+                        <th class="px-2 py-2 bg-gray-300">Mean Temperature (&deg;C)</th>
+                        <th class="px-2 py-2 bg-gray-300">Diarrhea Cases</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-white px-3 py-3 bg-gray-50 text-sm">
+                        <td class="px-2 py-2 bg-white">2021-01-28</td>
+                        <td class="px-2 py-2 bg-white">North West</td>
+                        <td class="px-2 py-2 bg-white">20.5</td>
+                        <td class="px-2 py-2 bg-white">190</td>
+                      </tr>
+                      <tr class="border-white px-2 py-2 bg-white text-sm">
+                        <td class="px-2 py-2 bg-white">2021-01-29</td>
+                        <td class="px-2 py-2 bg-white">North West</td>
+                        <td class="px-2 py-2 bg-white">21.3</td>
+                        <td class="px-2 py-2 bg-white">210</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- CSV upload for waterborne data -->
+              <div class="max-w-screen-md">
+                <input required
+                       type="file"
+                       accept=".csv"
+                       name="t4healthInput"
+                       id="t4healthInput"
+                       aria-describedby="helper-text71"
+                       class="border text-gray-900 rounded block p-1" />
+                <label for="t4healthInput"
+                       id="helper-text71"
+                       class="mt-1 text-gray-600 pb-1">Upload your health data as a .csv file (max 40MB)</label>
+                <input required
+                       type="file"
+                       accept=".csv"
+                       name="t4climateInput"
+                       id="t4climateInput"
+                       aria-describedby="helper-text71"
+                       class="border text-gray-900 rounded block p-1" />
+                <label for="t4climateInput"
+                       id="helper-text71"
+                       class="mt-1 text-gray-600 pb-1">Upload your climate data as a .csv file (max 40MB)</label>
+                <input required
+                       type="file"
+                       accept=".zip"
+                       name="t4sfInput"
+                       id="t4sfInput"
+                       aria-describedby="helper-text71"
+                       class="border text-gray-900 rounded block p-1" />
+                <label for="t4sfInput" id="helper-text71" class="mt-1 text-gray-600 pb-1">
+                  Upload your map (shapefile) data as a .zip file (max 150MB)
+                </label>
+              </div>
+              <h1 id="t4htableTitle" class="text-xl mb-2" style="display: none">Uploaded Health Data Preview</h1>
+              <div id="t4htableDiv" class="mt-3 max-w-screen-md" style="display: none">
+                <div style="overflow-x: auto">
+                  <table id="t4hpreviewTable">
+                  </table>
+                </div>
+              </div>
+              <h1 id="t4ctableTitle" class="text-xl mb-2" style="display: none">Uploaded Climate Data Preview</h1>
+              <div id="t4ctableDiv" class="mt-3 max-w-screen-md" style="display: none">
+                <div style="overflow-x: auto">
+                  <table id="t4cpreviewTable">
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Form -->
+            <form method="POST"
+                  action="{{ url_for('indicator_bp.waterborne_indicator') }}"
+                  enctype="multipart/form-data"
+                  class="flex flex-row flex-wrap">
+              <!-- Middle Pane -->
+              <div class="my-6 mx-3 space-y-3" style="width: 400px">
+                <!-- Column selects -->
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="font-semibold block">Column Selection</p>
+                  <!-- Region -->
+                  <div>
+                    <label for="t4region" class="tooltip-label">
+                      Region column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing names of the disaggregated geographies</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4region"
+                            id="t4region"
+                            aria-describedby="helper-text10"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select column containing region data if required</option>
+                    </select>
+                  </div>
+                  <!-- District -->
+                  <div>
+                    <label for="t4district" class="tooltip-label">
+                      District column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing district information</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4district"
+                            id="t4district"
+                            aria-describedby="helper-text10"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing district information</option>
+                    </select>
+                  </div>
+                  <!-- Date -->
+                  <div>
+                    <label for="t4date" class="tooltip-label">
+                      Date column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing the date</span>
+                      </a>
+                    </label>
+                    <select type="text"
+                            name="t4date"
+                            id="t4date"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing the timeseries (date) information</option>
+                    </select>
+                  </div>
+                  <!-- Year -->
+                  <div>
+                    <label for="t4year" class="tooltip-label">
+                      Year column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing year information</span>
+                      </a>
+                    </label>
+                    <select type="text"
+                            name="t4year"
+                            id="t4year"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing year information</option>
+                    </select>
+                  </div>
+                  <!-- Month -->
+                  <div>
+                    <label for="t4month" class="tooltip-label">
+                      Month column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing month information</span>
+                      </a>
+                    </label>
+                    <select type="text"
+                            name="t4month"
+                            id="t4month"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing month information</option>
+                    </select>
+                  </div>
+                  <!-- Diarrhea Cases -->
+                  <div>
+                    <label for="t4diarrhea_case" class="tooltip-label">
+                      Diarrhea cases column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing diarrhea case counts</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4diarrhea_case"
+                            id="t4diarrhea_case"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing diarrhea case counts</option>
+                    </select>
+                  </div>
+                  <!-- Total Population -->
+                  <div>
+                    <label for="t4tot_pop" class="tooltip-label">
+                      Total population column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing total population</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4tot_pop"
+                            id="t4tot_pop"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing total population</option>
+                    </select>
+                  </div>
+                  <!-- Tmin -->
+                  <div>
+                    <label for="t4tmin" class="tooltip-label">
+                      Minimum temperature column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing minimum temperature</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4tmin"
+                            id="t4tmin"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing minimum temperature</option>
+                    </select>
+                  </div>
+                  <!-- Tmean -->
+                  <div>
+                    <label for="t4tmean" class="tooltip-label">
+                      Mean temperature column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing mean temperature</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4tmean"
+                            id="t4tmean"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing mean temperature</option>
+                    </select>
+                  </div>
+                  <!-- Tmax -->
+                  <div>
+                    <label for="t4tmax" class="tooltip-label">
+                      Maximum temperature column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing maximum temperature</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4tmax"
+                            id="t4tmax"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing maximum temperature</option>
+                    </select>
+                  </div>
+                  <!-- Rainfall -->
+                  <div>
+                    <label for="t4rainfall" class="tooltip-label">
+                      Rainfall column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing rainfall data</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4rainfall"
+                            id="t4rainfall"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing rainfall data</option>
+                    </select>
+                  </div>
+                  <!-- Relative Humidity -->
+                  <div>
+                    <label for="t4r_humidity" class="tooltip-label">
+                      Relative humidity column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing relative humidity data</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4r_humidity"
+                            id="t4r_humidity"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing relative humidity data</option>
+                    </select>
+                  </div>
+                  <!-- Runoff -->
+                  <div>
+                    <label for="t4runoff" class="tooltip-label">
+                      Runoff column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing runoff data</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4runoff"
+                            id="t4runoff"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing runoff data</option>
+                    </select>
+                  </div>
+                  <!-- Geometry -->
+                  <div>
+                    <label for="t4geometry" class="tooltip-label">
+                      Geometry column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing geometry information</span>
+                      </a>
+                    </label>
+                    <input required
+                           type="text"
+                           name="t4geometry"
+                           id="t4geometry"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"
+                           value="geometry"
+                           placeholder="geometry" />
+                  </div>
+                  <!-- SPI -->
+                  <div>
+                    <label for="t4spi" class="tooltip-label">
+                      SPI column
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The column containing SPI (Standardized Precipitation Index) data</span>
+                      </a>
+                    </label>
+                    <select type="text"
+                            name="t4spi"
+                            id="t4spi"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing SPI data</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- RIGHT PANE -->
+              <div class="my-6 mx-3 space-y-3" style="width: 400px">
+                <div class="bg-gray-200 p-3 rounded space-y-2">
+                  <p class="font-semibold block">Advanced Model Parameters</p>
+                  <div>
+                    <label for="t4max_lag" class="tooltip-label">
+                      Maximum Lag
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">Maximum number of lag days to include in the model.</span>
+                      </a>
+                    </label>
+                    <input required
+                           type="number"
+                           name="t4max_lag"
+                           id="t4max_lag"
+                           min="1"
+                           value="2"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 block w-full" />
+                  </div>
+                  <div>
+                    <label for="t4basisMatrices" class="tooltip-label">
+                      Basis Matrices Choices
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">Select one or more basis matrices for the model.</span>
+                      </a>
+                    </label>
+                    <select name="t4basisMatrices"
+                            id="t4basisMatricesList"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"
+                            style="max-height: 24px"
+                            multiple
+                            data-multi-select></select>
+                  </div>
+                  <div>
+                    <label for="t4inlaParams" class="tooltip-label">
+                      Inla Parameters
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">Select one or more parameters for the INLA model.</span>
+                      </a>
+                    </label>
+                    <select name="t4inlaParams"
+                            id="t4inlaParamsList"
+                            aria-describedby="helper-text4"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full"
+                            style="max-height: 24px"
+                            multiple
+                            data-multi-select></select>
+                  </div>
+                  <div>
+                    <label for="t4param_term" class="tooltip-label">
+                      Parameter Term
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The parameter term to use in the model.</span>
+                      </a>
+                    </label>
+                    <select required
+                            type="text"
+                            name="t4param_term"
+                            id="t4param_term"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option disabled selected value="">Select the column containing the parameter term</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="t4level" class="tooltip-label">
+                      Level
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">The level to use for analysis.</span>
+                      </a>
+                    </label>
+                    <select required
+                            name="t4level"
+                            id="t4level"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 block w-full">
+                      <option value="country">Country</option>
+                      <option value="region">Region</option>
+                      <option value="district" selected>District</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="t4param_threshold" class="tooltip-label">
+                      Parameter Threshold
+                      <a class="tooltip">
+                        &#8505;
+                        <span class="tooltiptext">Threshold value for the parameter.</span>
+                      </a>
+                    </label>
+                    <input required
+                           type="number"
+                           min="1"
+                           value="2"
+                           name="t4param_threshold"
+                           id="t4param_threshold"
+                           value="1"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 block w-full" />
+                  </div>
+                </div>
+                <div class="alert">
+                  <span class="closebtn" onclick="this.parentElement.style.display = 'none'">&times;</span>
+                  <b>DISCLAIMER!</b>
+                  This analysis could take some time.
+                </div>
+                <div class="text-xl flex items-center">
+                  <button id="t4analyse" class="analyse-button">Analyse</button>
+                  <div class="t4spinner" id="t4spinner" style="visibility: hidden"></div>
+                  <div id="t4apiMessage" class="text-sm pl-10"></div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Tab Pane content Waterborne Results -->
+        <div id="WaterborneViewResults" class="tabcontent rounded-lg">
+          <div class="my-6 space-y-8">
+            <!-- Download buttons -->
+            <div class="flex flex-wrap mt-2 justify-center">
+              <div class="mb-2">
+                <button id="t4downloadButton"
+                        class="w-52 h-20 text-xl px-4 py-2 bg-gray-600 text-white rounded hover:bg-blue-500 transition">
+                  Diarrhea Analysis &nbsp;
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Tab Content for Sub-Tab 5 Vectorborne -->
+  {% include "indicators/vector_borne.html" %}
+{% endblock %}
+{% block scripts %}
+  <script>
+    window.allowedFrameworkHashes = {{ allowed_indicator_hashes | default([]) | tojson }};
+    window.allowedIndicatorHashes = {{ allowed_indicator_hashes | default([]) | tojson }};
+    window.comingSoonUrl = "{{ url_for('main_bp.coming_soon') }}";
+    window.enforceHashAllowlist = {{ (not config.get('ENABLE_FULL_UI', False)) | tojson }};
+  </script>
+  <!-- PapaParse Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <!-- Plotly Library -->
+  <script src="https://cdn.plot.ly/plotly-3.3.0.min.js" charset="utf-8"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easyprint@2.1.9/dist/bundle.min.js"></script>
+  <!-- Your main JavaScript -->
+  <script src="{{ url_for('static', filename='js/indicator.js') }}"></script>
+{% endblock %}

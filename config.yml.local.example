@@ -1,0 +1,18 @@
+# Flask Data Explorer Configuration
+# Copy this file to config.yml and customize for your local setup
+
+run_migrations: "false"
+debug_mode: "true"
+dummy_mode: "true"
+
+# Database settings (not used in dummy_mode)
+host: "localhost"
+dbname: "data-explorer-db"
+user: "myuser"
+password: "mypassword"
+port: 5432
+
+# R API URL - must be running for indicator calculators to work
+API_URL: "http://127.0.0.1:8000"
+
+# Note: Flask app runs on port 5001 by default

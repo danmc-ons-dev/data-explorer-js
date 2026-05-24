@@ -1,0 +1,10 @@
+{# templates/macros/heading.html #}
+{% macro heading(text, level=2, id=None, classes='') -%}
+  {% set _level = 1 if level < 1 else (6 if level > 6 else level) %}
+  {% set tag = 'h' ~ _level %}
+  <{{ tag }}
+  {% if id %}id="{{ id }}"{% endif %}
+  class="{{ classes }}">
+  {{ text }}
+  </{{ tag }}>
+{%- endmacro %}

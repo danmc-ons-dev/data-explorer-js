@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ons-data-explorer
+resources:
+  - common-config
+  - r-api-configmap.yaml
+  - ../../resources
+  - data-explorer-lb.yaml
+  - ingress.yaml
+
+configMapGenerator:
+  - files:
+      - config.yml
+    name: data-explorer-config
+
+images:
+  - name: data-explorer
+    newName: 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/data-explorer
+    newTag: 0.3.9 #0.3.1
+  - name: data-explorer-migrations
+    newName: 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/data-explorer-migrations
+    newTag: 0.3.9 #0.3.1
+  - name: 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/climatehealth
+    newTag: v0.9.1
+
+patches:
+  - path: data-explorer-patch.deployment.yaml
+  - path: storageclass-patch.yaml
+  - path: imagepull.patch.yaml
+  - path: r-api-patch.yaml

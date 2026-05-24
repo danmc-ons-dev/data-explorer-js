@@ -1,0 +1,56 @@
+{# templates/macros/table.html #}
+{% macro ons_table(headers=[], rows=[], caption=None, id='basic-table', scroll=True, aria_label='Table') %}
+  {% if scroll %}
+    <div class="ons-table-scrollable ons-table-scrollable--on">
+      <div class="ons-table-scrollable__content"
+           tabindex="0"
+           role="region"
+           aria-label="{{ aria_label }}">
+      {% endif %}
+      <table id="{{ id }}" class="ons-table">
+        {% if caption %}<caption class="ons-table__caption">{{ caption }}</caption>{% endif %}
+        {% if headers %}
+          <thead class="ons-table__head">
+            <tr class="ons-table__row">
+              {% for h in headers %}
+                <th scope="col" class="ons-table__header">
+                  <span class="ons-table__header-text">{{ h }}</span>
+                </th>
+              {% endfor %}
+            </tr>
+          </thead>
+        {% endif %}
+        <tbody class="ons-table__body">
+          {% for row in rows %}
+            <tr class="ons-table__row">
+              {% for cell in row %}
+                <td class="ons-table__cell">
+                  {% if cell is mapping %}
+                    {% if cell.html is defined %}
+                      {{ cell.html | safe }}
+                    {% else %}
+                      {% set cell_text = cell.text if cell.text is defined else "" %}
+                      {% if cell.icon is defined and cell.icon %}
+                        {% set icon_alt = cell.icon_alt if cell.icon_alt is defined else "" %}
+                        <img class="ons-icon{% if cell_text %} ons-u-mr-2xs{% endif %}"
+                             src="{{ url_for('static', filename='assets/' ~ cell.icon) }}"
+                             alt="{{ icon_alt }}"
+                             {% if not icon_alt %}aria-hidden="true"{% endif %}
+                             loading="lazy" />
+                      {% endif %}
+                      {% if cell_text %}<span>{{ cell_text }}</span>{% endif %}
+                    {% endif %}
+                  {% else %}
+                    {{ cell }}
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% if scroll %}
+      </div>
+    </div>
+  {% endif %}
+{% endmacro %}

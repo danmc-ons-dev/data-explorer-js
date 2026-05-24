@@ -1,0 +1,35 @@
+resources:
+  - "common-config"
+  - "../../resources"
+  - "data-explorer-lb.yaml"
+  - "ingress.yaml"
+
+namespace: ons-data-explorer-prod
+
+configMapGenerator:
+  - files:
+      - config.yml
+    name: data-explorer-config
+
+patchesStrategicMerge:
+  - data-explorer-patch.deployment.yaml
+  - storageclass-patch.yaml
+  - imagepull.patch.yaml
+
+images:
+  - name: data-explorer
+    #newTag: 0.3.2
+    digest: sha256:4ceba6740f43200072d717263277b4f01c3ffcbab105e68a1e8c6ef395405837
+    newName: 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/data-explorer
+  - name: data-explorer-migrations
+    #newTag: 0.3.2
+    digest: sha256:96b2ff4d110dcee007439dc8dc3da263540a2645df43a86bdec23a87ed7898d7
+    newName: 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/data-explorer-migrations
+  - name: climatehealth
+    #newTag: 1.1.8
+    digest: sha256:187db63ab8137e8bc5fdc19454d7d4c5dda417132c888e0a7a82f401467e2e67
+    newName: 142496269814.dkr.ecr.us-west-2.amazonaws.com/ons-climate-health/climatehealth
+# data explorer version 0.3.2 has backup sha256:0536461e3b66bf10cd931c2c316f0ee5de1aaa25776b4d299728c026f051dfae
+# data explorer migrations version 0.3.2 has backup sha256:07a2676fdba80e49448de84a122ac7b56e1639d0facbdf909016f35c45089c53
+# climate health version 1.1.8 has backup sha256:187db63ab8137e8bc5fdc19454d7d4c5dda417132c888e0a7a82f401467e2e67
+

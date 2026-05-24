@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: r-api
+  namespace: ons-data-explorer
+  labels:
+    app: climate-health-r-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: climate-health-r-api
+  template:
+    metadata:
+      labels:
+        app: climate-health-r-api
+    spec:
+      containers:
+      - name: r-api
+        command: ["R"]
+        # 'args' overrides the Docker image's CMD. The following arguments
+        # will be passed to the 'R' command. We use a single expression
+        # to install packages and then source the API script.
+        args:
+        - "-e"
+        - "install.packages(c('logger', 'config'), repos = 'http://cran.us.r-project.org'); source('api/run_api.R')"
+        # command: ["/bin/sh", "-c"]
+        # 'args' overrides the Docker image's CMD. This command will
+        # loop and sleep, effectively running forever.
+        # args:
+        #- while true; do echo 'Container is sleeping, ready for exec'; sleep 3600; done
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        volumeMounts:
+      # Mount the API configuration
+        - name: api-config
+          mountPath: /workspace/pipelines/api/API_config.yml
+          subPath: API_config.yml
+      volumes:
+      # ConfigMap for API configuration
+      - name: api-config
+        configMap:
+          name: api-config

@@ -1,0 +1,3 @@
+resources: 
+- "database.configmap.yaml"
+- "database.secret.yaml"

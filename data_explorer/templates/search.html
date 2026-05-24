@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Search</h1>
+  {% if query %}
+    <p class="ons-u-fs-r">
+      Showing results for:
+      <strong>{{ query }}</strong>
+    </p>
+    {% if results %}
+      <p class="ons-u-fs-r ons-u-mt-s">{{ results|length }} results</p>
+      <ol class="ons-list ons-u-mt-m ons-list--dashed">
+        {% for result in results %}
+          <li class="ons-list__item border-b-2">
+            <a class="ons-link" href="{{ result.url }}">{{ result.title }}</a>
+            <span class="ons-u-fs-s ons-u-ml-xs">({{ result.type }})</span>
+            <p class="ons-u-fs-r ons-u-mt-2xs">{{ result.summary }}</p>
+          </li>
+          <br />
+        {% endfor %}
+      </ol>
+    {% else %}
+      <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m">
+        <div class="ons-panel__body">
+          <p class="ons-u-fs-r">No results found. Try different keywords or check spelling.</p>
+        </div>
+      </div>
+    {% endif %}
+  {% else %}
+    <p class="ons-u-fs-r">Enter a search term in the header to get started.</p>
+  {% endif %}
+{% endblock %}
