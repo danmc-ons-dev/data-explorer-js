@@ -19,7 +19,7 @@
   </p>
   <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
     <div class="ons-grid__col ons-col-auto ons-u-mt-s">
-      <a href="{{ url_for("data_bp.framework") }}"
+      <a href="{{ url_for('indicator_bp.framework') }}"
          class="ons-btn ons-btn--link ons-js-submit-btn"
          aria-live="polite"
          role="button">
@@ -56,21 +56,21 @@
   <div class="ons-grid ons-u-mt-xl">
     <div class="ons-grid__col ons-col-4@s">
       {{ cards.relevant_pages("SOSCHI Framework", "", [ { "text": "Framework landing page",
-            "href": url_for('data_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('data_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('data_bp.framework') ~ '#waterborne-diseases' } ],
+            "href": url_for('indicator_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('indicator_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('indicator_bp.framework') ~ '#waterborne-diseases' } ],
       "icons/framework_overview_large_colour.svg" ) }}
     </div>
     <div class="ons-grid__col ons-col-4@s">
         {{ cards.relevant_pages("Tools for
         implementation", "", [ { "text": "SOSCHI open-source R package", "href": url_for('main_bp.r_package') }, { "text":
-        "Online analysis tools", "href": url_for('data_bp.indicator_calculators') }, { "text":
+        "Online analysis tools", "href": url_for('indicator_bp.indicator_calculators') }, { "text":
         "Additional resources", "href": url_for('main_bp.resources') } ], "icons/analysis_tools_large_colour.svg" ) }}
     </div>
     <div class="ons-grid__col ons-col-4@s">
         {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
-              diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
-        "Health effects of wildfires", "href": url_for('data_bp.framework') ~
+              diseases", "href": url_for('indicator_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+        "Health effects of wildfires", "href": url_for('indicator_bp.framework') ~
         '#wildfires-tab' }, { "text": "Mental Health", "href":
-        url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+        url_for('indicator_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
         }}
     </div>
   </div>

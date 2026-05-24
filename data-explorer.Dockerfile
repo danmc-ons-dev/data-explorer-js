@@ -1,6 +1,5 @@
 # Use an official Python runtime as a parent image
-#FROM 142496269814.dkr.ecr.us-west-2.amazonaws.com/python:3.9-slim
-FROM python:3.9-slim
+FROM 142496269814.dkr.ecr.us-west-2.amazonaws.com/python:3.9-slim
 
 # Install system dependencies required for psycopg2
 RUN apt-get update && apt-get install -y \

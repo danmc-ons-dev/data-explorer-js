@@ -20,20 +20,21 @@ dbname: "data-explorer-db"
 user: "myuser"
 password: "mypassword"
 port: 5432
-heat_api_url: "http://localhost:8000"
+API_URL: "http://localhost:8000"
 ```
 
-Alternatively, you can use environment variables as follows: 
+Alternatively, you can use environment variables as follows:
 
-* `RUN_MIGRATIONS`: Set to true if the application will run migrations automatically (default); otherwise set to false if migrations will be run manually. 
-* `LOAD_DUMMY_DATA`: Set to true if the application should load dummy data (default); otherwise set to false. 
+* `RUN_MIGRATIONS`: Set to true if the application will run migrations automatically (default); otherwise set to false if migrations will be run manually.
+* `DUMMY_MODE`: Set to true if the application should load dummy data; otherwise set to false (default).
+* `API_URL`: Base URL of the climatehealth R API (e.g. `http://localhost:8000`). The indicator calculators call endpoints under this base URL.
 
 ... need to add examples
 
 ### File and folder descriptions
 
-- `run.py`: Initiates Flask app.
-- `config.yml`: Credentials for PostgreSQL database (see app.py). Hidden in repository. Populate your own config.yml with database credentials. Can also use the .env pattern interchangeably.
+- `data_explorer/__main__.py`: Entrypoint that initiates the Flask app (run via `python -m data_explorer`).
+- `config.yml`: Local configuration including database credentials and `API_URL`. Hidden from the repository — copy `config.yml.local.example` and customise. The `.env` pattern is also supported.
 - `archive`: Contains archived scripts.
 - `data_explorer`: Cotains all of the files for running Flask app.
 - `data_explorer\__init__.py`: Contains the Flask app object and endpoints.
@@ -49,17 +50,7 @@ Alternatively, you can use environment variables as follows:
 ## Usage
 
 - Navigate to root of the app. Run `python -m data_explorer` from the console to start the application.
-- 'indicator_calculators.js' will only work locally if the API found in the [climatehealth package](https://github.com/onssoschi/climatehealth) is running. [Email us](climate.health@ons.gov.uk) if you require access to this repo and the associated [climatehealth pipelines](https://github.com/onssoschi/climatehealth_pipelines) repo.
-- 'data_explorer.js' will only work if the PostgreSQL database is available locally and a config.yml file has been created to store its credentials (see **init**.py).
-
-<!-- ## Project status
-
-Next steps:
-
-- Modify the database SQL migration file; add column in metadata table for dummy data
-- Modify the write_dummy_data function to record that it is dummy data
-- Modify the endpoint to select data based on dummy data condition
-- Add toggle in frontend for dummy data use; query parameter based on toggle -->
+- The indicator calculators (`indicator_calculators.js`) will only work locally if the API found in the [climatehealth package](https://github.com/onssoschi/climatehealth) is running and reachable at the configured `API_URL`. [Email us](climate.health@ons.gov.uk) if you require access to this repo.
 
 ---
 

@@ -89,7 +89,7 @@
     {% for slide in slides %}
       <figure class="ons-image ons-slideshow__slide{% if loop.first %} active{% endif %}">
         <a class="ons-slideshow__link"
-           href="{{ url_for("data_bp.framework") }}{% if slide.anchor %}#{{ slide.anchor }}{% endif %}"
+           href="{{ url_for('indicator_bp.framework') }}{% if slide.anchor %}#{{ slide.anchor }}{% endif %}"
            {% if slide.tabno is not none or slide.inner_tab %} onclick="{% if slide.tabno is not none %}setTabNo({{ slide.tabno }});{% endif %}
            {% if slide.inner_tab %}setInnerTabId('{{ slide.inner_tab }}');{% endif %}
            "

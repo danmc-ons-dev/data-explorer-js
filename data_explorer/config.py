@@ -44,12 +44,6 @@ def load_app_config(config_path="config.yml"):
 
         # API endpoints
         "API_URL": ("API_URL", None),
-        "HEAT_API_URL": ("heat_api_url", None),
-        "MENTAL_HEALTH_URL": ("mental_health_api_url", None),
-        "WILDFIRES_URL": ("wildfires_api_url", None),
-        "WATERBORNE_URL": ("waterborne_api_url", None),
-        "VECTORBORNE_URL": ("vectorborne_api_url", None),
-        "AIR_POLLUTION_URL": ("air_pollution_api_url", None),
 
         # Database
         "SQL_HOST": ("host", "localhost"),

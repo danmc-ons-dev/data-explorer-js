@@ -38,7 +38,7 @@
     <p class="ons-u-fs-r">
       The primary purpose is to support the dissemination of the SOSCHI statistical framework,
       and support users to produce indicator metrics using their own underlying climate and
-      health input data. Guidance for users includes{{ link.internal_link(url_for('data_bp.framework') , 'topic documents' ) }},{{ link.internal_link(url_for('data_bp.indicator_calculators') , 'statistical code and tools'
+      health input data. Guidance for users includes{{ link.internal_link(url_for('indicator_bp.framework') , 'topic documents' ) }},{{ link.internal_link(url_for('indicator_bp.indicator_calculators') , 'statistical code and tools'
       ) }} and {{ link.internal_link(url_for('main_bp.resources') , 'other resources' ) }}.
     </p>
   {% endcall %}
@@ -97,7 +97,7 @@
     </p>
     <p class="ons-u-fs-r">
       There are six selected topics which have been
-      prioritised; the outputs for these include a final version of{{ link.internal_link(url_for('data_bp.framework') , 'topic documents,' ) }}{{ link.internal_link(url_for('main_bp.r_package') , 'R code' ) }} and {{ link.internal_link(url_for('data_bp.indicator_calculators') , 'an indicator tool' ) }}.
+      prioritised; the outputs for these include a final version of{{ link.internal_link(url_for('indicator_bp.framework') , 'topic documents,' ) }}{{ link.internal_link(url_for('main_bp.r_package') , 'R code' ) }} and {{ link.internal_link(url_for('indicator_bp.indicator_calculators') , 'an indicator tool' ) }}.
     </p>
     <p class="ons-u-fs-r">
       The additional topics will have an alpha version of these documents, and there may be
@@ -115,7 +115,7 @@
       {# TODO: ADD LINK TO R PACKAGE #} Use the search function on the header to navigate to
       specific topics or indicators which you are interested in. If you want to produce any of
       the indicator metrics, you will first need to identify and prepare the input data sources.
-      Once the input data is in the required structure, you can either use the R Code or {{ link.internal_link(url_for('data_bp.indicator_calculators') , 'indicator tool' ) }}
+      Once the input data is in the required structure, you can either use the R Code or {{ link.internal_link(url_for('indicator_bp.indicator_calculators') , 'indicator tool' ) }}
       (subject to availability) to produce selected climate-health indicator metrics for your
       country or area. Additional guidance is available to support users (LINKS) (e.g. topic
       documents, guidance videos etc).
@@ -127,7 +127,7 @@
       All indicators in the SOSCHI framework can be used to provide estimates and both a
       national and sub-national level. The specific geographic granularity will vary by country,
       depending on the statistical power. Furthermore, some methods are only recommended for
-      regional level analysis. For further guidance, see the {{ link.internal_link(url_for('data_bp.framework') , 'Framework topic pages' ) }}for links to
+      regional level analysis. For further guidance, see the {{ link.internal_link(url_for('indicator_bp.framework') , 'Framework topic pages' ) }}for links to
       the methods documents', Section 2: Data and variables.
     </p>
   {% endcall %}
@@ -135,7 +135,7 @@
   {% call acc.accordion_item("faqs" ~ "-accordion", 9, "What data sources do I need to produce estimates for the indicators in the SOSCHI framework?", title_level=3) %}
     <p class="ons-u-fs-r">
       The climate-health indicators are not based on direct counts. For all indicators these are
-      estimated based on statistical models. For further guidance see the {{ link.internal_link(url_for('data_bp.framework') , 'Framework topic pages' ) }} for links to
+      estimated based on statistical models. For further guidance see the {{ link.internal_link(url_for('indicator_bp.framework') , 'Framework topic pages' ) }} for links to
       the methods documents', Section 2: Data and variables.
     </p>
   {% endcall %}
@@ -147,7 +147,7 @@
       countries, and potentially differing policy needs, the feasibility of this will depend on
       data availability and quality. Furthermore, if an outcome is relatively uncommon, the
       number of cases and the statistical model techniques used may be insufficient to provide
-      reliable results. For further guidance see the {{ link.internal_link(url_for('data_bp.framework') , 'Framework topic pages' ) }} for links to
+      reliable results. For further guidance see the {{ link.internal_link(url_for('indicator_bp.framework') , 'Framework topic pages' ) }} for links to
       the methods documents', Section 2.4: Disaggregations of data.
     </p>
   {% endcall %}
@@ -169,7 +169,7 @@
       processes used in the development of the framework and R package.
     </p>
     <p class="ons-u-fs-r">
-      The following sections of the{{ link.internal_link(url_for('data_bp.framework') ,
+      The following sections of the{{ link.internal_link(url_for('indicator_bp.framework') ,
       'indicator methods documents' ) }}will also provide users with guidance to support their
       interpretation of results, and explain any potential limitations:
     </p>
@@ -222,21 +222,21 @@
   <div class="ons-grid ons-u-mt-xl">
     <div class="ons-grid__col ons-col-4@s">
         {{ cards.relevant_pages("SOSCHI Framework", "", [ { "text": "Framework landing page",
-              "href": url_for('data_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('data_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('data_bp.framework') ~ '#waterborne-diseases' } ],
+              "href": url_for('indicator_bp.framework') ~ '#soschi' }, { "text": "Temperature-related health effects", "href": url_for('indicator_bp.framework') ~ '#heat-and-cold' }, { "text": "Waterborne diseases", "href": url_for('indicator_bp.framework') ~ '#waterborne-diseases' } ],
         "icons/framework_overview_large_colour.svg" ) }}
     </div>
     <div class="ons-grid__col ons-col-4@s">
         {{ cards.relevant_pages("Tools for
               implementation", "", [ { "text": "SOSCHI open-source R package", "href": url_for('main_bp.r_package') }, { "text":
-        "Online analysis tools", "href": url_for('data_bp.indicator_calculators') }, { "text":
+        "Online analysis tools", "href": url_for('indicator_bp.indicator_calculators') }, { "text":
         "Additional resources", "href": url_for('main_bp.resources') } ], "icons/analysis_tools_large_colour.svg" ) }}
     </div>
     <div class="ons-grid__col ons-col-4@s">
         {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
-              diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
-        "Health effects of wildfires", "href": url_for('data_bp.framework') ~
+              diseases", "href": url_for('indicator_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+        "Health effects of wildfires", "href": url_for('indicator_bp.framework') ~
         '#extreme-weather-events' }, { "text": "Mental Health", "href":
-        url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+        url_for('indicator_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
         }}
     </div>
   </div>

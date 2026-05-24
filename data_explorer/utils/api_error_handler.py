@@ -24,7 +24,7 @@ from flask import jsonify, current_app
 # SANITIZATION HELPERS
 # =============================================================================
 
-def sanitize_error_message(message: str) -> str:
+def sanitize_error_message(message) -> str:
     """
     Sanitize R error messages before displaying to users.
 
@@ -34,17 +34,37 @@ def sanitize_error_message(message: str) -> str:
     - Escapes any remaining special characters
 
     Args:
-        message: Raw error message from R API
+        message: Raw error message from R API. Defensive against non-string
+            inputs because Plumber serializes single-element character vectors
+            as JSON arrays (e.g. ``["error text"]``), and `stop()` payloads
+            can also be lists/dicts depending on the R-side handler.
 
     Returns:
         Sanitized message safe for display
     """
-    if not message:
+    if message is None:
+        return ""
+
+    if isinstance(message, str):
+        text = message
+    elif isinstance(message, (list, tuple)):
+        # Plumber-default array wrapping: ["error"] / ["line1", "line2"]
+        text = "\n".join(str(part) for part in message if part not in (None, ""))
+    elif isinstance(message, dict):
+        text = message.get("message") or message.get("error") or str(message)
+        if not isinstance(text, str):
+            text = str(text)
+    else:
+        text = str(message)
+
+    if not text:
         return ""
 
     # Check if response looks like HTML (Plumber crash output)
-    if "<html" in message.lower() or "<!doctype" in message.lower():
+    if "<html" in text.lower() or "<!doctype" in text.lower():
         return "An internal error occurred. Please try again."
+
+    message = text
 
     # Strip any HTML tags
     clean = re.sub(r'<[^>]+>', '', message)
@@ -261,17 +281,26 @@ class GenericServerErrorStrategy(ErrorStrategy):
     def handle(self, response: requests.Response, endpoint: str) -> APIErrorResponse:
         r_message = ""
         details = {}
+        raw_body = response.text or ""
 
         try:
             body = response.json()
-            # R API returns the original error message in the "message" field
-            r_message = body.get("message", "")
-            details = body.get("details", {})
+            if isinstance(body, dict):
+                # R API returns the original error message in the "message" field
+                r_message = body.get("message", "") or body.get("error", "")
+                raw_details = body.get("details")
+                if isinstance(raw_details, dict):
+                    details = raw_details
+            else:
+                # Body was JSON but not an object (e.g. ["msg"] from plumber).
+                r_message = body
         except (ValueError, KeyError):
-            # Response is not valid JSON (possibly HTML crash page from Plumber)
-            pass
+            # Response is not valid JSON (possibly HTML crash page from Plumber).
+            # Fall back to the raw text so we don't lose the message.
+            r_message = raw_body
 
-        # Sanitize the R message for safe display
+        # Sanitize the R message for safe display.  This also coerces lists /
+        # dicts / etc. into a string defensively.
         safe_message = sanitize_error_message(r_message)
 
         # Use actual R message if available and safe, otherwise fallback to generic
@@ -283,19 +312,36 @@ class GenericServerErrorStrategy(ErrorStrategy):
                 "Please check your inputs and try again."
             )
 
-        # Include response preview in details for debugging
-        response_preview = safe_message if safe_message else (
-            response.text[:500] if response.text else "No response body"
+        # Always include a body preview in details so the central logger can
+        # surface what R actually said even if sanitisation stripped it.
+        details["response_preview"] = safe_message or (
+            raw_body[:500] if raw_body else "No response body"
         )
-        if response_preview:
-            details["response_preview"] = response_preview
+        # Capture the unsanitised first 500 chars too — useful for diagnosing
+        # plumber HTML crash pages that get reduced to a generic message.
+        if raw_body:
+            details["raw_body_snippet"] = raw_body[:500]
+
+        # Log the raw body immediately so we never lose the message even if
+        # downstream logging is misconfigured.  Status + endpoint provide
+        # context; the body is truncated to keep logs readable.
+        try:
+            current_app.logger.error(
+                "R API %s returned %s. Body: %s",
+                endpoint,
+                response.status_code,
+                (raw_body[:500] + "...") if len(raw_body) > 500 else raw_body or "<empty>",
+            )
+        except RuntimeError:
+            # Outside application context (e.g. tests)
+            pass
 
         return APIErrorResponse(
             error_type="api_error",
             message=f"R API {endpoint} returned {response.status_code}",
             user_message=user_message,
             status_code=response.status_code,
-            details=details if details else None
+            details=details
         )
 
 
@@ -376,22 +422,32 @@ def handle_api_response(response: requests.Response, endpoint: str):
         # Check for legacy 200-with-error pattern (Gap 4 from research)
         try:
             body = response.json()
-            # Legacy pattern: {"error": "some message"} with no error_type
-            error_value = body.get("error")
-            if isinstance(error_value, str) and "error_type" not in body:
-                # This is a legacy validation error disguised as success
+            # Legacy pattern: {"error": "some message"} with no error_type.
+            # Plumber may wrap single strings in a JSON array, so accept
+            # lists/tuples too.
+            error_value = body.get("error") if isinstance(body, dict) else None
+            is_error = (
+                isinstance(error_value, (str, list, tuple))
+                and error_value
+                and (not isinstance(body, dict) or "error_type" not in body)
+            )
+            if is_error:
                 safe_message = sanitize_error_message(error_value)
+                preview = (
+                    error_value[:100] if isinstance(error_value, str)
+                    else str(error_value)[:100]
+                )
                 try:
                     current_app.logger.warning(
                         "Legacy 200-with-error detected for %s: %s",
-                        endpoint, error_value[:100]
+                        endpoint, preview
                     )
                 except RuntimeError:
                     pass
                 return APIErrorResponse(
                     error_type="legacy_validation_error",
                     message=f"R API {endpoint} returned 200 with error in body",
-                    user_message=safe_message if safe_message else error_value,
+                    user_message=safe_message or preview,
                     status_code=400,  # Treat as 400 for frontend
                     details={"legacy_200_error": True}
                 )
@@ -407,20 +463,37 @@ def handle_api_response(response: requests.Response, endpoint: str):
         error = handler.handle(response, endpoint)
         try:
             current_app.logger.error(
-                "API error [%s]: %s (status=%d, retry_after=%s)",
-                error.error_type, error.message, error.status_code, error.retry_after_seconds
+                "API error [%s] %s (status=%d, retry_after=%s) | user_message=%r | details=%r",
+                error.error_type,
+                error.message,
+                error.status_code,
+                error.retry_after_seconds,
+                error.user_message,
+                error.details,
             )
         except RuntimeError:
             # Outside application context (e.g., in tests)
             pass
         return error
 
-    # Fallback for unexpected status codes (e.g., 4xx client errors)
+    # Fallback for unexpected status codes (e.g., 4xx client errors).  Log the
+    # raw body so the operator at least sees what the R API actually sent.
+    try:
+        current_app.logger.error(
+            "Unhandled R API response from %s: status=%s, body=%s",
+            endpoint,
+            response.status_code,
+            (response.text[:500] + "...") if len(response.text or "") > 500
+            else (response.text or "<empty>"),
+        )
+    except RuntimeError:
+        pass
     return APIErrorResponse(
         error_type="unknown",
         message=f"Unexpected response from R API {endpoint}: {response.status_code}",
         user_message="An unexpected error occurred. Please try again.",
-        status_code=response.status_code
+        status_code=response.status_code,
+        details={"raw_body_snippet": (response.text or "")[:500]},
     )
 
 

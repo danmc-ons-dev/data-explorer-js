@@ -1117,6 +1117,58 @@ function populateT7DropdownWithCSV(file) {
   });
 }
 
+// Get columns for dropdown from uploaded CSV (Air pollution)
+function populateT8DropdownWithCSV(file) {
+  Papa.parse(file, {
+    skipEmptyLines: true,
+    complete: function (results) {
+      const columns = results.data[0] || [];
+
+      // dropdown id -> substring(s) in the column header that should auto-select
+      const dropdownTargets = {
+        t8date_col: ["date"],
+        t8region_col: ["region", "province", "area"],
+        t8pm25_col: ["pm25", "pm2.5", "pm_25"],
+        t8deaths_col: ["deaths", "mortality"],
+        t8population_col: ["population", "pop"],
+        t8humidity_col: ["humidity", "rh"],
+        t8precipitation_col: ["precipitation", "rainfall", "precip"],
+        t8tmax_col: ["tmax", "max_temp"],
+        t8wind_speed_col: ["wind_speed", "wind"],
+      };
+
+      Object.entries(dropdownTargets).forEach(([dropdownId, hints]) => {
+        const dropdown = document.getElementById(dropdownId);
+        if (!dropdown) return;
+
+        // Reset to placeholder option only
+        const placeholder = dropdown.querySelector('option[value=""]');
+        dropdown.innerHTML = "";
+        if (placeholder) dropdown.appendChild(placeholder);
+
+        let selectedColumn = null;
+        columns.forEach((column) => {
+          if (!column) return;
+          const option = document.createElement("option");
+          option.value = column;
+          option.text = column;
+          const colLower = column.toLowerCase();
+          if (!selectedColumn && hints.some((h) => colLower.includes(h))) {
+            option.selected = true;
+            selectedColumn = column;
+          }
+          dropdown.add(option);
+        });
+
+        if (selectedColumn !== null) {
+          dropdown.value = selectedColumn;
+          dropdown.dispatchEvent(new Event("change"));
+        }
+      });
+    },
+  });
+}
+
 // Populate diarrhea dropdowns
 function populateT4HealthDropdownWithCSV(file) {
   Papa.parse(file, {
@@ -2741,6 +2793,13 @@ on("t7csvInput", "change", function (e) {
   previewData(e.target.files[0], "t7previewTable");
 });
 
+on("t8csvInput", "change", function (e) {
+  if (check_file(e.target, "csv", 40) == false) return;
+  csvFile = e.target.files[0];
+  populateT8DropdownWithCSV(csvFile);
+  previewData(e.target.files[0], "t8previewTable");
+});
+
 // T4 (diarrhea) table previews
 on("t4healthInput", "change", function (e) {
   if (check_file(e.target, "csv", 40) == false) return;
@@ -3054,7 +3113,6 @@ on("t2Analyse", "click", async function (e) {
 
   const wildfireLag = getNumber("wildfire_lag");
   const temperatureLag = getNumber("temperature_lag");
-  const splineTempLag = getNumber("spline_temperature_lag");
   const splineTempDegFreedom = getNumber("spline_temperature_degrees_freedom");
   const scaleFactorWildfirePM = getNumber("scale_factor_wildfire_pm");
 
@@ -3102,7 +3160,6 @@ on("t2Analyse", "click", async function (e) {
   formFile.append("pm_25_col", pm25Col);
   formFile.append("wildfire_lag", wildfireLag);
   formFile.append("temperature_lag", temperatureLag);
-  formFile.append("spline_temperature_lag", splineTempLag);
   formFile.append("spline_temperature_degrees_freedom", splineTempDegFreedom);
   formFile.append("scale_factor_wildfire_pm", scaleFactorWildfirePM);
   formFile.append("relative_risk_by_region", byRegion);
@@ -3278,6 +3335,137 @@ on("t7Analyse", "click", async function (e) {
       }
       console.error("Error fetching data from the api:", error);
     });
+});
+
+// Air pollution: submit form, call /airpollution, surface results.
+let AirPollutionResponse = null;
+on("t8Analyse", "click", async function (e) {
+  e.preventDefault();
+  const ERROR_TARGET = "t8ApiError";
+
+  const file = getFile("t8csvInput");
+  const dateCol = getValue("t8date_col");
+  const regionCol = getValue("t8region_col");
+  const pm25Col = getValue("t8pm25_col");
+  const deathsCol = getValue("t8deaths_col");
+  const populationCol = getValue("t8population_col");
+  const humidityCol = getValue("t8humidity_col");
+  const precipitationCol = getValue("t8precipitation_col");
+  const tmaxCol = getValue("t8tmax_col");
+  const windSpeedCol = getValue("t8wind_speed_col");
+
+  const maxLag = getValue("t8max_lag");
+  const dfSeasonal = getValue("t8df_seasonal");
+  const movingAverageWindow = getValue("t8moving_average_window");
+  const attrThr = getValue("t8attr_thr");
+  const referenceStandards = getValue("t8reference_standards");
+  const yearsFilter = getValue("t8years_filter");
+  const regionsFilter = getValue("t8regions_filter");
+
+  const includeNational = getEl("t8-include-national-1")?.checked ?? true;
+  const runPower = getEl("t8-run-power-1")?.checked ?? false;
+
+  if (!file) {
+    showOnsError(ERROR_TARGET, "Please select a CSV file first.");
+    return;
+  }
+  const required = [
+    [dateCol, "date"],
+    [pm25Col, "PM2.5"],
+    [deathsCol, "deaths"],
+    [populationCol, "population"],
+    [humidityCol, "humidity"],
+    [precipitationCol, "precipitation"],
+    [tmaxCol, "maximum temperature"],
+    [windSpeedCol, "wind speed"],
+  ];
+  const missing = required.find(([val]) => !val);
+  if (missing) {
+    showOnsError(ERROR_TARGET, `Please select a ${missing[1]} column`);
+    return;
+  }
+
+  const analyseBtn = getEl("t8Analyse");
+  hideOnsError(ERROR_TARGET);
+  analyseBtn.classList.add("ons-is-loading");
+
+  const formFile = new FormData();
+  formFile.append("file", file);
+  formFile.append("date_col", dateCol);
+  if (regionCol) formFile.append("region_col", regionCol);
+  formFile.append("pm25_col", pm25Col);
+  formFile.append("deaths_col", deathsCol);
+  formFile.append("population_col", populationCol);
+  formFile.append("humidity_col", humidityCol);
+  formFile.append("precipitation_col", precipitationCol);
+  formFile.append("tmax_col", tmaxCol);
+  formFile.append("wind_speed_col", windSpeedCol);
+  formFile.append("max_lag", maxLag);
+  formFile.append("df_seasonal", dfSeasonal);
+  formFile.append("moving_average_window", movingAverageWindow);
+  formFile.append("attr_thr", attrThr);
+  if (referenceStandards) formFile.append("reference_standards", referenceStandards);
+  if (yearsFilter) formFile.append("years_filter", yearsFilter);
+  if (regionsFilter) formFile.append("regions_filter", regionsFilter);
+  formFile.append("include_national", includeNational);
+  formFile.append("run_power", runPower);
+
+  fetch("/airpollution", {
+    method: "POST",
+    body: formFile,
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        analyseBtn.classList.remove("ons-is-loading");
+        const errorData = await parseErrorResponse(response);
+        showOnsErrorEnhanced(ERROR_TARGET, errorData);
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      AirPollutionResponse = data ?? {};
+
+      // Populate the reference-standard dropdown from the analysis results keys.
+      const dropdown = getEl("t8groupDropdown");
+      if (dropdown) {
+        dropdown.innerHTML = '<option value="">Select an option</option>';
+        const analysisResults = AirPollutionResponse.analysis_results || {};
+        Object.keys(analysisResults).forEach((refName) => {
+          const opt = document.createElement("option");
+          opt.value = refName;
+          opt.text = refName;
+          dropdown.add(opt);
+        });
+      }
+
+      analyseBtn.classList.remove("ons-is-loading");
+      hideOnsError(ERROR_TARGET);
+      getEl("airPollutionResults").style.visibility = "visible";
+      getEl("tab_air-pollution-view-results")?.click();
+    })
+    .catch((error) => {
+      analyseBtn.classList.remove("ons-is-loading");
+      if (!error.message.includes("HTTP error")) {
+        showOnsErrorEnhanced(ERROR_TARGET, "Processing error. Please check your inputs.");
+      }
+      console.error("Error fetching data from the api:", error);
+    });
+});
+
+// Air pollution downloads
+on("downloadAirPollutionMeta", "click", function () {
+  if (!AirPollutionResponse?.meta_results) return;
+  const csv = convertObjectToCSV(AirPollutionResponse.meta_results);
+  downloadCSV(csv, "air_pollution_meta_results.csv");
+});
+
+on("downloadAirPollutionAttr", "click", function () {
+  const refName = getValue("t8groupDropdown");
+  const analysis = AirPollutionResponse?.analysis_results?.[refName];
+  if (!analysis) return;
+  const csv = convertObjectToCSV(analysis);
+  downloadCSV(csv, `air_pollution_attributable_${refName || "results"}.csv`);
 });
 
 // Upload data when button clicked, access API and plot results

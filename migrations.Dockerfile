@@ -1,6 +1,5 @@
 # Use the official PostgreSQL image as a base
-#FROM 142496269814.dkr.ecr.us-west-2.amazonaws.com/postgres:16
-FROM postgres:16
+FROM 142496269814.dkr.ecr.us-west-2.amazonaws.com/postgres:16
 
 # Set the working directory
 WORKDIR /migrations

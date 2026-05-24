@@ -11,4 +11,3 @@ data:
   DBNAME: flaskdb
   USER: flaskuser
   PORT: "5432"
-  HEAT_API_URL: "http://r-api/regression"

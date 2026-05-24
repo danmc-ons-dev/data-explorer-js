@@ -1,6 +1,4 @@
 config.yml
-# The personal-aws overlay config.yml contains no secrets (dummy mode only) so we allow it.
-!k8s/overlays/personal-aws/config.yml
 .env
 .venv
 .vscode

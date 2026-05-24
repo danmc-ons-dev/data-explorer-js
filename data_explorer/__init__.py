@@ -21,7 +21,6 @@ def get_component_versions():
     """
     components = [
         ('CLIMATEHEALTH', 'Climate Health'),
-        ('CLIMATEHEALTH_PIPELINES', 'Climate Health Pipelines (R Analytics API)'),
         ('DATA_EXPLORER', 'Data Explorer'),
     ]
 
@@ -83,12 +82,6 @@ def generate_startup_log(app_config):
         },
         "api_endpoints": {
             "api_url": app_config.get("API_URL"),
-            "heat_api_url": app_config.get("HEAT_API_URL"),
-            "mental_health_url": app_config.get("MENTAL_HEALTH_URL"),
-            "wildfires_url": app_config.get("WILDFIRES_URL"),
-            "waterborne_url": app_config.get("WATERBORNE_URL"),
-            "vectorborne_url": app_config.get("VECTORBORNE_URL"),
-            "air_pollution_url": app_config.get("AIR_POLLUTION_URL"),
         },
         "database": {
             "host": app_config.get("SQL_HOST"),
@@ -157,12 +150,6 @@ def create_app():
         SQL_PORT=config.get("port", 5432),
         SECRET_KEY=config.get("secret_key", secrets.token_hex(32)),
         API_URL=config.get("API_URL"),
-        HEAT_API_URL=config.get("heat_api_url"),
-        MENTAL_HEALTH_URL=config.get("mental_health_api_url"),
-        WILDFIRES_URL=config.get("wildfires_api_url"),
-        WATERBORNE_URL=config.get("waterborne_api_url"),
-        VECTORBORNE_URL=config.get("vectorborne_api_url"),
-        AIR_POLLUTION_URL=config.get("air_pollution_api_url"),
         KEYCLOAK_URL=config.get("keycloak_url"),
         TEMPORARY_DIRECTORY_PATH=config.get("temporary_directory_path"),
         REALM_NAME=config.get("realm_name"),
@@ -193,12 +180,10 @@ def create_app():
     # 5. Register Blueprints
     from data_explorer.routes.auth_routes import auth_bp
     from data_explorer.routes.main_routes import main_bp
-    from data_explorer.routes.data_routes import data_bp
     from data_explorer.routes.indicator_routes import indicator_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
-    app.register_blueprint(data_bp)
     app.register_blueprint(indicator_bp)
 
     # 6. Setup logging

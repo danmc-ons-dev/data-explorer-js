@@ -373,7 +373,7 @@
           This calculator returns the relative mortality risk attributable to non-optimal
           outdoor heat and cold for a given time series. This is estimated using a distributed
           lag non-linear model (DLNM). Full details of the methodology will be provided in the
-          <a href="{{ url_for("data_bp.framework") }}#heat-and-cold"
+          <a href="{{ url_for('indicator_bp.framework') }}#heat-and-cold"
              onclick="setTabNo(1)"
              class="text-blue-800 dark:text-blue-500 hover:underline">Heat and Cold framework documentation</a>
           .
@@ -1007,6 +1007,11 @@
     <!-- Tab Content for Sub-Tab 2-1 -->
     {% include "indicators/wildfires.html" %}
   </div>
+  <!-- Tab Content for Sub-Tab 8 Air pollution -->
+  <div id="air-pollution"
+       class="subtab-content ons-page__container ons-container">
+    {% include "indicators/air_pollution.html" %}
+  </div>
   <!-- Sub-Tab 2.1 -->
   <!-- Tab Content for Sub-Tab 2-2 -->
   <div id="flooding" class="innertab-content">
@@ -1038,7 +1043,7 @@
         <h1 class="text-2xl font-bold">Waterborne Diseases Indicator</h1>
         <p class="text-lg mt-2">
           Work in progress. View the
-          <a href="{{ url_for("data_bp.framework") }}#waterborne-diseases"
+          <a href="{{ url_for('indicator_bp.framework') }}#waterborne-diseases"
              onclick="setTabNo(4)"
              class="text-blue-800 dark:text-blue-500 hover:underline">Waterborne Diseases framework documentation</a>
           .

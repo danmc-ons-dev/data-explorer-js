@@ -326,6 +326,24 @@ def get_search_entries():
             ]
         },
         {
+            "title": "Indicator tools: Air pollution",
+            "url": "/indicator_calculators#air-pollution",
+            "type": "section",
+            "summary": "Air pollution indicator calculator: PM2.5-attributable mortality with meta-analysis and reference-standard burden.",
+            "keywords": [
+                "air pollution indicator",
+                "pm2.5",
+                "particulate matter",
+                "all-cause mortality",
+                "distributed lag",
+                "generalised additive model",
+                "gam",
+                "meta-analysis",
+                "attributable fraction",
+                "who reference standard"
+            ]
+        },
+        {
             "title": "Indicator tools: Mental health",
             "url": "/indicator_calculators#mental-health",
             "type": "section",

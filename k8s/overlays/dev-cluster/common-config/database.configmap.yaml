@@ -11,7 +11,6 @@ data:
   DBNAME: flaskdb
   USER: flaskuser
   PORT: "5432"
-  HEAT_API_URL: "http://r-api/regression"
   KEYCLOAK_URL: "https://id.officialstatistics.org"
   REALM_NAME: "climate-health"
   CLIENT_ID: "data-explorer"

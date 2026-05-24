@@ -45,7 +45,6 @@ def test_wildfires_post_success(client, monkeypatch):
         "health_outcome_col": "death",
         "wildfire_lag": "3",
         "temperature_lag": "1",
-        "spline_temperature_lag": "0",
         "spline_temperature_degrees_freedom": "6",
         "scale_factor_wildfire_pm": "10",
         "relative_risk_by_region": "true",
@@ -64,22 +63,29 @@ def test_wildfires_post_success(client, monkeypatch):
     assert payload["an_af_results"] == ["af_an"]
     assert payload["ar_pm_results"] == ["ar_pm"]
 
-    # Verify the app called the R endpoint with expected keys
-    assert captured["json"]["health_path"]
-    assert captured["json"]["join_wildfire_data"] == False
-    assert captured["json"]["ncdf_path"] == None
-    assert captured["json"]["shp_path"] == None
-    assert captured["json"]["date_col"] == "date"
-    assert captured["json"]["region_col"] == "region"
-    assert captured["json"]["mean_temperature_col"]
-    assert captured["json"]["health_outcome_col"]
-    assert captured["json"]["wildfire_lag"] == 3
-    assert captured["json"]["temperature_lag"] == 1
-    assert captured["json"]["spline_temperature_lag"] == 0
-    assert captured["json"]["spline_temperature_degrees_freedom"] == 6
-    assert captured["json"]["scale_factor_wildfire_pm"] == 10
-    assert captured["json"]["calc_relative_risk_by_region"] == True
-    assert captured["json"]["pm_2_5_col"] == "pm"
+    # Verify the app called the R endpoint with the param names
+    # wildfire_do_analysis() actually accepts.
+    sent = captured["json"]
+    assert sent["health_path"]
+    assert sent["join_wildfire_data"] is False
+    assert sent["ncdf_path"] is None
+    assert sent["shp_path"] is None
+    assert sent["date_col"] == "date"
+    assert sent["region_col"] == "region"
+    assert sent["mean_temperature_col"]
+    assert sent["health_outcome_col"]
+    assert sent["wildfire_lag"] == 3
+    assert sent["temperature_lag"] == 1
+    assert sent["spline_temperature_degrees_freedom"] == 6
+    assert sent["scale_factor_wildfire_pm"] == 10
+    assert sent["calculate_by_region"] is True
+    assert sent["pm_2_5_col"] == "pm"
+    # spline_temperature_lag is not part of wildfire_do_analysis() and must not leak through.
+    assert "spline_temperature_lag" not in sent
+    # Newly exposed optional cols default to None when the form omits them.
+    assert sent["population_col"] is None
+    assert sent["rh_col"] is None
+    assert sent["wind_speed_col"] is None
 
 
 def test_wildfires_missing_file(client):
@@ -280,14 +286,15 @@ def test_mental_health_api_error(client, monkeypatch):
 def test_vectorborne_post_success(client, monkeypatch):
     captured = {}
 
-    def fake_post(url, data=None, files=None, verify=None):
+    def fake_post(url, json=None, headers=None, verify=None):
         captured["url"] = url
-        captured["data"] = data
-        captured["files"] = files
+        captured["json"] = json
+        captured["headers"] = headers
 
         class Resp:
             status_code = 200
             headers = {}
+            text = ""
 
             def json(self):
                 # R API returns rr_df and an_ar_results
@@ -332,25 +339,26 @@ def test_vectorborne_post_success(client, monkeypatch):
     )
 
     assert resp.status_code == 200
-    # Endpoint returns rr_df and an_ar_results
     body = resp.get_json()
     assert body["rr_df"] == [{"rr": 1.5}]
     assert body["an_ar_results"] == {"region": "data"}
 
-    payload_str = captured["data"]["payload"]
-    sent = json.loads(payload_str)
-    assert sent["health_data"]
-    assert sent["climate_data"]
+    # Pure JSON now — no multipart payload wrapper, no separate file upload.
+    sent = captured["json"]
+    assert captured["headers"] == {"Content-Type": "application/json"}
+    assert sent["health_data_path"], "health CSV records sent under R param name"
+    assert sent["climate_data_path"], "climate CSV records sent under R param name"
     assert sent["region_col"] == "region"
     assert sent["district_col"] == "district"
-    assert sent["malaria_case_col"] == "cases"
+    # Malaria's "malaria_case_col" form field maps to R's single case_col arg.
+    assert sent["case_col"] == "cases"
     assert sent["ndvi_col"] == "ndvi"
     assert sent["basis_matrices_choices"] == ["bm1", "bm2"]
     assert sent["inla_param"] == ["p1", "p2"]
     assert sent["param_threshold"] == 2.5
-    assert "output_dir" in sent
-    # files posted through to R API
-    assert "geo_zip_file" in captured["files"]
+    # geo_zip_file is now base64-encoded inside the JSON body.
+    import base64
+    assert base64.b64decode(sent["map_zip_b64"]) == b"zip"
 
 
 def test_vectorborne_missing_file(client):
@@ -372,7 +380,7 @@ def test_vectorborne_api_error(client, monkeypatch):
     THEN /vectorborne surfaces an error with structured error response
     """
 
-    def fake_post(url, data=None, files=None, verify=None):
+    def fake_post(url, json=None, headers=None, verify=None):
         class Resp:
             status_code = 500
             text = "boom"
@@ -419,3 +427,98 @@ def test_vectorborne_api_error(client, monkeypatch):
     assert body["error"] is True
     assert body["error_type"] == "api_error"
     assert body["status_code"] == 500
+
+
+def test_airpollution_post_success(client, monkeypatch):
+    """
+    WHEN posting a valid CSV to /airpollution with the full set of column mappings
+    THEN the route forwards a JSON payload matching air_pollution_do_analysis()
+    AND returns the meta/analysis/power/descriptive keys back to the UI.
+    """
+    captured = {}
+
+    def fake_post(url, json=None, headers=None, verify=None):
+        captured["url"] = url
+        captured["json"] = json
+
+        class Resp:
+            status_code = 200
+            text = ""
+
+            def json(self):
+                return {
+                    "meta_results": {"region": "pooled"},
+                    "analysis_results": {"WHO": [{"af": 0.1}]},
+                    "power_results": {"WHO": {"power": 0.8}},
+                    "descriptive_stats": None,
+                }
+
+            def raise_for_status(self):
+                return None
+
+        return Resp()
+
+    monkeypatch.setattr(
+        "data_explorer.routes.indicator_routes.requests.post", fake_post)
+
+    resp = client.post(
+        "/airpollution",
+        data={
+            "file": (io.BytesIO(_make_csv().encode()), "air.csv"),
+            "date_col": "date",
+            "region_col": "region",
+            "pm25_col": "pm25",
+            "deaths_col": "deaths",
+            "population_col": "population",
+            "humidity_col": "humidity",
+            "precipitation_col": "precipitation",
+            "tmax_col": "tmax",
+            "wind_speed_col": "wind_speed",
+            "max_lag": "14",
+            "df_seasonal": "6",
+            "moving_average_window": "3",
+            "attr_thr": "95",
+            "reference_standards": '[{"value": 15, "name": "WHO"}]',
+            "include_national": "true",
+            "run_descriptive": "false",
+            "run_power": "true",
+        },
+        content_type="multipart/form-data",
+    )
+
+    assert resp.status_code == 200
+    body = resp.get_json()
+    assert body["meta_results"] == {"region": "pooled"}
+    assert body["analysis_results"] == {"WHO": [{"af": 0.1}]}
+    assert body["power_results"] == {"WHO": {"power": 0.8}}
+
+    sent = captured["json"]
+    # All column mappings reach R under the names the R function accepts.
+    assert isinstance(sent["data_path"], list) and sent["data_path"]
+    assert sent["date_col"] == "date"
+    assert sent["region_col"] == "region"
+    assert sent["pm25_col"] == "pm25"
+    assert sent["deaths_col"] == "deaths"
+    assert sent["population_col"] == "population"
+    assert sent["humidity_col"] == "humidity"
+    assert sent["precipitation_col"] == "precipitation"
+    assert sent["tmax_col"] == "tmax"
+    assert sent["wind_speed_col"] == "wind_speed"
+    # Tuning params are coerced to native types and reference_standards parsed.
+    assert sent["max_lag"] == 14
+    assert sent["df_seasonal"] == 6
+    assert sent["moving_average_window"] == 3
+    assert sent["attr_thr"] == 95.0
+    assert sent["reference_standards"] == [{"value": 15, "name": "WHO"}]
+    assert sent["include_national"] is True
+    assert sent["run_descriptive"] is False
+    assert sent["run_power"] is True
+    # save_outputs is forced to False in API mode regardless of form input.
+    assert sent["save_outputs"] is False
+
+
+def test_airpollution_missing_file(client):
+    resp = client.post(
+        "/airpollution", data={}, content_type="multipart/form-data")
+    assert resp.status_code == 400
+    assert resp.get_json()["error"] == "No file uploaded"

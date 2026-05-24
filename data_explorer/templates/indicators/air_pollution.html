@@ -1,0 +1,356 @@
+{# templates/indicators/air_pollution.html #}
+<!-- prettier-ignore -->
+{% import "macros/table.html" as table %}
+{% import "macros/upload.html" as upload %}
+{% import "macros/select.html" as select %}
+{% import "macros/input.html" as input %}
+{% import "macros/radios.html" as radio %}
+{% import "macros/external_link.html" as link %}
+{% set tooltips = tooltips|default({}) %}
+<div class="innertab-content active-innercontent">
+  <div class="ons-grid">
+    <div class="ons-grid__col ons-col-12@m ons-u-mt-m">{% include "components/indicator_banner.html" %}</div>
+    <div class="ons-grid__col ons-col-12@m ons-u-mt-m">
+      <h1 class="ons-u-fs-xl">Health effects of air pollution</h1>
+      <p class="ons-u-fs-r">
+        This tool estimates short-term health impacts of ambient PM2.5 on all-cause mortality
+        using a distributed-lag generalised additive model with meta-analysis across regions.
+        Attributable burden is computed against one or more reference standards (e.g. WHO
+        15&nbsp;μg/m³).
+      </p>
+      <p class="ons-u-fs-r">
+        Full details of the methodology are provided in the
+        <a href="{{ url_for('indicator_bp.framework') }}#air-pollution-tab"
+           onclick=" setTabNo(2); setInnerTabId('air-pollution-tab'); "
+           class="ons-link ons-u-fs-r--b">Air pollution framework documentation</a>
+      </p>
+      <div class="ons-panel ons-panel--info ons-panel--no-title">
+        <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+        <div class="ons-panel__body">
+          <p class="ons-u-fs-r">Using user input data, this calculator returns the following results:</p>
+          <ul class="ons-list">
+            <li class="ons-list__item list-disc">
+              Region-level and pooled relative risk of mortality across distributed lag windows.
+            </li>
+            <li class="ons-list__item list-disc">
+              Attributable fractions and numbers of deaths versus a chosen reference standard.
+            </li>
+            <li class="ons-list__item list-disc">
+              Optional descriptive statistics and power analysis for the input data.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {# TABS #}
+  <section class="ons-tabs ons-u-mt-m">
+    <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
+    <div class="ons-tabs__container">
+      <ul class="ons-tabs__list">
+        <li class="ons-tab__list-item">
+          <a href="#air-pollution-select-file" class="ons-tab">Select File</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#air-pollution-view-results" class="ons-tab">View Results</a>
+        </li>
+      </ul>
+    </div>
+    {# TAB CONTENT - SELECT FILE #}
+    <section id="air-pollution-select-file" class="ons-tabs__panel">
+      <div class="ons-grid">
+        <div class="ons-grid__col ons-col-12@m">
+          <div class="ons-panel ons-panel--info ons-panel--no-title">
+            <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+            <div class="ons-panel__body">
+              <h4 class="ons-u-f-b">Air pollution indicator tool instructions</h4>
+              <ul class="ons-list">
+                <li class="ons-list__item list-disc">Select your input data (.csv) file</li>
+                <li class="ons-list__item list-disc">Select columns from your file to match the required columns in the dropdowns</li>
+                <li class="ons-list__item list-disc">Select a column in Region if your data is sub-national, or leave blank for national-only analysis</li>
+              </ul>
+              <p class="inline-flex items-center gap-2 m-0">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-4 w-4 shrink-0 align-middle"
+                     viewBox="0 0 28 28"
+                     aria-hidden="true"
+                     focusable="false">
+                  <path d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 5.75C14.3461 5.75 14.6845 5.85264 14.9723 6.04493C15.26 6.23722 15.4843 6.51053 15.6168 6.8303C15.7492 7.15007 15.7839 7.50194 15.7164 7.84141C15.6489 8.18087 15.4822 8.4927 15.2374 8.73744C14.9927 8.98218 14.6809 9.14885 14.3414 9.21637C14.0019 9.2839 13.6501 9.24924 13.3303 9.11679C13.0105 8.98434 12.7372 8.76003 12.5449 8.47225C12.3526 8.18446 12.25 7.84612 12.25 7.5C12.25 7.03587 12.4344 6.59075 12.7626 6.26256C13.0908 5.93437 13.5359 5.75 14 5.75ZM16.5 21.25C16.5 21.3826 16.4473 21.5098 16.3536 21.6036C16.2598 21.6973 16.1326 21.75 16 21.75H12C11.8674 21.75 11.7402 21.6973 11.6465 21.6036C11.5527 21.5098 11.5 21.3826 11.5 21.25V20.25C11.5 20.1174 11.5527 19.9902 11.6465 19.8964C11.7402 19.8027 11.8674 19.75 12 19.75H12.5V12.75H12C11.8674 12.75 11.7402 12.6973 11.6465 12.6036C11.5527 12.5098 11.5 12.3826 11.5 12.25V11.25C11.5 11.1174 11.5527 10.9902 11.6465 10.8964C11.7402 10.8027 11.8674 10.75 12 10.75H15C15.1326 10.75 15.2598 10.8027 15.3536 10.8964C15.4473 10.9902 15.5 11.1174 15.5 11.25V19.75H16C16.1326 19.75 16.2598 19.8027 16.3536 19.8964C16.4473 19.9902 16.5 20.1174 16.5 20.25V21.25Z" fill="currentColor" />
+                </svg>
+                <span class="sr-only">Info:</span>
+                <span>Data uploaded is not stored</span>
+              </p>
+            </div>
+          </div>
+          <p class="ons-u-fs-r ons-u-mt-m">
+            Data must be a daily time series containing date, region (optional), PM2.5, deaths,
+            population, humidity, precipitation, maximum temperature and wind speed columns:
+          </p>
+          <!-- prettier-ignore -->
+          {{ table.ons_table(headers=['Date (yyyy-mm-dd)', 'Region', 'PM2.5 (μg/m³)', 'Deaths', 'Population', 'Humidity (%)', 'Precipitation (mm)', 'Max temp (°C)', 'Wind speed (m/s)'], rows=[['2021-01-28','North West', '35', '12', '2600000', '68', '4.1', '26.4', '3.2'], ['2021-01-29','North West', '40', '9', '2600000', '71', '0.0', '28.1', '4.0']], id='air-pollution-example-table', aria_label='Air pollution example input table', scroll=True) }}
+        </div>
+        <div class="ons-grid__col ons-col-6@m">
+          {{ upload.ons_file_upload(id="t8csvInput", label="Upload data", text="File types accepted are .csv (max 40MB)") }}
+        </div>
+      </div>
+      {# FORM #}
+      <form method="POST"
+            action="{{ url_for('indicator_bp.airpollution_indicator') }}"
+            enctype="multipart/form-data">
+        <div class="ons-grid ons-u-mt-m">
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id="t8date_col", name='date_col', label='Date column', placeholder='Select an option', options=[], hint=tooltips.get('date_column')) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t8region_col', name='region_col', label='Region column', placeholder='Select an option (optional)', options=[], required=False, hint=tooltips.get('region_column')) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t8pm25_col', name='pm25_col', label='PM2.5 column', placeholder='Select an option', options=[], hint=tooltips.get('pm2.5_column')) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t8deaths_col', name='deaths_col', label='Deaths column', placeholder='Select an option', options=[], hint=tooltips.get('deaths_column')) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t8population_col', name='population_col', label='Population column', placeholder='Select an option', options=[], hint=tooltips.get('population_column')) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t8humidity_col', name='humidity_col', label='Humidity column', placeholder='Select an option', options=[], hint=tooltips.get('humidity_column')) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t8precipitation_col', name='precipitation_col', label='Precipitation column', placeholder='Select an option', options=[], hint=tooltips.get('precipitation_column')) }}
+            </div>
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t8tmax_col', name='tmax_col', label='Maximum temperature column', placeholder='Select an option', options=[], hint=tooltips.get('maximum_temperature_column')) }}
+            </div>
+          </div>
+          <div class="ons-grid__row">
+            <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+              {{ select.ons_select(id='t8wind_speed_col', name='wind_speed_col', label='Wind speed column', placeholder='Select an option', options=[], hint=tooltips.get('wind_speed_column')) }}
+            </div>
+          </div>
+        </div>
+        {# Advanced model parameters #}
+        <details class="ons-details ons-u-mt-m">
+          <summary class="ons-details__heading">Advanced model parameters</summary>
+          <div class="ons-details__content ons-u-mt-s">
+            <div class="ons-grid">
+              <div class="ons-grid__row">
+                <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+                  {{ input.text_input(id='t8max_lag', name='max_lag', type='number', label='Maximum PM2.5 lag (days)', value='14', hint=tooltips.get('max_lag_(days)'), autocomplete='off') }}
+                </div>
+                <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+                  {{ input.text_input(id='t8df_seasonal', name='df_seasonal', type='number', label='Seasonal spline degrees of freedom', value='6', hint=tooltips.get('df_seasonal'), autocomplete='off') }}
+                </div>
+              </div>
+              <div class="ons-grid__row">
+                <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+                  {{ input.text_input(id='t8moving_average_window', name='moving_average_window', type='number', label='Moving-average window (descriptives)', value='3', autocomplete='off') }}
+                </div>
+                <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+                  {{ input.text_input(id='t8attr_thr', name='attr_thr', type='number', label='Attributable percentile threshold (%)', value='95', autocomplete='off') }}
+                </div>
+              </div>
+              <div class="ons-grid__row">
+                <div class="ons-grid__col ons-col-12@m ons-u-mt-s">
+                  {{ input.text_input(id='t8reference_standards', name='reference_standards', type='text', label='Reference standards (JSON)', value='[{"value": 15, "name": "WHO"}]', hint=tooltips.get('reference_standards'), autocomplete='off') }}
+                </div>
+              </div>
+              <div class="ons-grid__row">
+                <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+                  {{ input.text_input(id='t8years_filter', name='years_filter', type='text', label='Years filter (comma-separated, optional)', value='', autocomplete='off') }}
+                </div>
+                <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+                  {{ input.text_input(id='t8regions_filter', name='regions_filter', type='text', label='Regions filter (comma-separated, optional)', value='', autocomplete='off') }}
+                </div>
+              </div>
+              <div class="ons-grid__row">
+                <div class="ons-grid__col ons-col-12@m ons-u-mt-s">
+                  {% set include_national_options = [{"value": true, "label": "Yes"}, {"value": false, "label": "No"}] %}
+                  {{ radio.radio_group("t8-include-national", "Include national-level results?", include_national_options, selected=True) }}
+                </div>
+              </div>
+              <div class="ons-grid__row">
+                <div class="ons-grid__col ons-col-6@m ons-u-mt-s">
+                  {% set run_power_options = [{"value": true, "label": "Yes"}, {"value": false, "label": "No"}] %}
+                  {{ radio.radio_group("t8-run-power", "Run power analysis?", run_power_options, selected=False) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+        <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-m">
+          <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+          <div class="ons-panel__body">
+            <p class="ons-u-fs-r">
+              The default model estimates mortality attributable to ambient PM2.5 using a
+              distributed-lag generalised additive model with a quasi-Poisson family and a
+              cyclic seasonal spline, pooled across regions with a multivariate meta-analysis.
+            </p>
+            <p class="ons-u-fs-r">
+              Full details of the methodology are provided in the
+              <a href="{{ url_for('indicator_bp.framework') }}#air-pollution-tab"
+                 onclick=" setTabNo(2); setInnerTabId('air-pollution-tab'); "
+                 class="ons-link ons-u-fs-r--b">Air pollution framework documentation</a>
+            </p>
+            <p class="ons-u-fs-r">Default (baseline) model specification:</p>
+            <ul class="ons-list">
+              <li class="ons-list__item list-disc">
+                Required exposure variables: daily deaths, daily PM2.5, population, humidity,
+                precipitation, maximum temperature and wind speed.
+              </li>
+              <li class="ons-list__item list-disc">
+                Maximum PM2.5 lag of 14 days, with seasonal smoothing controlled by a spline of
+                6 degrees of freedom.
+              </li>
+              <li class="ons-list__item list-disc">
+                Attributable burden is computed against the WHO short-term guideline value of
+                15 μg/m³ by default. Additional reference standards can be added in the
+                advanced parameters as a JSON list.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <button id="t8Analyse"
+                class="ons-btn ons-btn--loader ons-u-mt-m"
+                type="submit"
+                aria-live="polite">
+          <span class="ons-btn__inner">
+            <span class="ons-btn__text">Analyse</span>
+            <svg class="ons-icon ons-u-ml-2xs"
+                 xmlns="http://www.w3.org/2000/svg"
+                 focusable="false"
+                 viewBox="0 0 100 100"
+                 preserveAspectRatio="xMidYMid"
+                 fill="currentcolor"
+                 role="img"
+                 aria-hidden="true">
+              <rect x="0" y="0" width="100" height="100" fill="none"></rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(0 50 50) translate(0 -30)">
+                <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(45 50 50) translate(0 -30)">
+                <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.125s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(90 50 50) translate(0 -30)">
+                <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.25s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(135 50 50) translate(0 -30)">
+                <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.375s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(180 50 50) translate(0 -30)">
+                <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(225 50 50) translate(0 -30)">
+                <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.625s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(270 50 50) translate(0 -30)">
+                <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.75s" repeatCount="indefinite" />
+              </rect>
+              <rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(315 50 50) translate(0 -30)">
+                <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.875s" repeatCount="indefinite" />
+              </rect>
+            </svg>
+          </span>
+        </button>
+      </form>
+      {# API Error - Hidden by default #}
+      <div id="t8ApiError"
+           class="ons-panel ons-panel--error ons-panel--no-title ons-u-d-no ons-u-mt-m"
+           role="alert">
+        <span class="ons-panel__assistive-text ons-u-vh">Error:</span>
+        <div class="ons-panel__body"></div>
+      </div>
+      <div class="ons-table-scrollable ons-table-scrollable--on">
+        <div class="ons-table-scrollable__content"
+             tabindex="0"
+             role="region"
+             aria-label="Air pollution input preview">
+          <table id="t8previewTable" class="ons-table ons-u-mt-xl"></table>
+        </div>
+      </div>
+    </section>
+    {# TAB CONTENT - VIEW RESULTS #}
+    <section id="air-pollution-view-results" class="ons-tabs__panel">
+      <div class="ons-grid ons-u-mt-m">
+        <div class="ons-grid__col ons-col-12@m">
+          <div class="ons-grid ons-grid-flex ons-grid-flex--vertical-center ons-grid-flex--center">
+            <div class="ons-grid__col ons-col-auto layout-select-buttons">
+              {{ select.ons_select(id='t8groupDropdown', name='t8groupDropdown', label='Select a reference standard / region to plot:', placeholder='Select an option', options=[]) }}
+              <div class="layout-buttons-row">
+                <button type="button"
+                        id="downloadAirPollutionMeta"
+                        class="ons-btn ons-btn--download ons-btn--small ons-btn--secondary ons-btn--link ons-js-submit-btn">
+                  <span class="ons-btn__inner">
+                    <svg class="ons-icon ons-u-mr-2xs"
+                         viewBox="0 0 12 12"
+                         xmlns="http://www.w3.org/2000/svg"
+                         focusable="false"
+                         fill="currentColor"
+                         role="img"
+                         aria-hidden="true">
+                      <path d="M5.6 9a.48.48 0 0 0 .7 0l3-3.2a.48.48 0 0 0 0-.7C9.3 5 9.2 5 9 5H7.5V.5A.47.47 0 0 0 7 0H5a.47.47 0 0 0-.5.5V5H3a.47.47 0 0 0-.5.5.37.37 0 0 0 .1.3Z" />
+                      <path d="M11.5 9H11a.47.47 0 0 0-.5.5v1h-9v-1A.47.47 0 0 0 1 9H.5a.47.47 0 0 0-.5.5v2a.47.47 0 0 0 .5.5h11a.47.47 0 0 0 .5-.5v-2a.47.47 0 0 0-.5-.5Z" />
+                    </svg>
+                    <span class="ons-btn__text">Pooled meta-analysis results</span>
+                  </span>
+                </button>
+                <button type="button"
+                        id="downloadAirPollutionAttr"
+                        class="ons-btn ons-btn--download ons-btn--small ons-btn--secondary ons-btn--link ons-js-submit-btn">
+                  <span class="ons-btn__inner">
+                    <svg class="ons-icon ons-u-mr-2xs"
+                         viewBox="0 0 12 12"
+                         xmlns="http://www.w3.org/2000/svg"
+                         focusable="false"
+                         fill="currentColor"
+                         role="img"
+                         aria-hidden="true">
+                      <path d="M5.6 9a.48.48 0 0 0 .7 0l3-3.2a.48.48 0 0 0 0-.7C9.3 5 9.2 5 9 5H7.5V.5A.47.47 0 0 0 7 0H5a.47.47 0 0 0-.5.5V5H3a.47.47 0 0 0-.5.5.37.37 0 0 0 .1.3Z" />
+                      <path d="M11.5 9H11a.47.47 0 0 0-.5.5v1h-9v-1A.47.47 0 0 0 1 9H.5a.47.47 0 0 0-.5.5v2a.47.47 0 0 0 .5.5h11a.47.47 0 0 0 .5-.5v-2a.47.47 0 0 0-.5-.5Z" />
+                    </svg>
+                    <span class="ons-btn__text">Attributable burden results</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {# PLOTS #}
+      <div id="airPollutionResults"
+           class="ons-grid__col ons-col-12@m"
+           style="visibility: hidden">
+        <div id="airPollutionMetaPlot" class="ons-u-mt-m"></div>
+        <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-s">
+          <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+          <div class="ons-panel__body">
+            <p class="ons-u-fs-n">
+              The plot above shows the cumulative relative risk of mortality (and 95%
+              confidence intervals) across the distributed lag period, per unit increase in
+              PM2.5 concentration.
+            </p>
+          </div>
+        </div>
+        <div id="airPollutionAttrPlot" class="ons-u-mt-m" hidden></div>
+        <div id="airPollutionAttrDesc"
+             class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-s"
+             hidden>
+          <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+          <div class="ons-panel__body">
+            <p class="ons-u-fs-n">
+              Attributable fractions and numbers of deaths versus the selected reference
+              standard (default WHO 15 μg/m³).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+</div>
