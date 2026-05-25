@@ -26,7 +26,7 @@ name: Trigger Bitbucket Dev Pipeline
 on:
   push:
     tags:
-      - 'v*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   trigger-bitbucket-dev:
