@@ -90,3 +90,4 @@ jobs:
           echo "Bitbucket pipeline triggered successfully."
           echo "Build number: ${BUILD_NUMBER}"
           echo "Monitor at: https://bitbucket.org/${BB_WORKSPACE}/${BB_REPO}/addon/pipelines/home"
+          
