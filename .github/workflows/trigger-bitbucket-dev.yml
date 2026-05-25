@@ -14,11 +14,13 @@ name: Trigger Bitbucket Dev Pipeline
 #
 # ─────────────────────────────────────────────────────────────────────────────
 # Required GitHub repository secrets (Settings → Secrets → Actions):
-#   BITBUCKET_USERNAME      Your Bitbucket account username
-#   BITBUCKET_API_TOKEN     Bitbucket API Token with scope: Pipelines: Write
+#   BITBUCKET_USERNAME      Your Bitbucket account EMAIL address (e.g. you@gmail.com)
+#                           NOT the username slug — Bitbucket API tokens auth with email
+#   BITBUCKET_API_TOKEN     Bitbucket API Token — requires BOTH scopes:
+#                             - Pipelines: Read
+#                             - Pipelines: Write
 #                           Create at: https://bitbucket.org/account/settings/api-tokens/
-#                           NOTE: App passwords are removed July 28 2026. Use API tokens.
-#   BITBUCKET_WORKSPACE     Your Bitbucket workspace slug (e.g. "danmcmyler")
+#   BITBUCKET_WORKSPACE     Your Bitbucket workspace slug (e.g. "dan-climhealth")
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
