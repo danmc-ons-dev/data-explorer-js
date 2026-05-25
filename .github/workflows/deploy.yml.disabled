@@ -1,0 +1,150 @@
+name: Deploy to Personal AWS
+
+# Triggers on every push (including merged PRs) to the main branch.
+# This mirrors how the production CodeBuild pipeline is triggered.
+on:
+  push:
+    branches: [main]
+
+# These permissions are REQUIRED for OIDC — the workflow requests a short-lived
+# token from GitHub and exchanges it with AWS for temporary credentials.
+# No long-lived AWS keys are stored anywhere.
+permissions:
+  id-token: write  # allows requesting a GitHub OIDC JWT
+  contents: read   # allows checking out the repo
+
+env:
+  AWS_REGION: us-east-1                         # change if you used a different region
+  ECR_REPO: ons-climate-health/data-explorer    # matches the ECR repository you created
+  CLUSTER_NAME: data-explorer-personal          # matches your EKS cluster name
+  K8S_NAMESPACE: data-explorer-personal         # the namespace the app runs in
+
+jobs:
+  build-and-deploy:
+    name: Build, Push & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # -----------------------------------------------------------------------
+      # 1. Check out the code
+      # -----------------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # 2. Authenticate to AWS using OIDC (no stored secrets needed)
+      #    AWS_ROLE_ARN is the only secret required — it is not sensitive
+      #    enough to matter on its own, but we store it as a secret for tidiness.
+      # -----------------------------------------------------------------------
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # -----------------------------------------------------------------------
+      # 3. Log Docker into your personal ECR registry
+      # -----------------------------------------------------------------------
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # -----------------------------------------------------------------------
+      # 4. Read the version number from setup.py (mirrors the buildspec approach)
+      # -----------------------------------------------------------------------
+      - name: Extract version from setup.py
+        id: version
+        run: |
+          VERSION=$(grep -oP "(?<=version=)['\"]?.+?['\"]?(?=[,)])" setup.py | tr -d "\"'" | head -1)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building and deploying version: $VERSION"
+
+      # -----------------------------------------------------------------------
+      # 5. Build the Docker image (web app only — no migrations image needed
+      #    in dummy mode since there is no database)
+      # -----------------------------------------------------------------------
+      - name: Build Docker image
+        run: docker build -t data-explorer -f data-explorer.Dockerfile .
+
+      # -----------------------------------------------------------------------
+      # 6. Push to ECR with two tags:
+      #    - :$VERSION  (e.g. :0.9.22) — the immutable, auditable tag
+      #    - :latest    — used as the default in kustomization.yaml
+      # -----------------------------------------------------------------------
+      - name: Push image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          IMAGE_URI=$ECR_REGISTRY/${{ env.ECR_REPO }}
+          docker tag data-explorer:latest $IMAGE_URI:$VERSION
+          docker tag data-explorer:latest $IMAGE_URI:latest
+          docker push $IMAGE_URI:$VERSION
+          docker push $IMAGE_URI:latest
+          echo "Pushed $IMAGE_URI:$VERSION and $IMAGE_URI:latest"
+
+      # -----------------------------------------------------------------------
+      # 7. Configure kubectl to talk to your personal EKS cluster.
+      #    This works because the IAM role assumed in step 2 is mapped to
+      #    a Kubernetes group (system:masters) in the cluster's aws-auth ConfigMap.
+      # -----------------------------------------------------------------------
+      - name: Configure kubectl
+        run: |
+          aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}
+
+      # -----------------------------------------------------------------------
+      # 8. Create namespace if it doesn't already exist.
+      #    --dry-run=client -o yaml | kubectl apply -f - is an idempotent pattern
+      #    that avoids a failure if the namespace already exists.
+      # -----------------------------------------------------------------------
+      - name: Ensure Kubernetes namespace exists
+        run: |
+          kubectl create namespace ${{ env.K8S_NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+
+      # -----------------------------------------------------------------------
+      # 9. Apply the personal-aws overlay.
+      #    This creates (or updates) the Deployment, Service, and ConfigMap.
+      #    On first run this bootstraps the cluster; on subsequent runs it
+      #    ensures config changes (e.g. new env vars) are applied.
+      # -----------------------------------------------------------------------
+      - name: Apply Kubernetes manifests
+        run: kubectl apply -k ./k8s/overlays/personal-aws
+
+      # -----------------------------------------------------------------------
+      # 10. Pin the deployment to the exact version tag we just pushed.
+      #     This is the same pattern used by update_deployment.sh in production.
+      # -----------------------------------------------------------------------
+      - name: Update deployment image to this build's version
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          kubectl set image deployment/data-explorer \
+            data-explorer=$ECR_REGISTRY/${{ env.ECR_REPO }}:$VERSION \
+            -n ${{ env.K8S_NAMESPACE }}
+
+      # -----------------------------------------------------------------------
+      # 11. Block until the rollout completes (or fails after 5 minutes).
+      #     This means the workflow turns red if the new pods crash on startup.
+      # -----------------------------------------------------------------------
+      - name: Wait for rollout to complete
+        run: |
+          kubectl rollout status deployment/data-explorer \
+            -n ${{ env.K8S_NAMESPACE }} \
+            --timeout=300s
+
+      # -----------------------------------------------------------------------
+      # 12. Print the Load Balancer URL so you can open the app immediately.
+      # -----------------------------------------------------------------------
+      - name: Print application URL
+        run: |
+          echo "Giving the NLB a moment to register..."
+          sleep 20
+          LB_HOST=$(kubectl get svc data-explorer-service \
+            -n ${{ env.K8S_NAMESPACE }} \
+            -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null || echo "still-provisioning")
+          echo ""
+          echo "=========================================="
+          echo "  App URL: http://$LB_HOST"
+          echo "  (NLBs can take 2-3 minutes to become reachable after this step)"
+          echo "=========================================="
