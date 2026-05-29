@@ -120,7 +120,7 @@ user implementation", title_level=3) %}
   SOSCHI framework, you will first need to identify and prepare the input data sources. Once the
   input data is in the required structure, you can either use the
   {{ link.internal_link(url_for('main_bp.r_package'), 'Climate-Health R Package') }} or the
-  {{ link.internal_link(url_for('data_bp.indicator_calculators'), 'indicator tool') }} for
+  {{ link.internal_link(url_for('indicator_bp.indicator_calculators'), 'indicator tool') }} for
   selected topics, to produce selected climate-health indicator metrics for your country or area.
 </p>
 <p class="ons-u-fs-r">
@@ -331,15 +331,15 @@ framework") }}
   <div class="ons-grid__col ons-col-4@s">
     {{ cards.relevant_pages("Tools for
     implementation", "", [ { "text": "SOSCHI open-source R package", "href": url_for('main_bp.r_package') }, { "text":
-    "Online analysis tools", "href": url_for('data_bp.indicator_calculators') }, { "text":
+    "Online analysis tools", "href": url_for('indicator_bp.indicator_calculators') }, { "text":
     "Additional resources", "href": url_for('main_bp.resources') } ], "icons/analysis_tools_large_colour.svg" ) }}
   </div>
   <div class="ons-grid__col ons-col-4@s">
     {{ cards.relevant_pages("Explore our priority topics", "", [ { "text": "Vector-borne
-    diseases", "href": url_for('data_bp.framework') ~ '#vectorborne-diseases' }, { "text":
-    "Health effects of wildfires", "href": url_for('data_bp.framework') ~
+    diseases", "href": url_for('indicator_bp.framework') ~ '#vectorborne-diseases' }, { "text":
+    "Health effects of wildfires", "href": url_for('indicator_bp.framework') ~
     '#wildfires-tab' }, { "text": "Mental Health", "href":
-    url_for('data_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
+    url_for('indicator_bp.framework') ~ '#mental-health' } ], "icons/topics_large_colour.svg" )
     }}
   </div>
 </div>

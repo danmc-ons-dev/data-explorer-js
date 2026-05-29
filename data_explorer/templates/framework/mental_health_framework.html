@@ -243,7 +243,7 @@ intervening to reduce negative impacts.") }}
     {{ btn.external('CRAN Package Page', cran_package_url, "ons-btn--secondary") }}
   </div>
     <div class="ons-grid__col ons-col-auto ons-u-mt-m">
-    {{ btn.internal("Indicator Tools", url_for('data_bp.indicator_calculators') ~ '#' ~ topic_id) }}
+    {{ btn.internal("Indicator Tools", url_for('indicator_bp.indicator_calculators') ~ '#' ~ topic_id) }}
   </div>
 </div>
 {# ACCORDION TWO #}
@@ -379,14 +379,14 @@ at risk?", title_level=3) %}
 <div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
   <!-- prettier-ignore -->
   {{ cards.relevant_pages("Temperature related health effects", "", [], "icons/temperature_related_illness.svg",
-  title_href=url_for('data_bp.framework') ~ '#heat-and-cold', img_width=200, img_height=200, img_alt='Heat and cold
+  title_href=url_for('indicator_bp.framework') ~ '#heat-and-cold', img_width=200, img_height=200, img_alt='Heat and cold
   icon') }}
   <!-- prettier-ignore -->
   {{ cards.relevant_pages("Health effects of extreme weather events - Flooding", "", [], "icons/extreme_weather.svg",
-  title_href=url_for('data_bp.framework') ~ '#flooding-tab', img_width=200, img_height=200, img_alt='Flooding icon') }}
+  title_href=url_for('indicator_bp.framework') ~ '#flooding-tab', img_width=200, img_height=200, img_alt='Flooding icon') }}
   <!-- prettier-ignore -->
   {{ cards.relevant_pages("Health effects of extreme weather events - Wildfires", "", [], "icons/wildfires.svg",
-  title_href=url_for('data_bp.framework') ~ '#extreme-weather-events', img_width=200, img_height=200, img_alt='Wildfires
+  title_href=url_for('indicator_bp.framework') ~ '#extreme-weather-events', img_width=200, img_height=200, img_alt='Wildfires
   icon') }}
 </div>
 <h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
@@ -514,12 +514,12 @@ at risk?", title_level=3) %}
     </p>
     <p class="ons-u-fs-r">
       For more information on the selection criteria used for prioritising the SOSCHI topics and the
-      development process, see the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI
+      development process, see the{{ link.internal_link(url_for('indicator_bp.framework') , 'SOSCHI
       Framework Page' ) }}.
     </p>
     <p class="ons-u-fs-r">
       We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
-      page can be used for official statistics reporting. See the{{ link.internal_link(url_for('data_bp.framework') ,
+      page can be used for official statistics reporting. See the{{ link.internal_link(url_for('indicator_bp.framework') ,
       'SOSCHI Framework Page' ) }}for information
       on the endorsement of the proposed indicators.
     </p>
