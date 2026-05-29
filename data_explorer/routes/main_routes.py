@@ -65,6 +65,11 @@ def r_package():
     return render_template("r_package.html")
 
 
+@main_bp.route("/coming_soon")
+def coming_soon():
+    return render_template("coming_soon.html")
+
+
 @main_bp.route("/version")
 def system_version():
     """
