@@ -9,6 +9,7 @@ def app():
         TESTING=True,
         SESSION_PERMANENT=False,
         SESSION_TYPE="filesystem",
+        ENABLE_FULL_UI=True,
     )
     Session(app)
     return app

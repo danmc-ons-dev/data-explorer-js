@@ -62,14 +62,7 @@ def search():
 
 @main_bp.route("/r_package")
 def r_package():
-    if not current_app.config.get("ENABLE_FULL_UI", False):
-        return render_template("coming_soon.html")
     return render_template("r_package.html")
-
-
-@main_bp.route("/coming_soon")
-def coming_soon():
-    return render_template("coming_soon.html")
 
 
 @main_bp.route("/version")

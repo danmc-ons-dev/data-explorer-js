@@ -4,8 +4,10 @@
 {% import "macros/buttons.html" as btn %}
 {% import "macros/cards.html" as cards %}
 {% import "macros/external_link.html" as link %}
-{% set title = "Waterborne diseases" %}
+{% set title = "Diarrheal disease" %}
 {% set topic_id = "waterborne-diseases" %}
+{% set cran_package_url = "https://CRAN.R-project.org/package=climatehealth" %}
+{% set github_url = "https://github.com/onssoschi/climatehealth" %}
 {# TITLE #}
 <h1 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h1>
 {# INTRO PARAGRAPH #}
@@ -15,7 +17,7 @@
   waterbodies through runoff, dry conditions, water scarcity, and poor sanitation. Diarrheal disease
   is one of the most prevalent waterborne diseases and is highly impacted by these climatic
   conditions. Diarrheal disease is a public health concern particularly among young children and in
-  Sub-Saharan Africa.
+  regions of Africa.
 </p>
 {# INFO PANEL TOP #}
 <div class="ons-panel ons-panel--info ons-panel--no-title">
@@ -27,28 +29,53 @@
     </p>
   </div>
 </div>
-{# BUTTONS ONE (TOPIC INTRO, METHODOLOGY, METADATA) #}
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">UN endorsement:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">UN endorsement</h5>
+    <p class="ons-u-fs-r">
+      The methods for measuring the headline outcome indicator for this topic were endorsed by the 57th United Nations
+      Statistical Commission to
+      include in the Global Set of Climate Change Statistics and Indicators (see decision 57/109 (b)
+      in the {{
+      link.external_link('https://unstats.un.org/UNSDWebsite/statcom/session_57/documents/2026-35-FinalReport-EE.pdf',
+      'Final Report') }}).
+      This will be included in the {{ link.external_link('https://unstats.un.org/unsd/envstats/climatechange.cshtml',
+      'Global Set') }} metadata as:
+    </p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">Indicator 44: Incidence of cases of climate-related disease: <br>
+        44.1 Incidence of diarrheal disease cases attributable to (a) heat and (b) rainfall</li>
+    </ul>
+  </div>
+</div>
+{# BUTTONS ONE (TOPIC INTRO, METHODOLOGY, TEMPERATURE METADATA, RAINFALL METADATA) #}
 <!-- prettier-ignore -->
 {% set buttons = [
-  {
-    "text": "Topic Introduction",
-    "href": "https://zenodo.org/records/14051905",
-    "classes": ""
-  },
-  {
-    "text": "Methodology",
-    "href": "https://doi.org/10.5281/zenodo.14871506",
-    "classes": "ons-btn--secondary"
-  },
-  {
-    "text": "Metadata",
-    "href": "https://doi.org/10.5281/zenodo.14871734",
-    "classes": ""
-  }
+{
+"text": "Topic Introduction",
+"href": "https://doi.org/10.5281/zenodo.14051904",
+"classes": ""
+},
+{
+"text": "Methodology",
+"href": "https://doi.org/10.5281/zenodo.14871506",
+"classes": "ons-btn--secondary"
+},
+{
+"text": "Temperature Metadata",
+"href": "https://doi.org/10.5281/zenodo.14871734",
+"classes": ""
+},
+{
+"text": "Rainfall Metadata",
+"href": "https://doi.org/10.5281/zenodo.19696636",
+"classes": "ons-btn--secondary"
+}
 ] %}
 <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
   {% for button in buttons %}
-    <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
   {% endfor %}
 </div>
 {# ACCORDION ONE #}
@@ -57,371 +84,404 @@
 group=topic_id ~ "-accordion",) }}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 1, "Impact Pathway", title_level=3) %}
-  {{ image.image(image_name='framework-waterborne.png', width='100%', alt="Diagram showing pathways between climate change and waterborne disease (diarrhea) impacts. At the top left, climate drivers and hazards include increased frequency and intensity of extreme weather, extreme temperatures, floods, droughts, wildfires, and storms. At the top right, exposure and vulnerability include drinking contaminated water, flood/sewage contact, poor hygiene, and higher risk among children, elderly populations, and communities with weak WASH symptoms. These factors interact and flow downward toward physiological impacts and health outcomes. Physiological impacts include dehydration, malnutrition, weakened immunity, intestinal damage, developmental delays and higher infection risk. Health outcomes include increased diarrheal disease, malnutrition and mortality, long -term growth deficits and overburdened health systems. Adaptation and mitigation measures—such as climate-resilient WASH infrastructure, early warning systems, emergency preparedness and community hygiene education—are shown intervening to reduce negative impacts.") }}
+{{ image.image(image_name='framework-waterborne.png', width='100%', alt="Diagram showing pathways between climate change
+and waterborne disease (diarrhea) impacts. At the top left, climate drivers and hazards include increased frequency and
+intensity of extreme weather, extreme temperatures, floods, droughts, wildfires, and storms. At the top right, exposure
+and vulnerability include drinking contaminated water, flood/sewage contact, poor hygiene, and higher risk among
+children, elderly populations, and communities with weak WASH symptoms. These factors interact and flow downward toward
+physiological impacts and health outcomes. Physiological impacts include dehydration, malnutrition, weakened immunity,
+intestinal damage, developmental delays and higher infection risk. Health outcomes include increased diarrheal disease,
+malnutrition and mortality, long -term growth deficits and overburdened health systems. Adaptation and mitigation
+measures—such as climate-resilient WASH infrastructure, early warning systems, emergency preparedness and community
+hygiene education—are shown intervening to reduce negative impacts.") }}
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicators", title_level=3) %}
-  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r--b">
-        Two priority indicators developed within the waterborne disease and water-related illnesses
-        topic are
-      </p>
-      <ul class="ons-list">
-        <li class="ons-list__item list-disc">Diarrheal disease incidence attributable to extreme temperature</li>
-        <li class="ons-list__item list-disc">Diarrheal disease incidence attributable to extreme rainfall</li>
-      </ul>
-    </div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      Two priority indicators developed within the waterborne disease and water-related illnesses
+      topic are:
+    </p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">
+        diarrheal disease incidence attributable to extreme temperature
+      </li>
+      <li class="ons-list__item list-disc">
+        diarrheal disease incidence attributable to extreme rainfall
+      </li>
+    </ul>
   </div>
-  <p class="ons-u-fs-r ons-u-mt-m">
-    It was agreed to priortise these indicators as they can provide regular, reliable, and comparable
-    data to monitor climate-related health impacts using state-of-the-art statistical methods.
-  </p>
-  <p class="ons-u-fs-r">
-    Further justification for the focus on this indicator is explained in the Topic introduction,
-    which also outlines supplementary and additional indicators that are not in scope for the current
-    SOSCHI framework but are recommended for future development.
-  </p>
-  <div class="ons-panel ons-panel--info ons-panel--no-title">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r--b">Diarrheal disease incidence attributable to extreme temperature</p>
-      <ul class="ons-list ons-list--dashed">
-        <li class="ons-list__item">Relative risk of diarrhea cases attributable to extreme temperature</li>
-        <li class="ons-list__item">Number of diarrhea cases attributable to extreme temperature</li>
-        <li class="ons-list__item">Fraction of diarrhea cases attributable to extreme temperature</li>
-        <li class="ons-list__item">Diarrhea cases per 100,000 population attributable to extreme temperature</li>
-      </ul>
-    </div>
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">
+  It was agreed to prioritise these indicators as they can provide regular, reliable, and comparable
+  data to monitor climate-related health impacts using state-of-the-art statistical methods.
+</p>
+<p class="ons-u-fs-r">
+  Further justification for the focus on this indicator is explained in the {{
+  link.external_link('https://doi.org/10.5281/zenodo.14051904', 'Topic introduction') }},
+  which also outlines supplementary and additional indicators that are not in scope for the current
+  SOSCHI framework but are recommended for future development.
+</p>
+<p class="ons-u-fs-r">
+  Each indicator has four component parts:
+</p>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r--b">Diarrheal disease incidence attributable to extreme temperature</p>
+    <ul class="ons-list ons-list--dashed">
+      <li class="ons-list__item">Relative risk of diarrhea cases attributable to extreme temperature</li>
+      <li class="ons-list__item">Number of diarrhea cases attributable to extreme temperature</li>
+      <li class="ons-list__item">Fraction of diarrhea cases attributable to extreme temperature</li>
+      <li class="ons-list__item">Diarrhea cases per 100,000 population attributable to extreme temperature</li>
+    </ul>
   </div>
-  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__two">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r--b">Diarrheal disease incidence attributable to extreme rainfall</p>
-      <ul class="ons-list ons-list--dashed">
-        <li class="ons-list__item">Relative risk of diarrhea cases attributable to extreme rainfall</li>
-        <li class="ons-list__item">Number of diarrhea cases attributable to extreme rainfall</li>
-        <li class="ons-list__item">Fraction of diarrhea cases attributable to extreme rainfall</li>
-        <li class="ons-list__item">Diarrhea cases per 100,000 population attributable to extreme rainfall</li>
-      </ul>
-    </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r--b">Diarrheal disease incidence attributable to extreme rainfall</p>
+    <ul class="ons-list ons-list--dashed">
+      <li class="ons-list__item">Relative risk of diarrhea cases attributable to extreme rainfall</li>
+      <li class="ons-list__item">Number of diarrhea cases attributable to extreme rainfall</li>
+      <li class="ons-list__item">Fraction of diarrhea cases attributable to extreme rainfall</li>
+      <li class="ons-list__item">Diarrhea cases per 100,000 population attributable to extreme rainfall</li>
+    </ul>
   </div>
-  <p class="ons-u-fs-r ons-u-mt-m">
-    For guidance on the process for calculating these indicator metrics, see the Methodology section
-    below.
-  </p>
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">
+  For guidance on the process for calculating these indicator metrics, see the Methodology section
+  below.
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 3, "Policy Relevance", title_level=3) %}
-  <p class="ons-u-fs-r">
-    These indicators can give insights into how changes in temperature and extreme rainfall events
-    influence their risk of waterborne diseases, and how these impacts vary geographically and among
-    the most vulnerable groups in society, informing local adaptation needs.
-  </p>
-  <p class="ons-u-fs-r">
-    While diarrheal disease incidence does not capture all pathways through which climate change
-    affects health, it is a well established and sensitive indicator of waterborne health impacts,
-    particularly in setting with limited access to safe water, sanitation and hygiene (WASH) services.
-  </p>
-  <p class="ons-u-fs-r--b">This indicator can therefore:</p>
-  <ul class="ons-list">
-    <li class="ons-list__item list-disc">
-      Monitor and quantify the health burden associated with extreme rainfall and extreme temperature
-      through waterborne disease outcomes.
-    </li>
-    <li class="ons-list__item list-disc">Inform national adaptation plans (NAPs) and resilience strategies</li>
-    <li class="ons-list__item list-disc">
-      Guide environmental and public health policy to reduce risks and improve outcomes
-    </li>
-  </ul>
+<p class="ons-u-fs-r">
+  These indicators can give insights into how changes in temperature and extreme rainfall events
+  influence their risk of waterborne diseases, and how these impacts vary geographically and among
+  the most vulnerable groups in society, informing local adaptation needs.
+</p>
+<p class="ons-u-fs-r">
+  While diarrheal disease incidence does not capture all pathways through which climate change
+  affects health, it is a well established and sensitive indicator of waterborne health impacts,
+  particularly in setting with limited access to safe water, sanitation and hygiene (WASH) services.
+</p>
+<p class="ons-u-fs-r">This indicator can therefore:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    monitor and quantify the health burden associated with extreme rainfall and extreme temperature
+    through waterborne disease outcomes
+  </li>
+  <li class="ons-list__item list-disc">
+    inform national adaptation plans (NAPs) and resilience strategies
+  </li>
+  <li class="ons-list__item list-disc">
+    guide environmental and public health policy to reduce risks and improve outcomes
+  </li>
+</ul>
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 4, "Methodology", title_level=3) %}
-  <p class="ons-u-fs-r">
-    The indicator uses epidemiological methods to examine short-term links between climate exposure
-    and waterborne disease outcomes. The analysis uses a spatiotemporal Bayesian model combined with a
-    Distributed Lag Nonlinear Model (DLNM). The DLNM captures both nonlinear and delayed effects of
-    climate on monthly diarrhea counts, while the Bayesian framework accounts for spatial and temporal
-    correlations.
-  </p>
-  <div class="ons-panel ons-panel--info ons-panel--no-title">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <h5 class="ons-u-fs-r--b">Understand the method</h5>
-      <p class="ons-u-fs-r">
-        Read the {{ link.external_link('https://zenodo.org/records/14871507', 'waterborne disease and
-         water-related illnesses: methodology') }} for details on the modelling approach, the data
-        needed, and guidance on interpreting results.
-      </p>
-    </div>
+<p class="ons-u-fs-r">
+  The indicator uses epidemiological methods to examine short-term links between climate exposure
+  and waterborne disease outcomes. The analysis uses a spatiotemporal Bayesian model combined with a
+  Distributed Lag Nonlinear Model (DLNM). The DLNM captures both nonlinear and delayed effects of
+  climate on monthly diarrhea counts, while the Bayesian framework accounts for spatial and temporal
+  correlations.
+</p>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Understand the method</h5>
+    <p class="ons-u-fs-r">
+      Read the {{ link.external_link('https://doi.org/10.5281/zenodo.14871506', 'waterborne disease and
+      water-related illnesses: methodology') }} for details on the modelling approach, the data
+      needed, and guidance on interpreting results.
+    </p>
   </div>
-  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <h5 class="ons-u-fs-r--b">Develop bespoke analyses</h5>
-      <p class="ons-u-fs-r">
-        For flexible, reproducible analysis or to adapt methods to your country or region, use the
-        Code Library and R package, which provides program code for the priority indicators.
-      </p>
-    </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Develop bespoke analyses</h5>
+    <p class="ons-u-fs-r">
+      For flexible, reproducible analysis or to adapt methods to your country or region, use the
+      {{ link.internal_link(url_for('main_bp.r_package'), 'R package') }}, which provides program code for the priority
+      indicators.
+    </p>
   </div>
-  <div class="ons-panel ons-panel--no-title ons-panel--info headline-indicators__two ons-u-mb-m">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <h5 class="ons-u-fs-r--b">No-code option for indicator analysis</h5>
-      <p class="ons-u-fs-r">
-        Use the Indicator tool if you want quick baseline estimates and simple charts without writing
-        code; it supports secure temporary uploads and downloadable outputs.
-      </p>
-    </div>
+</div>
+<div class="ons-panel ons-panel--no-title ons-panel--info headline-indicators__two ons-u-mb-m">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Online tools for indicator analysis</h5>
+    <p class="ons-u-fs-r">
+      Tools for selected indicators are in development. These will allow users to run quick baseline estimates and
+      simple charts without writing code;
+      it supports secure temporary uploads and downloadable outputs.
+    </p>
   </div>
+</div>
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 5, "Data Requirements and Guidance", title_level=3) %}
-  <p class="ons-u-fs-r--b">The following data is needed for this indicator production:</p>
-  <ul class="ons-list">
-    <li class="ons-list__item list-disc">
-      Monthly count of diarrhea reported cases from national administrative records.
-    </li>
-    <li class="ons-list__item list-disc">Climate data from the National Meteorological Agency.</li>
-    <li class="ons-list__item list-disc">Population estimates from national statistical agencies.</li>
-  </ul>
-  <p class="ons-u-fs-r ons-u-mt-m">
-    Where this data is unavailable or observations are incomplete, proxy datasets may be used. Further
-    information on these potential sources as well as required variable names and formats are outlined
-    in section 2 of the {{ link.external_link('https://zenodo.org/records/14871507', 'Waterborne
-     disease and water-related illnesses: methodology') }}
-  </p>
+<p class="ons-u-fs-r">The following data are needed for this indicator production:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    monthly count of diarrhea reported cases from national administrative records
+  </li>
+  <li class="ons-list__item list-disc">
+    climate data from the National Meteorological Agency
+  </li>
+  <li class="ons-list__item list-disc">
+    population estimates from national statistical agencies
+  </li>
+</ul>
+<p class="ons-u-fs-r ons-u-mt-m">
+  Where this data is unavailable or observations are incomplete, proxy datasets may be used. Further
+  information on these potential sources as well as required variable names and formats are outlined
+  in section 2 of the {{ link.external_link('https://doi.org/10.5281/zenodo.14871506', 'Waterborne
+  disease and water-related illnesses: methodology') }}
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
 {{ acc.accordion_end() }}
-{# BUTTONS TWO (CODE LIBRARY, INDICATOR TOOLS) #}
+{# BUTTONS THREE (R PACKAGE GITHUB, CRAN, INDICATOR TOOLS) #}
 <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
   <div class="ons-grid__col ons-col-auto ons-u-mt-m">
-    {{ btn.external('Code Library', 'https://github.com/onssoschi/climatehealth') }}
+    {{ btn.external('Climatehealth GitHub', github_url) }}
   </div>
   <div class="ons-grid__col ons-col-auto ons-u-mt-m">
-    {{ btn.internal("Indicator Tools", url_for('indicator_bp.indicator_calculators') ~ '#' ~ topic_id,
-    "ons-btn--secondary" ) }}
+    {{ btn.external('CRAN Package Page', cran_package_url, "ons-btn--secondary") }}
+  </div>
+    <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.internal("Indicator Tools", url_for('data_bp.indicator_calculators') ~ '#' ~ topic_id) }}
   </div>
 </div>
 {# ACCORDION TWO #}
+<h2 class="ons-u-fs-l ons-u-mt-xl">FAQs</h2>
 <!-- prettier-ignore -->
 {{ acc.accordion_start(id=topic_id ~ "-accordion-two",
 group=topic_id ~ "-accordion-two",
 toggle_text_open="Show all FAQs",
 toggle_text_close="Hide all FAQs") }}
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 1, "What is the relevance of statistics on diarrhea attributable to extreme temperature and extreme rainfall?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    Diarrheal diseases are a key indicator of climate-sensitive waterborne health outcomes. Exposure
-    to extreme temperatures and rainfall can influence diarrhea risk through multiple pathways,
-    including pathogen survival and replication, water contamination, overload of sanitation systems,
-    and changes in hygiene behaviour.
-  </p>
-  <p class="ons-u-fs-r">
-    These indicators estimate the burden of diarrhea associated with climate conditions that increase
-    or decrease risk at a monthly time scale, supporting climate adaptation planning, WASH
-    interventions, and public health decision-making. Diarrhea risk is influenced by multiple
-    interacting factors, and extreme temperatures and rainfall represent one component of this broader
-    system.
-  </p>
-{% endcall %}
-<!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "How are extreme temperature and extreme rainfall defined for this indicator?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    In the analysis, extreme temperature refers to the monthly maximum temperature, while extreme
-    rainfall refers to the cumulative monthly rainfall. Extreme conditions are identified using
-    relative risk (RR) rather than percentile-based thresholds. Months where RR > 1 are considered
-    harmful, meaning the temperature or rainfall conditions are associated with increased diarrhea
-    risk, while RR < 1 indicates protective conditions with lower risk.
-  </p>
-  <p class="ons-u-fs-r">
-    The relative risk is estimated from a statistical model linking monthly diarrhea incidence to
-    monthly maximum temperature and cumulative rainfall. Extremes, therefore, reflect health-relevant
-    risk conditions, rather than rare values in the climate distribution. See Topic introduction for
-    more details.
-  </p>
-{% endcall %}
-<!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "Are these direct counts of diarrhea cases caused by temperature or rainfall?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    No. These are model-based attribution estimates, not direct observations of climate-caused
-    diarrhea cases. The analysis models the association between monthly diarrhea counts and monthly
-    maximum temperature and cumulative rainfall, while accounting for delayed and cumulative effects,
-    and spatiotemporal variability at the monthly scale.
-  </p>
-{% endcall %}
-<!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "What does “attributable to extreme temperature or extreme rainfall” mean?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    “Attributable” refers to the estimated number, rate, or fraction of diarrhea cases associated with
-    months in which climate conditions increase risk. In this analysis, attribution is calculated only
-    for months with a relative risk (RR) greater than 1, indicating harmful temperature or rainfall
-    conditions. It represents the portion of the diarrhea burden that would not have occurred in the
-    absence of these risk-increasing climate conditions, as estimated from the modeled
-    exposure–response relationship.
-  </p>
-{% endcall %}
-<!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "What statistical methods are used to estimate diarrhea attributable to extreme temperature and extreme rainfall?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    The analysis uses a spatiotemporal Bayesian model combined with a Distributed Lag Nonlinear Model
-    (DLNM). The DLNM captures both nonlinear and delayed effects of climate on monthly diarrhea
-    counts, while the Bayesian framework accounts for spatial and temporal correlations.
-  </p>
-  <p class="ons-u-fs-r">
-    This combination enables robust estimates of relative risk and attributable burden across multiple
-    locations over time using the R-INLA package. Depending on the dataset size and spatial coverage,
-    running the model can take 3 to 5 minutes.
-  </p>
-{% endcall %}
-<!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "How reliable are the estimates that are produced?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    The reliability of these estimates depends on the quality of monthly diarrhea case data, the
-    representativeness of monthly maximum temperature and cumulative rainfall, and the strength of the
-    modeled climate–diarrhea relationship.
-  </p>
-  <p class="ons-u-fs-r--b">Reliability is strengthened because the model can:</p>
-  <ul class="ons-list">
-    <li class="ons-list__item list-disc">
-      Borrow strength across space and time, producing more stable estimates in areas or months with
-      low case counts.
-    </li>
-    <li class="ons-list__item list-disc">
-      Capture delayed and nonlinear effects of temperature and rainfall on diarrhea risk, reflecting
-      cumulative or lagged impacts rather than only immediate associations.
-    </li>
-    <li class="ons-list__item list-disc">
-      Account for spatial and temporal correlations, recognizing that diarrhea risk is related across
-      neighboring regions and adjacent months.
-    </li>
-    <li class="ons-list__item list-disc">
-      Quantify uncertainty rigorously through credible intervals, which incorporate variability from
-      the data, model structure, and parameter estimation.
-    </li>
-  </ul>
-  <p class="ons-u-fs-r">
-    While this approach improves robustness compared with raw counts alone, users should still
-    interpret results cautiously, particularly at sub-national scales or for smaller populations.
-    Detailed methodological limitations are described in {{ link.external_link('https://zenodo.org/records/14871507', 'waterborne disease and water-related
-     illnesses: methodology.') }}
-  </p>
-{% endcall %}
-<!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "Are estimates available for locations or populations most at risk?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    Yes, waterborne diarrhea indicators are produced at multiple spatial levels, including national,
-    regional, and district scales, and for key sub-populations such as children under five years of
-    age.
-  </p>
-  <p class="ons-u-fs-r">
-    Estimates for the under-five population are considered reliable because diarrhea incidence is
-    higher in this group, providing sufficient data for stable modeling. As with all analyses,
-    uncertainty intervals (credible intervals) should still be considered when interpreting results,
-    particularly at finer spatial scales.
-  </p>
-{% endcall %}
-<!-- prettier-ignore -->
-{{ acc.accordion_end() }}
-<p class="ons-u-fs-r ons-u-mt-l">
-  For broader questions that apply across the platform, please see our{{ link.internal_link(url_for('main_bp.faqs') , 'General FAQs' ) }}section.
-</p>
-{# RELATED TOPICS #}
-<h2 class="ons-u-fs--l ons-u-mt-xl">Related Topics</h2>
-<div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
-  <!-- prettier-ignore -->
-    {{ cards.relevant_pages("Temperature related health effects", "", [], "icons/temperature_related_illness.svg", title_href=url_for('indicator_bp.framework') ~ '#heat-and-cold', img_width=200, img_height=200, img_alt='Heat and cold icon') }}
-  <!-- prettier-ignore -->
-    {{ cards.relevant_pages("Health effects of extreme weather events - Flooding", "", [], "icons/extreme_weather.svg", title_href=url_for('indicator_bp.framework') ~ '#flooding-tab', img_width=200, img_height=200, img_alt='Flooding icon') }}
-</div>
-<h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 1, "What is the relevance of statistics on diarrhea attributable
+to extreme temperature and extreme rainfall?", title_level=3) %}
 <p class="ons-u-fs-r">
-  The waterborne disease and water-related illnesses topic expert group was set up to review this
-  topic and guide what we measure and how we measure it. The group brings together internal and
-  external specialists who advise on indicators and methods, share subject knowledge so we build on
-  existing work and good practice, and help quality assure draft outputs before publication.
+  Diarrheal diseases are a key indicator of climate-sensitive waterborne health outcomes. Exposure
+  to extreme temperatures and rainfall can influence diarrhea risk through multiple pathways,
+  including pathogen survival and replication, water contamination, overload of sanitation systems,
+  and changes in hygiene behaviour.
 </p>
+<p class="ons-u-fs-r">
+  These indicators estimate the burden of diarrhea associated with climate conditions that increase
+  or decrease risk at a monthly time scale, supporting climate adaptation planning, WASH
+  interventions, and public health decision-making. Diarrhea risk is influenced by multiple
+  interacting factors, and extreme temperatures and rainfall represent one component of this broader
+  system.
+</p>
+{% endcall %}
 <!-- prettier-ignore -->
-{% set team_members = [
-  {
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "How are extreme temperature and extreme rainfall defined for
+this indicator?", title_level=3) %}
+<p class="ons-u-fs-r">
+  In the analysis, extreme temperature refers to the monthly maximum temperature, while extreme
+  rainfall refers to the cumulative monthly rainfall. Extreme conditions are identified using
+  relative risk (RR) rather than percentile-based thresholds. Months where RR > 1 are considered
+  harmful, meaning the temperature or rainfall conditions are associated with increased diarrhea
+  risk, while RR < 1 indicates protective conditions with lower risk. </p>
+    <p class="ons-u-fs-r">
+      The relative risk is estimated from a statistical model linking monthly diarrhea incidence to
+      monthly maximum temperature and cumulative rainfall. Extremes, therefore, reflect health-relevant
+      risk conditions, rather than rare values in the climate distribution. See {{
+      link.external_link('https://doi.org/10.5281/zenodo.14051904', 'Topic introduction') }} for
+      more details.
+    </p>
+    {% endcall %}
+    <!-- prettier-ignore -->
+    {% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "Are these direct counts of diarrhea cases caused by
+    temperature or rainfall?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      No. These are model-based attribution estimates, not direct observations of climate-caused
+      diarrhea cases. The analysis models the association between monthly diarrhea counts and monthly
+      maximum temperature and cumulative rainfall, while accounting for delayed and cumulative effects,
+      and spatiotemporal variability at the monthly scale.
+    </p>
+    {% endcall %}
+    <!-- prettier-ignore -->
+    {% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "What does “attributable to extreme temperature or
+    extreme rainfall” mean?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      “Attributable” refers to the estimated number, rate, or fraction of diarrhea cases associated with
+      months in which climate conditions increase risk. In this analysis, attribution is calculated only
+      for months with a relative risk (RR) greater than 1, indicating harmful temperature or rainfall
+      conditions. It represents the portion of the diarrhea burden that would not have occurred in the
+      absence of these risk-increasing climate conditions, as estimated from the modeled
+      exposure–response relationship.
+    </p>
+    {% endcall %}
+    <!-- prettier-ignore -->
+    {% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "What statistical methods are used to estimate diarrhea
+    attributable to extreme temperature and extreme rainfall?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      The analysis uses a spatiotemporal Bayesian model combined with a Distributed Lag Nonlinear Model
+      (DLNM). The DLNM captures both nonlinear and delayed effects of climate on monthly diarrhea
+      counts, while the Bayesian framework accounts for spatial and temporal correlations.
+    </p>
+    <p class="ons-u-fs-r">
+      This combination enables robust estimates of relative risk and attributable burden across multiple
+      locations over time using the R-INLA package. Depending on the dataset size and spatial coverage,
+      running the model can take 3 to 5 minutes.
+    </p>
+    {% endcall %}
+    <!-- prettier-ignore -->
+    {% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "How reliable are the estimates that are produced?",
+    title_level=3) %}
+    <p class="ons-u-fs-r">
+      The reliability of these estimates depends on the quality of monthly diarrhea case data, the
+      representativeness of monthly maximum temperature and cumulative rainfall, and the strength of the
+      modeled climate–diarrhea relationship.
+    </p>
+    <p class="ons-u-fs-r">Reliability is strengthened because the model can:</p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">
+        borrow strength across space and time, producing more stable estimates in areas or months with
+        low case counts
+      </li>
+      <li class="ons-list__item list-disc">
+        capture delayed and nonlinear effects of temperature and rainfall on diarrhea risk, reflecting
+        cumulative or lagged impacts rather than only immediate associations
+      </li>
+      <li class="ons-list__item list-disc">
+        account for spatial and temporal correlations, recognizing that diarrhea risk is related across
+        neighboring regions and adjacent months
+      </li>
+      <li class="ons-list__item list-disc">
+        quantify uncertainty rigorously through credible intervals, which incorporate variability from
+        the data, model structure, and parameter estimation
+      </li>
+    </ul>
+    <p class="ons-u-fs-r">
+      While this approach improves robustness compared with raw counts alone, users should still
+      interpret results cautiously, particularly at sub-national scales or for smaller populations.
+      Detailed methodological limitations are described in {{
+      link.external_link('https://doi.org/10.5281/zenodo.14871506', 'waterborne disease and water-related
+      illnesses: methodology.') }}
+    </p>
+    {% endcall %}
+    <!-- prettier-ignore -->
+    {% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "Are estimates available for locations or populations
+    most at risk?", title_level=3) %}
+    <p class="ons-u-fs-r">
+      Yes, waterborne diarrhea indicators are produced at multiple spatial levels, including national,
+      regional, and district scales, and for key sub-populations such as children under five years of
+      age.
+    </p>
+    <p class="ons-u-fs-r">
+      Estimates for the under-five population are considered reliable because diarrhea incidence is
+      higher in this group, providing sufficient data for stable modeling. As with all analyses,
+      uncertainty intervals (credible intervals) should still be considered when interpreting results,
+      particularly at finer spatial scales.
+    </p>
+    {% endcall %}
+    <!-- prettier-ignore -->
+    {{ acc.accordion_end() }}
+    <p class="ons-u-fs-r ons-u-mt-l">
+      For broader questions that apply across the platform, please see our {{ link.internal_link(url_for('main_bp.faqs')
+      , 'General FAQs' ) }}section.
+    </p>
+    {# RELATED TOPICS #}
+    <h2 class="ons-u-fs-l ons-u-mt-xl">Related Topics</h2>
+    <div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
+      <!-- prettier-ignore -->
+      {{ cards.relevant_pages("Temperature related health effects", "", [], "icons/temperature_related_illness.svg",
+      title_href=url_for('data_bp.framework') ~ '#heat-and-cold', img_width=200, img_height=200, img_alt='Heat and cold
+      icon') }}
+      <!-- prettier-ignore -->
+      {{ cards.relevant_pages("Health effects of extreme weather events - Flooding", "", [],
+      "icons/extreme_weather.svg", title_href=url_for('data_bp.framework') ~ '#flooding-tab', img_width=200,
+      img_height=200, img_alt='Flooding icon') }}
+    </div>
+    <h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
+    <p class="ons-u-fs-r">
+      The waterborne disease and water-related illnesses topic expert group was set up to review this
+      topic and guide what we measure and how we measure it. The group brings together internal and
+      external specialists who advise on indicators and methods, share subject knowledge so we build on
+      existing work and good practice, and help quality assure draft outputs before publication.
+    </p>
+    <!-- prettier-ignore -->
+    {% set team_members = [
+    {
     "name": "Dr. Anna Freni Sterrantino",
     "company": "The Alan Turing Institute, UK"
-  },
-  {
+    },
+    {
     "name": "Dr. Kanza Ahmed",
     "company": "UK Health Security Agency"
-  },
-  {
+    },
+    {
     "name": "Prof. Masahiro Hashizume",
     "company": "University of Tokyo, Japan"
-  },
-  {
+    },
+    {
     "name": "Dr. Monica Pirani",
     "company": "Imperial College London, UK"
-  },
-  {
+    },
+    {
     "name": "Dr. Rick Johnston",
     "company": "World Health Organisation"
-  }
-] %}
-<!-- prettier-ignore -->
-{% set team_list_id = "ons-meet-the-team-" ~ topic_id ~ "-list" %}
-{# TEAM CARDS #}
-{% set members_count = team_members | length %}
-<div class="ons-team-cards ons-u-mt-xl"
-     role="region"
-     aria-label="{{ title }} team"
-     data-js="ons-team-cards">
-  <ul id="{{ team_list_id }}"
-      class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
-      data-js="ons-team-cards-list">
-    {% for member in team_members %}
-      <li class="ons-team-cards__item flex items-end">
-        <div class="ons-card">
-          <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
-          {% if member.company %}<p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>{% endif %}
-        </div>
-      </li>
-    {% endfor %}
-  </ul>
-  <button type="button"
-          class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
-          aria-label="Show next team members"
-          aria-controls="{{ team_list_id }}"
-          data-js="ons-team-cards-next">
-    <svg class="ons-icon"
-         viewBox="0 0 12 12"
-         xmlns="http://www.w3.org/2000/svg"
-         focusable="false"
-         aria-hidden="true"
-         role="img">
-      <path d="M4 2.5L8 6L4 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  </button>
-</div>
-{# CLOSING TEXT - FINAL #}
-<div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l headline-indicators__two">
-  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-  <div class="ons-panel__body">
-    <p class="ons-u-fs-r">
-      The framework topic documents are a final version produced as part of the SOSCHI project
-      (Wellcome grant no. 224682/Z/21/Z). Please note that as this is an emerging topic area,
-      indicators and methods are subject to change. Notices will be issued on this page to inform
-      users of any changes to the information captured.
-    </p>
-    <p class="ons-u-fs-r">
-      For more information on the selection criteria used for prioritising the SOSCHI topics and the
-      development process, see the{{ link.internal_link(url_for('indicator_bp.framework') , 'SOSCHI
-      Framework Page' ) }}.
-    </p>
-    <p class="ons-u-fs-r">
-      We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
-      page can be used for official statistics reporting. See the{{ link.internal_link(url_for('indicator_bp.framework') , 'SOSCHI Framework Page' ) }}for information
-      on the endorsement of the proposed indicators.
-    </p>
-  </div>
-</div>
-{# LAST UPDATED #}
-<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 28/02/2025</p>
+    }
+    ] %}
+    <!-- prettier-ignore -->
+    {% set team_list_id = "ons-meet-the-team-" ~ topic_id ~ "-list" %}
+    {# TEAM CARDS #}
+    {% set members_count = team_members | length %}
+    <div class="ons-team-cards ons-u-mt-xl" role="region" aria-label="{{ title }} team" data-js="ons-team-cards">
+      <ul id="{{ team_list_id }}" class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
+        data-js="ons-team-cards-list">
+        {% for member in team_members %}
+        <li class="ons-team-cards__item flex items-end">
+          <div class="ons-card">
+            <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
+            {% if member.company %}<p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>{% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <button type="button"
+        class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
+        aria-label="Show next team members" aria-controls="{{ team_list_id }}" data-js="ons-team-cards-next">
+        <svg class="ons-icon" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" focusable="false"
+          aria-hidden="true" role="img">
+          <path d="M4 2.5L8 6L4 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+    {# CLOSING TEXT - FINAL #}
+    <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l headline-indicators__two">
+      <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+      <div class="ons-panel__body">
+        <p class="ons-u-fs-r">
+          The framework topic documents are a final version produced as part of the SOSCHI project
+          (Wellcome grant no. 224682/Z/21/Z). Please note that as this is an emerging topic area,
+          indicators and methods are subject to change. Notices will be issued on this page to inform
+          users of any changes to the information captured.
+        </p>
+        <p class="ons-u-fs-r">
+          For more information on the selection criteria used for prioritising the SOSCHI topics and the
+          development process, see the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI
+          Framework Page' ) }}.
+        </p>
+        <p class="ons-u-fs-r">
+          We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
+          page can be used for official statistics reporting. See the{{ link.internal_link(url_for('data_bp.framework')
+          , 'SOSCHI Framework Page' ) }}for information
+          on the endorsement of the proposed indicators.
+        </p>
+      </div>
+    </div>
+    {# LAST UPDATED #}
+    <p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 30/04/2026</p>

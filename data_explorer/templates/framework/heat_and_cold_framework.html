@@ -6,6 +6,8 @@
 {% import "macros/external_link.html" as link %}
 {% set title = "Temperature-related health effects" %}
 {% set topic_id = "heat-and-cold" %}
+{% set cran_package_url = "https://CRAN.R-project.org/package=climatehealth" %}
+{% set github_url = "https://github.com/onssoschi/climatehealth" %}
 {# TITLE #}
 <h1 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h1>
 {# INTRO PARAGRAPH #}
@@ -25,28 +27,48 @@
     </p>
   </div>
 </div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">UN endorsement:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">UN endorsement</h5>
+    <p class="ons-u-fs-r">
+      The methods for measuring the headline outcome indicator for this topic were endorsed by the 57th United Nations
+      Statistical Commission to
+      include in the Global Set of Climate Change Statistics and Indicators (see decision 57/109 (b)
+      in the {{
+      link.external_link('https://unstats.un.org/UNSDWebsite/statcom/session_57/documents/2026-35-FinalReport-EE.pdf',
+      'Final Report') }}).
+      This will be included in the {{ link.external_link('https://unstats.un.org/unsd/envstats/climatechange.cshtml',
+      'Global Set') }} metadata as:
+    </p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">Indicator 45: Incidence of heat and cold related illnesses or excess mortality: <br>
+        45.1 Mortality from all causes attributable to (a) heat and (b) cold</li>
+    </ul>
+  </div>
+</div>
 {# BUTTONS ONE (TOPIC INTRO, METHODOLOGY, METADATA) #}
 <!-- prettier-ignore -->
 {% set buttons = [
-  {
-    "text": "Topic Introduction",
-    "href": "https://zenodo.org/records/14051796",
-    "classes": ""
-  },
-  {
-    "text": "Methodology",
-    "href": "https://doi.org/10.5281/zenodo.14865904",
-    "classes": "ons-btn--secondary"
-  },
-  {
-    "text": "Metadata",
-    "href": "https://doi.org/10.5281/zenodo.14870335",
-    "classes": ""
-  }
+{
+"text": "Topic Introduction",
+"href": "https://doi.org/10.5281/zenodo.14051795",
+"classes": ""
+},
+{
+"text": "Methodology",
+"href": "https://doi.org/10.5281/zenodo.14865904",
+"classes": "ons-btn--secondary"
+},
+{
+"text": "Metadata",
+"href": "https://doi.org/10.5281/zenodo.14870335",
+"classes": ""
+}
 ] %}
 <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
   {% for button in buttons %}
-    <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
   {% endfor %}
 </div>
 {# ACCORDION ONE #}
@@ -55,313 +77,369 @@
 group=topic_id ~ "-accordion",) }}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 1, "Impact Pathway", title_level=3) %}
-  {{ image.image(image_name='framework-heat-and-cold.png', width='100%', alt="Diagram showing pathways between climate change and temperature-related health impacts. At the top left, climate drivers and hazards include increased frequency and intensity of extreme temperatures which lead to heatwaves and cold spells. At the top right, exposure and vulnerability include direct or repeated climate hazard exposure and socio-economic factors such as age, gender, occupation and pre-existing health conditions. These factors interact and flow downward toward physiological impacts and health outcomes. Physiological impacts include heat dissipating mechanisms being negatively impacted due to heat, and heat retaining mechanisms negatively impacted due to cold. Health outcomes are caused or exacerbated by high and low temperatures, and mortality risk increases are temperatures become more extreme. Adaptation and mitigation measures—such as temperature-related warning systems to support health and social care systems, or nature-based solutions such as urban forests and green infrastructure to facilitate cooling—are shown intervening to reduce negative impacts.") }}
+{{ image.image(image_name='framework-heat-and-cold.png', width='100%', alt="Diagram showing pathways between climate
+change and temperature-related health impacts. At the top left, climate drivers and hazards include increased frequency
+and intensity of extreme temperatures which lead to heatwaves and cold spells. At the top right, exposure and
+vulnerability include direct or repeated climate hazard exposure and socio-economic factors such as age, gender,
+occupation and pre-existing health conditions. These factors interact and flow downward toward physiological impacts and
+health outcomes. Physiological impacts include heat dissipating mechanisms being negatively impacted due to heat, and
+heat retaining mechanisms negatively impacted due to cold. Health outcomes are caused or exacerbated by high and low
+temperatures, and mortality risk increases are temperatures become more extreme. Adaptation and mitigation measures—such
+as temperature-related warning systems to support health and social care systems, or nature-based solutions such as
+urban forests and green infrastructure to facilitate cooling—are shown intervening to reduce negative impacts.") }}
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicators", title_level=3) %}
-  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r">
-        The priority indicator developed for this topic is all-cause mortality attributable to high
-        and low temperatures.
-      </p>
-    </div>
+{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicator", title_level=3) %}
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      The priority indicator developed for this topic is all-cause mortality attributable to high
+      and low temperatures.
+    </p>
   </div>
-  <p class="ons-u-fs-r ons-u-mt-m">There are two main aims of this indicator:</p>
-  <ul class="ons-list">
-    <li class="ons-list__item list-disc">
-      To allow users to estimate the relationship between temperature and mortality using historical
-      data records.
-    </li>
-    <li class="ons-list__item list-disc">
-      To allow users to produce modelled estimates of the impact of high and low temperatures on
-      mortality.
-    </li>
-  </ul>
-  <p class="ons-u-fs-r">
-    Further justification for the focus on this indicator is explained in the Topic introduction,
-    which also outlines supplementary and additional indicators that are not in scope for the current
-    SOSCHI framework but are recommended for future development.
-  </p>
-  <div class="ons-panel ons-panel--info ons-panel--no-title">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r">Number of deaths attributable to high and low temperatures</p>
-    </div>
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">There are two main aims of this indicator:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    to allow users to estimate the relationship between temperature and mortality using historical
+    data records
+  </li>
+  <li class="ons-list__item list-disc">
+    to allow users to produce modelled estimates of the impact of high and low temperatures on
+    mortality
+  </li>
+</ul>
+<p class="ons-u-fs-r">
+  Further justification for the focus on this indicator is explained in the {{
+  link.external_link('https://doi.org/10.5281/zenodo.14051795', 'Topic introduction') }},
+  which also outlines supplementary and additional indicators that are not in scope for the current
+  SOSCHI framework but are recommended for future development.
+</p>
+<p class="ons-u-fs-r">
+  The indicator has four component parts:
+</p>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">Relative risk for the temperature-mortality association</p>
   </div>
-  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r">Relative risk for the temperature-mortality association</p>
-    </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">Attributable number as the number of deaths attributable to high and low temperatures</p>
   </div>
-  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__two">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r">Percentage of deaths attributable to high and low temperatures</p>
-    </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__two">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">Attributable fraction as the percentage of deaths attributable to high and low temperatures
+    </p>
   </div>
-  <div class="ons-panel ons-panel--info ons-panel--no-title">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r">Number of deaths per 100,000 population attributable to high and low temperatures</p>
-    </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">Attributable rate as the number of deaths per 100,000 population attributable to high and low
+      temperatures</p>
   </div>
-  <p class="ons-u-fs-r ons-u-mt-m">
-    For guidance on the process for calculating these indicator metrics, see the Methodology section
-    below.
-  </p>
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">
+  For guidance on the process for calculating these indicator metrics, see the Methodology section
+  below.
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 3, "Sub-indicator", title_level=3) %}
-  <div class="ons-panel ons-panel--info ons-panel--no-title">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <p class="ons-u-fs-r">
-        This methodology also covers the following sub-indicator which specifies the underlying cause
-        of death: Non-communicable disease (NCD) mortality attributable to high and low temperatures
-        and produces the same outputs as the headline indicator noted above
-      </p>
-    </div>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <p class="ons-u-fs-r">
+      This methodology also covers the following sub-indicator which specifies the underlying cause
+      of death: Non-communicable disease (NCD) mortality attributable to high and low temperatures
+      and produces the same outputs as the headline indicator noted above.
+    </p>
   </div>
-  <p class="ons-u-fs-r ons-u-mt-m">
-    The interaction between climate change and health is especially evident in the growing burden of
-    NCDs, which are further exacerbated by environmental shifts.
-  </p>
-  <p class="ons-u-fs-r">
-    Table 1 of the methodology document specifies codes for underlying cause of death related to NCDs
-    as captured in the SOSCHI NCD Topic Introduction document. These codes refer to the WHO
-    International Classification of Diseases, 10th edition {{ link.external_link('https://icd.who.int/browse10/2019/en', '(ICD-10)') }} or 11th edition {{ link.external_link('https://icd.who.int/browse/2025-01/mms/en', '(ICD-11)') }}. These codes
-    represent the underlying cause of death, which in many countries is the only health condition
-    reported from death registration.
-  </p>
-  <p class="ons-u-fs-r">NCDs was previously a separate topic in the SOSCHI framework.</p>
-  <!-- prettier-ignore -->
-  {{ btn.external('Topic Introduction', 'https://zenodo.org/records/14051506', 'ons-u-mb-m ons-u-mt-m') }}
+</div>
+<p class="ons-u-fs-r ons-u-mt-m">
+  The interaction between climate change and health is especially evident in the growing burden of
+  NCDs, which are further exacerbated by environmental shifts.
+</p>
+<p class="ons-u-fs-r">
+  Table 1 of the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'methodology document ') }} 
+  specifies codes for underlying cause of death related to NCDs
+  as captured in the SOSCHI NCD Topic Introduction document. These codes refer to the WHO
+  International Classification of Diseases, 10th edition {{ link.external_link('https://icd.who.int/browse10/2019/en',
+  '(ICD-10)') }} or 11th edition {{ link.external_link('https://icd.who.int/browse/2025-01/mms/en', '(ICD-11)') }}.
+  These codes
+  represent the underlying cause of death, which in many countries is the only health condition
+  reported from death registration.
+</p>
+<p class="ons-u-fs-r">NCDs was previously a separate topic in the SOSCHI framework.</p>
+<!-- prettier-ignore -->
+{{ btn.external('Topic Introduction', 'https://doi.org/10.5281/zenodo.14051795', 'ons-u-mb-m ons-u-mt-m') }}
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 4, "Policy Relevance", title_level=3) %}
-  <p class="ons-u-fs-r">
-    This indicator can give insights into how high and low temperature days may be impacting physical
-    health and how this may vary geographically and impact vulnerable groups in society.
-  </p>
-  <p class="ons-u-fs-r--b">This indicator can therefore:</p>
-  <ul class="ons-list">
-    <li class="ons-list__item list-disc">Inform national adaptation plans (NAPs) and targeted resilience strategies.</li>
-    <li class="ons-list__item list-disc">
-      Guide climate and public health policy to help mitigate risks and improve health outcomes
-    </li>
-  </ul>
+<p class="ons-u-fs-r">
+  This indicator can give insights into how high and low temperature days may be impacting physical
+  health and how this may vary geographically and impact vulnerable groups in society.
+</p>
+<p class="ons-u-fs-r">This indicator can therefore:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    inform national adaptation plans (NAPs) and targeted resilience strategies
+  </li>
+  <li class="ons-list__item list-disc">
+    guide climate and public health policy to help mitigate risks and improve health outcomes
+  </li>
+</ul>
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 5, "Methodology", title_level=3) %}
-  <p class="ons-u-fs-r">
-    The indicator quantifies the short-term impacts of high and low temperatures on mortality using a
-    quasi-Poisson time series regression with a distributed lag non-linear model (DLNM). This model
-    accounts for both the delayed health effects seen after the occurrence of a high or low
-    temperature day, and the non-linear relationship between temperature and mortality i.e., mortality
-    risk increases as temperatures become more extreme.
-  </p>
-  <p class="ons-u-fs-r">
-    The model estimates the temperature–mortality relationship, relative to the lowest risk
-    temperature i.e., the minimum mortality temperature. When multiple geographies are analysed, the
-    results are combined using a multivariate meta-analysis to strengthen estimates and produce
-    results for the combined geographical area e.g., national level.
-  </p>
-  <div class="ons-panel ons-panel--info ons-panel--no-title">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <h5 class="ons-u-fs-r--b">Understand the method</h5>
-      <p class="ons-u-fs-r">
-        Read the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'Temperature-related
-         health effects: methodology') }} for details on the modelling approach, the data needed, and
-        guidance on interpreting results.
-      </p>
-    </div>
+<p class="ons-u-fs-r">
+  The indicator quantifies the short-term impacts of high and low temperatures on mortality using a
+  quasi-Poisson time series regression with a distributed lag non-linear model (DLNM). This model
+  accounts for both the delayed health effects seen after the occurrence of a high or low
+  temperature day, and the non-linear relationship between temperature and mortality i.e. mortality
+  risk increases as temperatures become more extreme.
+</p>
+<p class="ons-u-fs-r">
+  The model estimates the temperature–mortality relationship, relative to the lowest risk
+  temperature i.e. the minimum mortality temperature. When multiple geographies are analysed, the
+  results are combined using a multivariate meta-analysis to strengthen estimates and produce
+  results for the combined geographical area e.g. national level.
+</p>
+<div class="ons-panel ons-panel--info ons-panel--no-title">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Understand the method</h5>
+    <p class="ons-u-fs-r">
+      Read the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'Mortality attributable to high and low
+      temperatures: methodology') }} for details on the modelling approach, the data needed, and
+      guidance on interpreting results.
+    </p>
   </div>
-  <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <h5 class="ons-u-fs-r--b">Develop bespoke analyses</h5>
-      <p class="ons-u-fs-r">
-        For flexible, reproducible analysis or to adapt methods to your country or region, use the
-        Code Library and R package, which provides program code for the priority indicators.
-      </p>
-    </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Develop bespoke analysis</h5>
+    <p class="ons-u-fs-r">
+      For flexible, reproducible analysis or to adapt methods to your country or region, use the
+      {{ link.internal_link(url_for('main_bp.r_package'), 'R package') }}, which provides program code for the priority
+      indicators.
+    </p>
   </div>
-  <div class="ons-panel ons-panel--no-title ons-panel--info headline-indicators__two ons-u-mb-m">
-    <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
-    <div class="ons-panel__body">
-      <h5 class="ons-u-fs-r--b">No-code option for indicator analysis</h5>
-      <p class="ons-u-fs-r">
-        Use the Indicator tool if you want quick baseline estimates and simple charts without writing
-        code; it supports secure temporary uploads and downloadable outputs.
-      </p>
-    </div>
+</div>
+<div class="ons-panel ons-panel--no-title ons-panel--info headline-indicators__two ons-u-mb-m">
+  <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">Online tools for indicator analysis</h5>
+    <p class="ons-u-fs-r">
+      Tools for selected indicators are in development. These will allow users to run quick baseline estimates and
+      simple charts without writing code;
+      it supports secure temporary uploads and downloadable outputs.
+    </p>
   </div>
+</div>
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 6, "Data Requirements and Guidance", title_level=3) %}
-  <p class="ons-u-fs-r--b">This indicator requires:</p>
-  <ul class="ons-list">
-    <li class="ons-list__item list-disc">Daily mortality data from national administrative records</li>
-    <li class="ons-list__item list-disc">Population estimates from national statistical agencies</li>
-    <li class="ons-list__item list-disc">
-      Daily mean temperature and other optional climatic variables from government meteorological
-      offices
-    </li>
-  </ul>
-  <p class="ons-u-fs-r ons-u-mt-m">
-    Where this data is unavailable or observations are incomplete, proxy datasets may be used. Further
-    information on these potential sources as well as required variable names and formats are outlined
-    in section 2 of the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904',
-     'Temperature-related health effects: methodology') }}
-  </p>
+<p class="ons-u-fs-r">This indicator requires:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    daily mortality data from national administrative records
+  </li>
+  <li class="ons-list__item list-disc">
+    population estimates from national statistical agencies
+  </li>
+  <li class="ons-list__item list-disc">
+    daily mean temperature and other optional climatic variables from government meteorological
+    offices
+  </li>
+</ul>
+<p class="ons-u-fs-r ons-u-mt-m">
+  Where data points are missing, proxy datasets may be used as recommended in section 2.2 of {{
+  link.external_link('https://doi.org/10.5281/zenodo.14865904', 'Mortality attributable to high and low temperatures: methodology') }}. 
+  Guidance on required variables and how to prepare the dataset can also be found in section 2.3 and 3.2.
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
 {{ acc.accordion_end() }}
-{# BUTTONS TWO (CODE LIBRARY, INDICATOR TOOLS) #}
+{# BUTTONS THREE (R PACKAGE GITHUB, CRAN, INDICATOR TOOLS) #}
 <div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
   <div class="ons-grid__col ons-col-auto ons-u-mt-m">
-    {{ btn.external('Code Library', 'https://github.com/onssoschi/climatehealth') }}
+    {{ btn.external('Climatehealth GitHub', github_url) }}
   </div>
   <div class="ons-grid__col ons-col-auto ons-u-mt-m">
-    {{ btn.internal("Indicator Tools", url_for('indicator_bp.indicator_calculators') ~ '#' ~ topic_id,
-    "ons-btn--secondary" ) }}
+    {{ btn.external('CRAN Package Page', cran_package_url, "ons-btn--secondary") }}
+  </div>
+    <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.internal("Indicator Tools", url_for('data_bp.indicator_calculators') ~ '#' ~ topic_id) }}
   </div>
 </div>
 {# ACCORDION TWO #}
+<h2 class="ons-u-fs-l ons-u-mt-xl">FAQs</h2>
 <!-- prettier-ignore -->
 {{ acc.accordion_start(id=topic_id ~ "-accordion-two",
 group=topic_id ~ "-accordion-two",
 toggle_text_open="Show all FAQs",
 toggle_text_close="Hide all FAQs") }}
 {% call acc.accordion_item(topic_id ~ "-accordion-two", 1, "How is the temperature-related health effects topic relevant?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    Climate change is leading to more frequent and extreme hazards that have direct and indirect
-    effects on populations. For example, increasingly high and low temperatures have been found to
-    show an impact on mortality risk.
-  </p>
+<p class="ons-u-fs-r">
+  Climate change is leading to more frequent and extreme hazards that have direct and indirect
+  effects on populations. For example, increasingly high and low temperatures have been found to
+  show an impact on mortality risk.
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "What insights can this indicator provide?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    The estimated change of mortality risk due to high or low outdoor temperatures, compared to the
-    lowest risk temperature for the area. It also estimates the number, rate and proportion of deaths
-    attributable to high or low temperatures, i.e., the number, rate or proportion of deaths that have
-    occurred due to high or low temperatures.
-  </p>
-  <p class="ons-u-fs-r">
-    The results can help identify which groups are most vulnerable at certain high or low
-    temperatures. This can help plan interventions to build resilience to mitigate the risks
-    associated with the changing temperature patterns.
-  </p>
-  <p class="ons-u-fs-r">See the methodology document for details on the indicator metrics.</p>
+<p class="ons-u-fs-r">
+  The estimated change of mortality risk due to high or low outdoor temperatures, compared to the
+  lowest risk temperature for the area. It also estimates the number, rate and proportion of deaths
+  attributable to high or low temperatures, i.e. the number, rate or proportion of deaths that have
+  occurred due to high or low temperatures.
+</p>
+<p class="ons-u-fs-r">
+  The results can help identify which groups are most vulnerable at certain high or low
+  temperatures. This can help plan interventions to build resilience to mitigate the risks
+  associated with the changing temperature patterns.
+</p>
+<p class="ons-u-fs-r">See the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'methodology document ') }} for details on the indicator metrics.</p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "How can I run the indicator analysis?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    Users can apply the methodology to their own daily temperature and mortality data to run a time
-    series model with our open-source R package on GitHub. Contact {{ link.internal_link(href='mailto:climate.health@ons.gov.uk', text='climate.health@ons.gov.uk') 
-    }}for access.
-  </p>
-  <p class="ons-u-fs-r">
-    Please see the {{ link.internal_link('/indicator_calculators#heat-and-cold"', 'Heat- and
-     cold-related mortality Indicator') }} for more detail.
-  </p>
+ {% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "Who can run this indicator analysis?", title_level=3) %}
+<p class="ons-u-fs-r">This indicator can be used by analysts who meet the following criteria:</p>
+<ul class="ons-list">
+  <li class="ons-list__item list-disc">
+    have access to daily mortality data and daily temperature data
+  </li>
+  <li class="ons-list__item list-disc">
+     have access to population estimates for the applicable geography/geographies or other disaggregated groups
+  </li>
+  <li class="ons-list__item list-disc">
+     have some understanding of how to interpret the indicator metrics, and can communicate 
+     uncertainty using statistical power, using guidance provided in section 4 of the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'methodology document ') }} 
+  </li>
+</ul>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "Can I use weekly or monthly data?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    Daily data provide the highest level of accuracy for this indicator. However, previously published
-    literature (see methodology document section 1 for more info and references) has demonstrated that
-    the method produces reasonable estimates with weekly data in the context of Europe. See section
-    2.2 of the methodology document for alternative data sources that can be used as proxy data. The
-    method is not applicable to monthly data.
-  </p>
-  <p class="ons-u-fs-r">
-    See section 2.2 of the methodology document for alternative data sources that can be used as proxy
-    data.
-  </p>
-  <p class="ons-u-fs-r">The method is not applicable to monthly data.</p>
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "How can I run the indicator analysis?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Users can apply the methodology to their own daily temperature and mortality data to run a time
+  series model with our open-source {{ link.internal_link(url_for('main_bp.r_package'), 'R package') }}
+  available on GitHub or CRAN.
+</p>
+<p class="ons-u-fs-r">
+  Please see the {{ link.internal_link('/r_package', 'Analysis pathways') }} guidance page for more detail.
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "What geographical level can I run the analysis for?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    The methodology can be applied to any geographical level e.g., national, local, but the power of
-    the data must be considered. The R package includes a function to produce this. Users should aim
-    for 80% power and document whether this has been achieved when communicating results (see FAQ 9).
-  </p>
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "Can I use weekly or monthly data?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Daily data provide the highest level of accuracy for this indicator. However, previously published
+  literature (see {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'methodology document ') }} section 1 for more info and references) has demonstrated that
+  the method produces reasonable estimates with weekly data in the context of Europe.
+</p>
+<p class="ons-u-fs-r">
+  See section 2.2 of the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'methodology document ') }} for alternative data sources that can be used as proxy
+  data.
+</p>
+<p class="ons-u-fs-r">The method is not applicable to monthly data.</p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "Can I disaggregate by different demographics?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    Yes, the data will need to be subset prior to running the analysis. E.g., including death count
-    columns for each age group. Users should consider whether their data has enough power to help
-    achieve more accurate results. The R package includes a function to produce this. Users should aim
-    for 80% power and document whether this has been achieved when communicating results (see FAQ 9).
-  </p>
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "What geographical level can I run the analysis for?",
+title_level=3) %}
+<p class="ons-u-fs-r">
+  The methodology can be applied to any geographical level e.g. national, local, but the power of
+  the data must be considered. The {{ link.internal_link(url_for('main_bp.r_package'), 'R package') }} includes a function to produce this. Users should aim
+  for 80% power and document whether this has been achieved when communicating results 
+  (See section 3.7 and 4 of {{link.external_link('https://doi.org/10.5281/zenodo.14865904',
+  'Mortality attributable to high and low temperatures: methodology') }}).
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "Why are the temperature percentile thresholds for high and low temperatures set at the 97.5th and 2.5th percentiles, respectively?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    These were set based on existing literature (see methodology document section 3.1 for more info
-    and references) and consultation with a group of climate and health international experts. These
-    are based on the temperature distribution over the whole time series provided for each
-    geographical area. These are the default settings, and we encourage users to apply these for
-    consistent official reporting. However, ussers can adjust these if other percentiles are more
-    relevant for their context.
-  </p>
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "Can I disaggregate by different demographics?",
+title_level=3) %}
+<p class="ons-u-fs-r">
+  Yes, the data will need to be subset prior to running the analysis e.g. including death count
+  columns for each age group. Users should consider whether their data has enough power to help
+  achieve more accurate results. The {{ link.internal_link(url_for('main_bp.r_package'), 'R package') }} includes a function to produce this. Users should aim
+  for 80% power and document whether this has been achieved when communicating results  (See section 3.7 and 4 of {{link.external_link('https://doi.org/10.5281/zenodo.14865904',
+  'Mortality attributable to high and low temperatures: methodology') }}).
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 8, "If global temperatures show an increasing trend, why does the indicator investigate cold temperatures too?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    Anthropogenic climate changes have affected weather and climate extremes in every region of the
-    globe. These are predicted to have impacts on both warming and cooling under future climate change
-    scenarios. Published estimates report approximately 489,075 heat-related deaths globally, between
-    2000-2019. However, a higher number of deaths have been estimated related to exposure to cold
-    temperatures, with estimations reaching approximately 4,594,098 cold-related deaths globally,
-    during the same period. However, the global rate of increased climate-related mortality from heat
-    is predicted to offset the rate of decrease in mortality from cold during the 21st Century. This
-    will lead to net mortality from high and low temperatures increasing.
-  </p>
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 8, "Why are the temperature percentile thresholds for high and
+low temperatures set at the 97.5th and 2.5th percentiles, respectively?", title_level=3) %}
+<p class="ons-u-fs-r">
+  These were set based on existing literature (see {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'methodology document ') }} section 3.1 for more info
+  and references) and consultation with a group of climate and health international experts. These
+  are based on the temperature distribution over the whole time series provided for each
+  geographical area. These are the default settings, and we encourage users to apply these for
+  consistent official reporting. However, users can adjust these if other percentiles are more
+  relevant for their context.
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 9, "How do I interpret the indicator analysis results?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    See section 4: communication and interpretation of the methodology document for guidance on
-    interpreting the indicator metrics outlined above.
-  </p>
-  <p class="ons-u-fs-r">
-    Also see sections 2.5 and 5 of the methodology document respectively to understand the data and
-    methodology limitations of the indicator.
-  </p>
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 9, "If global temperatures show an increasing trend, why does
+the indicator investigate cold temperatures too?", title_level=3) %}
+<p class="ons-u-fs-r">
+  Anthropogenic climate changes have affected weather and climate extremes in every region of the
+  globe. These are predicted to have impacts on both warming and cooling under future climate change
+  scenarios. Published estimates report approximately 489,075 heat-related deaths globally, between
+  2000-2019. However, a higher number of deaths have been estimated related to exposure to cold
+  temperatures, with estimations reaching approximately 4,594,098 cold-related deaths globally,
+  during the same period. However, the global rate of increased climate-related mortality from heat
+  is predicted to offset the rate of decrease in mortality from cold during the 21st Century. This
+  will lead to net mortality from high and low temperatures increasing.
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 10, "Are these direct counts of deaths caused by high and low temperatures?", title_level=3) %}
-  <p class="ons-u-fs-r">
-    No, these are estimates based on a statistical model and not observational. These are produced by
-    modelling the association between daily mortality counts and daily mean temperature. This
-    association is then used to estimate the attribution to high and low temperatures. As these are
-    modelled estimates there are uncertainty around the statistics that should be considered in any
-    interpretation of results.
-  </p>
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 10, "How do I interpret the indicator analysis results?",
+title_level=3) %}
+<p class="ons-u-fs-r">
+  See section 4: communication and interpretation of the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'methodology document ') }} for guidance on
+  interpreting the indicator metrics outlined above.
+</p>
+<p class="ons-u-fs-r">
+  Also see sections 2.5 and 5 of the {{ link.external_link('https://doi.org/10.5281/zenodo.14865904', 'methodology document ') }} respectively to understand the data and
+  methodology limitations of the indicator.
+</p>
+{% endcall %}
+<!-- prettier-ignore -->
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 11, "Are these direct counts of deaths caused by high and low
+temperatures?", title_level=3) %}
+<p class="ons-u-fs-r">
+  No, these are estimates based on a statistical model and not observational. These are produced by
+  modelling the association between daily mortality counts and daily mean temperature. This
+  association is then used to estimate the attribution to high and low temperatures. As these are
+  modelled estimates there are uncertainty around the statistics that should be considered in any
+  interpretation of results.
+</p>
 {% endcall %}
 <!-- prettier-ignore -->
 {{ acc.accordion_end() }}
 <p class="ons-u-fs-r ons-u-mt-l">
-  For broader questions that apply across the platform, please see our{{ link.internal_link(url_for('main_bp.faqs') , 'General FAQs' ) }}section.
+  For broader questions that apply across the platform, please see our {{ link.internal_link(url_for('main_bp.faqs'),
+  'General FAQs' ) }} section.
 </p>
 {# RELATED TOPICS #}
-<h2 class="ons-u-fs--l ons-u-mt-xl">Related Topics</h2>
+<h2 class="ons-u-fs-l ons-u-mt-xl">Related Topics</h2>
 <div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
   <!-- prettier-ignore -->
-    {{ cards.relevant_pages("Mental Health", "", [], "icons/mental_health.svg", title_href=url_for('indicator_bp.framework') ~ '#mental-health', img_width=200, img_height=200, img_alt='Mental health icon') }}
+  {{ cards.relevant_pages("Mental Health", "", [], "icons/mental_health.svg", title_href=url_for('data_bp.framework') ~
+  '#mental-health', img_width=200, img_height=200, img_alt='Mental health icon') }}
   <!-- prettier-ignore -->
-    {{ cards.relevant_pages("Vector-borne diseases", "", [], "icons/vector-borne_disease.svg", title_href=url_for('indicator_bp.framework') ~ '#vectorborne-diseases', img_width=200, img_height=200, img_alt='Vector-borne disease icon') }}
+  {{ cards.relevant_pages("Vector-borne diseases", "", [], "icons/vector-borne_disease.svg",
+  title_href=url_for('data_bp.framework') ~ '#vectorborne-diseases', img_width=200, img_height=200,
+  img_alt='Vector-borne disease icon') }}
   <!-- prettier-ignore -->
-    {{ cards.relevant_pages("Waterborne diseases", "", [], "icons/water-borne_disease.svg", title_href=url_for('indicator_bp.framework') ~ '#waterborne-diseases', img_width=200, img_height=200, img_alt='Waterborne disease icon') }}
+  {{ cards.relevant_pages("Waterborne diseases", "", [], "icons/water-borne_disease.svg",
+  title_href=url_for('data_bp.framework') ~ '#waterborne-diseases', img_width=200, img_height=200, img_alt='Waterborne
+  disease icon') }}
 </div>
 <h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
 <p class="ons-u-fs-r">
@@ -372,155 +450,146 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 <!-- prettier-ignore -->
 {% set team_members = [
-  {
-    "name": "Dr. Aaron Bernstein",
-    "company": "Centers for Disease Control and Prevention"
-  },
-  {
-    "name": "Adam Gardiner",
-    "company": "UK Climate Change Committee (previously)"
-  },
-  {
-    "name": "Dr. Ana Bonell",
-    "company": "London School of Hygiene & Tropical Medicine"
-  },
-  {
-    "name": "Sir Andrew Haines",
-    "company": "London School of Hygiene & Tropical Medicine"
-  },
-  {
-    "name": "Dr. Anna Freni Sterrantino",
-    "company": "The Alan Turing Institute"
-  },
-  {
-    "name": "Dr. Anna Rom",
-    "company": "UK Health Security Agency"
-  },
-  {
-    "name": "Prof. Antonio Gasparrini",
-    "company": "London School of Hygiene & Tropical Medicine"
-  },
-  {
-    "name": "Dr. Charles Simpson",
-    "company": "University College London"
-  },
-  {
-    "name": "Dr. Christophe Sarran",
-    "company": "UK Met Office"
-  },
-  {
-    "name": "Dr. Clare Heaviside",
-    "company": "University College London"
-  },
-  {
-    "name": "Denise Thomson",
-    "company": "Cochrane Thematic Group"
-  },
-  {
-    "name": "Dr. Emil Ivanov",
-    "company": "United Nations Statistics Division"
-  },
-  {
-    "name": "Dr. Erik Svendsen",
-    "company": "Centers for Disease Control and Prevention"
-  },
-  {
-    "name": "Dr. Frederike Garbe",
-    "company": "Public Health Scotland"
-  },
-  {
-    "name": "Gemma Holmes",
-    "company": "UK Climate Change Committee"
-  },
-  {
-    "name": "Dr. Helen Macintyre",
-    "company": "UK Health Security Agency"
-  },
-  {
-    "name": "Ian Dwyer",
-    "company": "UK Office for National Statistics"
-  },
-  {
-    "name": "Isabella Tortora-Brayda di Belvedere",
-    "company": "Public Health Scotland"
-  },
-  {
-    "name": "Prof. Kristie Ebi",
-    "company": "University of Washington"
-  },
-  {
-    "name": "Prof. Majid Ezzati",
-    "company": "Imperial College London"
-  },
-  {
-    "name": "Marina Walawender",
-    "company": "Lancet Countdown"
-  },
-  {
-    "name": "Prof. Michael Davies",
-    "company": "UK Climate Change Committee"
-  },
-  {
-    "name": "Mo Davies",
-    "company": "UK Health Security Agency"
-  },
-  {
-    "name": "Paul Schramm",
-    "company": "Centers for Disease Control and Prevention"
-  },
-  {
-    "name": "Richard Millar",
-    "company": "UK Climate Change Committee"
-  },
-  {
-    "name": "Dr. Ricky Nathvani",
-    "company": "Imperial College London"
-  },
-  {
-    "name": "Dr. Ross Thompson",
-    "company": "UK Health Security Agency"
-  },
-  {
-    "name": "Prof. Shakoor Hajat",
-    "company": "London School of Hygiene & Tropical Medicine"
-  },
-  {
-    "name": "Dr. Shubhayu Saha",
-    "company": "Centers for Disease Control and Prevention (previously)"
-  }
+{
+"name": "Dr. Aaron Bernstein",
+"company": "Centers for Disease Control and Prevention"
+},
+{
+"name": "Adam Gardiner",
+"company": "UK Climate Change Committee (previously)"
+},
+{
+"name": "Dr. Ana Bonell",
+"company": "London School of Hygiene & Tropical Medicine"
+},
+{
+"name": "Sir Andrew Haines",
+"company": "London School of Hygiene & Tropical Medicine"
+},
+{
+"name": "Dr. Anna Freni Sterrantino",
+"company": "The Alan Turing Institute"
+},
+{
+"name": "Dr. Anna Rom",
+"company": "UK Health Security Agency"
+},
+{
+"name": "Prof. Antonio Gasparrini",
+"company": "London School of Hygiene & Tropical Medicine"
+},
+{
+"name": "Dr. Charles Simpson",
+"company": "University College London"
+},
+{
+"name": "Dr. Christophe Sarran",
+"company": "UK Met Office"
+},
+{
+"name": "Dr. Clare Heaviside",
+"company": "University College London"
+},
+{
+"name": "Denise Thomson",
+"company": "Cochrane Thematic Group"
+},
+{
+"name": "Dr. Emil Ivanov",
+"company": "United Nations Statistics Division"
+},
+{
+"name": "Dr. Erik Svendsen",
+"company": "Centers for Disease Control and Prevention"
+},
+{
+"name": "Dr. Frederike Garbe",
+"company": "Public Health Scotland"
+},
+{
+"name": "Gemma Holmes",
+"company": "UK Climate Change Committee"
+},
+{
+"name": "Dr. Helen Macintyre",
+"company": "UK Health Security Agency"
+},
+{
+"name": "Ian Dwyer",
+"company": "UK Office for National Statistics"
+},
+{
+"name": "Isabella Tortora-Brayda di Belvedere",
+"company": "Public Health Scotland"
+},
+{
+"name": "Prof. Kristie Ebi",
+"company": "University of Washington"
+},
+{
+"name": "Prof. Majid Ezzati",
+"company": "Imperial College London"
+},
+{
+"name": "Marina Walawender",
+"company": "Lancet Countdown"
+},
+{
+"name": "Prof. Michael Davies",
+"company": "UK Climate Change Committee"
+},
+{
+"name": "Mo Davies",
+"company": "UK Health Security Agency"
+},
+{
+"name": "Paul Schramm",
+"company": "Centers for Disease Control and Prevention"
+},
+{
+"name": "Richard Millar",
+"company": "UK Climate Change Committee"
+},
+{
+"name": "Dr. Ricky Nathvani",
+"company": "Imperial College London"
+},
+{
+"name": "Dr. Ross Thompson",
+"company": "UK Health Security Agency"
+},
+{
+"name": "Prof. Shakoor Hajat",
+"company": "London School of Hygiene & Tropical Medicine"
+},
+{
+"name": "Dr. Shubhayu Saha",
+"company": "Centers for Disease Control and Prevention (previously)"
+}
 ] %}
 <!-- prettier-ignore -->
 {% set team_list_id = "ons-meet-the-team-" ~ topic_id ~ "-list" %}
 {# TEAM CARDS #}
 {% set members_count = team_members | length %}
-<div class="ons-team-cards ons-u-mt-xl"
-     role="region"
-     aria-label="{{ title }} team"
-     data-js="ons-team-cards">
-  <ul id="{{ team_list_id }}"
-      class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
-      data-js="ons-team-cards-list">
+<div class="ons-team-cards ons-u-mt-xl" role="region" aria-label="{{ title }} team" data-js="ons-team-cards">
+  <ul id="{{ team_list_id }}" class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
+    data-js="ons-team-cards-list">
     {% for member in team_members %}
-      <li class="ons-team-cards__item flex items-end">
-        <div class="ons-card">
-          <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
-          {% if member.company %}<p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>{% endif %}
-        </div>
-      </li>
+    <li class="ons-team-cards__item flex items-end">
+      <div class="ons-card">
+        <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
+        {% if member.company %}<p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>{% endif %}
+      </div>
+    </li>
     {% endfor %}
   </ul>
   <button type="button"
-          class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
-          aria-label="Show next team members"
-          aria-controls="{{ team_list_id }}"
-          data-js="ons-team-cards-next">
-    <svg class="ons-icon"
-         viewBox="0 0 12 12"
-         xmlns="http://www.w3.org/2000/svg"
-         focusable="false"
-         aria-hidden="true"
-         role="img">
-      <path d="M4 2.5L8 6L4 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
+    aria-label="Show next team members" aria-controls="{{ team_list_id }}" data-js="ons-team-cards-next">
+    <svg class="ons-icon" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"
+      role="img">
+      <path d="M4 2.5L8 6L4 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
     </svg>
   </button>
 </div>
@@ -536,15 +605,16 @@ toggle_text_close="Hide all FAQs") }}
     </p>
     <p class="ons-u-fs-r">
       For more information on the selection criteria used for prioritising the SOSCHI topics and the
-      development process, see the{{ link.internal_link(url_for('indicator_bp.framework') , 'SOSCHI
+      development process, see the {{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI
       Framework Page' ) }}.
     </p>
     <p class="ons-u-fs-r">
       We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
-      page can be used for official statistics reporting. See the{{ link.internal_link(url_for('indicator_bp.framework') , 'SOSCHI Framework Page' ) }}for information
+      page can be used for official statistics reporting. See the {{ link.internal_link(url_for('data_bp.framework') ,
+      'SOSCHI Framework Page' ) }}for information
       on the endorsement of the proposed indicators.
     </p>
   </div>
 </div>
 {# LAST UPDATED #}
-<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 28/02/2025</p>
+<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 14/05/2026</p>

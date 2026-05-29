@@ -15,6 +15,8 @@ data_explorer/__pycache__/__main__/
 data_explorer/scripts/__pycache__/dummy_data/
 data_explorer/__init__copy.py
 explorer_venv/
+venv/
+.DS_Store
 k8s/overlays/dev-cluster/config.yaml
 .prettierrc
 data_explorer_js/temp

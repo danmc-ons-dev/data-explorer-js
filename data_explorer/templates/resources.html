@@ -3,7 +3,9 @@
 {% import "macros/publications_list.html" as list %}
 {% import "macros/external_link.html" as link %}
 {% block content %}
-  <h1 class="ons-u-fs-xl ons-u-mt-l">Implementation case-studies</h1>
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Additional Resources</h1>
+  {% if config.get('ENABLE_FULL_UI', False) %}
+  <h2 class="ons-u-fs-l ons-u-mt-l">Implementation case-studies</h2>
   <p class="ons-u-fs-r">
     The SOSCHI topic documents have been developed across three partner countries – Ghana, Rwanda and
     the United Kingdom. This has provided useful lessons, which may inform global implementation of
@@ -32,6 +34,7 @@
       <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
     {% endfor %}
   </div>
+  {% endif %}
   <div class="ons-panel ons-panel--info ons-panel--no-title ons-u-mt-l">
     <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
     <div class="ons-panel__body">

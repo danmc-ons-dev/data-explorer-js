@@ -211,10 +211,23 @@ def create_app():
     # 8. Register context processor for build info
     @app.context_processor
     def inject_build_info():
+        from datetime import datetime, timezone #TEMPORARY - remove once all go-live dates have passed
         component_versions, build_meta = get_component_versions()
+
+        # TEMPORARY START: remove once all go-live dates have passed
+        from zoneinfo import ZoneInfo
+        london = ZoneInfo("Europe/London")
+        framework_go_live = {
+            "mental_health": datetime(2026, 5, 21, 9, 30, tzinfo=london).astimezone(timezone.utc), # 21st May 2026, 9:30am BST
+            "air_pollution": datetime(2026, 5, 28, 9, 30, tzinfo=london).astimezone(timezone.utc), # 28th May 2026, 9:30am BST
+            "wildfires": datetime(2026, 6, 4, 9, 30, tzinfo=london).astimezone(timezone.utc), # 4th June 2026, 9:30am BST
+        }
+        # TEMPORARY END
         return dict(
             component_versions=component_versions,
-            build_meta=build_meta
+            build_meta=build_meta,
+            now=datetime.now(timezone.utc), #TEMPORARY - remove once all go-live dates have passed
+            framework_go_live=framework_go_live, #TEMPORARY - remove once all go-live dates have passed
         )
 
     app.logger.info("Flask app created and configured successfully.")

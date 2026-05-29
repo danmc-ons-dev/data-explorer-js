@@ -1,6 +1,6 @@
 {# templates/macros/cards.html #}
 {% macro relevant_pages(title, description, items, image_name,
-  img_width=303, img_height=100, img_alt="placeholder",
+  img_width=303, img_height=100, img_alt="",
   title_href=None, link_image=True ) -%}
   {% set items_list = items if items is iterable and items is not string else [] %}
   {% set first_href = title_href or (items_list[0].href if items_list else "#0") %}

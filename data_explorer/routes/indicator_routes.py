@@ -208,7 +208,7 @@ def call_r_api(payload, endpoint="regression"):
     """
     Generic function to call external R-based API endpoint.
     """
-    api_url = current_app.config.get("API_URL", "http://127.0.0.1:5671")
+    api_url = current_app.config.get("API_URL", "http://127.0.0.1:8000")
     if api_url.endswith("/"):
         api_url = api_url[:-1]
     full_endpoint = f"{api_url}/{endpoint}"
@@ -1306,12 +1306,12 @@ def foodborne_and_malnutrition_indicator():
     return jsonify({"message": "foodborne_and_malnutrition indicator coming soon."})
 
 
-@indicator_bp.route("/water_related", methods=["GET", "POST"])
-def water_related_indicator():
-    """
-    Placeholder route for water_related health impacts indicator.
-    """
-    return jsonify({"message": "water_related indicator coming soon."})
+# @indicator_bp.route("/water_related", methods=["GET", "POST"])
+# def water_related_indicator():
+#     """
+#     Placeholder route for water_related health impacts indicator.
+#     """
+#     return jsonify({"message": "water_related indicator coming soon."})
 
 
 @indicator_bp.route("/healthcare_systems", methods=["GET", "POST"])

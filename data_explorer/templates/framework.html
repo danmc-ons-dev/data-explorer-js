@@ -1,170 +1,282 @@
 {% extends "base.html" %}
 {% from "macros/framework_section.html" import framework_section %}
 {% block head_extra %}
-  <link rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 {% endblock %}
 {% block content %}
-  <!-- Tab Content for Sub-Tab 0 -->
-  <div id="soschi" class="subtab-content active-content">{% include "framework/soschi_framework.html" %}</div>
-  <!-- Tab Content for Sub-Tab 1 -->
-  <div id="heat-and-cold" class="subtab-content">{% include "framework/heat_and_cold_framework.html" %}</div>
-  <!-- Tab Content for Sub-Tab 2 -->
-  <div id="extreme-weather-events" class="subtab-content">
-    <section class="ons-tabs ons-u-mt-m">
-      <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
-      <div class="ons-tabs__container">
-        <ul class="ons-tabs__list">
-          <li class="ons-tab__list-item">
-            <a href="#wildfires-tab" class="ons-tab">Wildfires</a>
-          </li>
-          <li class="ons-tab__list-item">
-            <a href="#flooding-tab" class="ons-tab">Flooding</a>
-          </li>
-        </ul>
-      </div>
-      <section id="wildfires-tab"
-               class="ons-tabs__panel"
-               role="tabpanel"
-               aria-labelledby="wildfires-tab">
-        {% include "framework/wildfires_framework.html" %}
-      </section>
-      <!-- Tab Content for Sub-Tab 2-2 -->
-      <section id="flooding-tab"
-               class="ons-tabs__panel ons-tabs__panel--hidden"
-               role="tabpanel"
-               aria-labelledby="flooding-tab">
-        <!-- prettier-ignore -->
-        {% set flooding_paragraphs = [
-          "Flooding is a significant global health hazard, with far-reaching implications for public health, infrastructure, and socioeconomic stability. Climate change has significantly increased the frequency and severity of flooding events through more intense precipitation, elevated sea levels and accelerated snowmelt. "
-        ] %}
-        {% set flooding_info_panels = [
-          "This topic area focuses on quantifying the short-term health impacts associated with flash and fluvial floods."
-        ] %}
-        {% set flooding_buttons = [
-          {
-            "href": "https://doi.org/10.5281/zenodo.14870643",
-            "label": "Topic Introduction"
-          },
-          {
-            "href": "https://doi.org/10.5281/zenodo.14871331",
-            "label": "Methodology"
-          },
-          {
-            "href": "https://doi.org/10.5281/zenodo.14871193",
-            "label": "Metadata"
-          }
-        ] %}
-        {{ framework_section(title='Flooding', intro_paragraphs=flooding_paragraphs, info_panel_paragraphs=flooding_info_panels, buttons=flooding_buttons) }}
-      </section>
+<!-- Tab Content for Sub-Tab 0 -->
+<div id="soschi" class="subtab-content active-content">{% include "framework/soschi_framework.html" %}</div>
+<!-- Tab Content for Sub-Tab 1 -->
+<div id="heat-and-cold" class="subtab-content">
+  <!-- prettier-ignore -->
+  {% include "framework/heat_and_cold_framework.html" %}
+</div>
+<!-- Tab Content for Sub-Tab 2 -->
+<div id="extreme-weather-events" class="subtab-content">
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Health effects of extreme weather events</h1>
+  <section class="ons-tabs ons-u-mt-m">
+    <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
+    <div class="ons-tabs__container">
+      <ul class="ons-tabs__list">
+        <li class="ons-tab__list-item">
+          <a href="#wildfires-tab" class="ons-tab">Wildfires</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#flooding-tab" class="ons-tab">Flooding</a>
+        </li>
+      </ul>
+    </div>
+    <section id="wildfires-tab" class="ons-tabs__panel" role="tabpanel" aria-labelledby="wildfires-tab">
+      <!-- prettier-ignore -->
+      {# TEMPORARY START: remove this if/else once wildfires go-live date has passed #}
+      {%- set wildfires_live = now >= framework_go_live.wildfires -%}
+      {% if wildfires_live %}
+      {% include "framework/wildfires_framework.html" %}
+      {% else %}
+      {% set wildfires_paragraphs = ['Climate change is increasing the frequency, intensity, and duration of hot and dry
+      conditions, which increases the risk of wildfires. These are defined as uncontrolled or unplanned fires that occur
+      in vegetated areas. Wildfire hazards are predominantly fire and its associated smoke and air pollution. Wildfire
+      exposure increases the risk of mortality and morbidity. Vulnerability to this exposure is controlled by
+      demographic and socioeconomic factors, thus risk is not distributed evenly within populations. '] %}
+      {% set wildfires_info_panels = ['This topic area aims to quantify the health impacts attributable to wildfire
+      smoke, using a case-crossover approach.'] %}
+      {% set wildfires_buttons = [{"href": "https://doi.org/10.5281/zenodo.14051583", "label": "Topic Introduction"}] %}
+      {% set wildfires_img = {"src": "assets/framework-wildfires.png", "alt": "Wildfires illustration"} %}
+      {{ framework_section(title='Wildfires', intro_paragraphs=wildfires_paragraphs,
+      info_panel_paragraphs=wildfires_info_panels, buttons=wildfires_buttons, image=wildfires_img) }}
+      {% endif %}
+      {# TEMPORARY END #}
     </section>
-  </div>
-  <!-- Tab Content for Sub-Tab 3 -->
-  <div id="air-pollution-and-air-borne-diseases" class="subtab-content">
-    <section class="ons-tabs ons-u-mt-m">
-      <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
-      <div class="ons-tabs__container">
-        <ul class="ons-tabs__list">
-          <li class="ons-tab__list-item">
-            <a href="#air-pollution-tab" class="ons-tab">Air pollution</a>
-          </li>
-          <li class="ons-tab__list-item">
-            <a href="#airborne-diseases-tab" class="ons-tab">Airborne diseases</a>
-          </li>
-        </ul>
-      </div>
-      <!-- Tab Content for Sub-Tab 3-1 -->
-      <section id="air-pollution-tab" class="ons-tabs__panel">
-        {% include "framework/air_pollution_framework.html" %}
-      </section>
-      <!-- Tab Content for Sub-Tab 3-2 -->
-      <section id="airborne-diseases-tab"
-               class="ons-tabs__panel ons-tabs__panel--hidden">
-        <!-- prettier-ignore -->
-        {% set airborne_diseases_paragraphs = [
-          "Climate change is leading to more frequent and intense high temperatures, droughts, and wildfires. These changes promote the spread of certain airborne diseases which are impacted by warm temperatures, dry conditions, dusty winds, overcrowding, and poor sanitation. One airborne disease which is particularly impacted by these conditions is Cerebrospinal Meningitis (CSM). CSM is prevalent in the African Meningitis Belt and has severe health impacts.",
-          "Methods for this topic are still in development, therefore a preliminary “Methods Review” document has been published at this stage. This document may be updated to a “Methodology” document depending on the feasibility of ongoing developments and decisions on the final scope of proposed indicators and methods."
-        ] %}
-        {% set airborne_diseases_info_panels = [
-          "This topic area aims to quantify the health impacts of Cerebrospinal Meningitis (CSM) attributable to high temperatures."
-        ] %}
-        {% set airborne_diseases_buttons = [
-          {
-            "href": "https://zenodo.org/records/14051848",
-            "label": "Topic Introduction"
-          },
-          {
-            "href": "https://doi.org/10.5281/zenodo.14871052",
-            "label": "Methods Review"
-          }
-        ] %}
-        {{ framework_section(title='Airborne disease (CSM)', intro_paragraphs=airborne_diseases_paragraphs, info_panel_paragraphs=airborne_diseases_info_panels, buttons=airborne_diseases_buttons) }}
-      </section>
-    </section>
-  </div>
-  <!-- Tab Content for Sub-Tab 4 -->
-  <div id="waterborne-diseases" class="subtab-content">{% include "framework/waterborne_framework.html" %}</div>
-  <!-- Tab Content for Sub-Tab 5 -->
-  <div id="vectorborne-diseases" class="subtab-content">{% include "framework/vectorborne_framework.html" %}</div>
-  <!-- Tab Content for Sub-Tab 6 -->
-  <div id="undernutrition" class="subtab-content">
-    <!-- prettier-ignore -->
-    {% set undernutrition_paragraphs = [
-      "Climate change is leading to more extreme temperatures, precipitation, and other weather events. These changes exacerbate conditions which lead to undernutrition, a health condition resulting from an imbalance in dietary intake, where nutrients are either insufficiently or overly consumed, leading to adverse health effects. Conditions which impact undernutrition include soil fertility, crop and livestock production and diversity, food and water security, and sanitation."
-    ] %}
-    {% set undernutrition_info_panels = [
-      "This topic area aims to quantify the health impacts of undernutrition attributable to extreme temperatures, precipitation, and drought.",
-      "Methods for this topic are still in development, therefore a preliminary “Methods Review” document has been published at this stage. This document may be updated to a “Methodology” document depending on the feasibility of ongoing developments and decisions on the final scope of proposed indicators and methods."
-    ] %}
-    {% set undernutrition_buttons = [
+    <!-- Tab Content for Sub-Tab 2-2 -->
+    <section id="flooding-tab" class="ons-tabs__panel ons-tabs__panel--hidden" role="tabpanel"
+      aria-labelledby="flooding-tab">
+      <!-- prettier-ignore -->
+      {% set flooding_paragraphs = [
+      "Flooding is a significant global health hazard, with far-reaching implications for public health, infrastructure,
+      and socioeconomic stability. Climate change has significantly increased the frequency and severity of flooding
+      events through more intense precipitation, elevated sea levels and accelerated snowmelt. "
+      ] %}
+      {% set flooding_info_panels = [
+      "This topic area focuses on quantifying the short-term health impacts associated with flash and fluvial floods."
+      ] %}
+      {% set flooding_buttons = [
       {
-        "href": "https://zenodo.org/records/14051846",
-        "label": "Topic Introduction"
+      "href": "https://doi.org/10.5281/zenodo.14870643",
+      "label": "Topic Introduction"
       },
       {
-        "href": "https://doi.org/10.5281/zenodo.14942893",
-        "label": "Methods Review"
+      "href": "https://doi.org/10.5281/zenodo.14871331",
+      "label": "Methodology"
+      },
+      {
+      "href": "https://doi.org/10.5281/zenodo.14871193",
+      "label": "Metadata"
       }
-    ] %}
-    {{ framework_section(title='Undernutrition', intro_paragraphs=undernutrition_paragraphs, info_panel_paragraphs=undernutrition_info_panels, buttons=undernutrition_buttons) }}
-  </div>
-  <!-- Tab Content for Sub-Tab 7 -->
-  <div id="mental-health" class="subtab-content">{% include "framework/mental_health_framework.html" %}</div>
-  <!-- Tab Content for Sub-Tab 8 -->
-  <div id="chemical-contaminants" class="subtab-content">
-    <!-- prettier-ignore -->
-    {% set chemical_contaminants_paragraphs = [
-      "Climate change is leading to more extreme temperatures, precipitation, and weather events. These changes impact the presence of harmful chemicals in the environment through factors such as contamination of waterbodies through runoff, reduced dilution of waterbodies, and greater use of agricultural chemicals to support crop and cattle yield in warm and dry conditions. Exposure to these contaminants is linked with a range of health outcomes."
-    ] %}
-    {% set chemical_contaminants_info_panels = [
-      "This topic introduction provides an overview of the process we took to identify a climate-health chemical contaminants indicator.",
-      "This process identified significant limitations in data availability and knowledge within this field. As a result, the SOSCHI framework will not include an indicator on chemical contaminants. We make recommendations for future developments within the field and highlight Harmful Algal Blooms as a potential future indicator."
-    ] %}
-    {% set chemical_contaminants_buttons = [{"href": "https://zenodo.org/records/14051500", "label": "Topic Introduction"}] %}
-    {{ framework_section(title='Chemical contaminants', intro_paragraphs=chemical_contaminants_paragraphs, info_panel_paragraphs=chemical_contaminants_info_panels, buttons=chemical_contaminants_buttons) }}
-  </div>
-  <!-- Tab Content for Sub-Tab 9 -->
-  <div id="healthcare-systems-and-facilities" class="subtab-content">
-    <!-- prettier-ignore -->
-    {% set healthcare_paragraphs = [
-      "Healthcare systems include a broad range of activities from public health initiatives to services, covering both private and public sectors. Globally, healthcare systems are under significant pressure which are further compounded by the effects of climate change. These can be direct impacts to infrastructure as well as disruption to medical supply and service delivery.",
-      "The ability of facilities to function, particularly in vulnerable regions, during extreme conditions such as flooding, heatwaves and storms determines the effectiveness of these systems in mitigating the impacts of climate change on public health."
-    ] %}
-    {% set healthcare_info_panels = [
-      "This topic area follows a different approach to the wider framework, aiming to use qualitative methods to assess the impact on health workforce, infrastructure and technology as well as service delivery."
-    ] %}
-    {% set healthcare_buttons = [{"href": "https://doi.org/10.5281/zenodo.14883129", "label": "Topic Introduction"}] %}
-    {% set healthcare_img = {"src": "assets/framework-healthcare-systems.png", "alt": "Health care systems illustration"} %}
-    {{ framework_section(title='Healthcare systems and facilities', intro_paragraphs=healthcare_paragraphs, info_panel_paragraphs=healthcare_info_panels, buttons=healthcare_buttons, image=healthcare_img) }}
-  </div>
+      ] %}
+      {{ framework_section(title='Health effects of flooding',
+      intro_paragraphs=flooding_paragraphs,
+      info_panel_paragraphs=flooding_info_panels, buttons=flooding_buttons) }}
+    </section>
+  </section>
+</div>
+<!-- Tab Content for Sub-Tab 3 -->
+<div id="air-pollution-and-air-borne-diseases" class="subtab-content">
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Air pollution and air-borne diseases</h1>
+  <section class="ons-tabs ons-u-mt-m">
+    <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
+    <div class="ons-tabs__container">
+      <ul class="ons-tabs__list">
+        <li class="ons-tab__list-item">
+          <a href="#air-pollution-tab" class="ons-tab">Air pollution</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#airborne-diseases-tab" class="ons-tab">Airborne diseases</a>
+        </li>
+      </ul>
+    </div>
+    <!-- Tab Content for Sub-Tab 3-1 -->
+    <section id="air-pollution-tab" class="ons-tabs__panel">
+
+      <!-- prettier-ignore -->
+      {# TEMPORARY START: remove this if/else once air pollution go-live date has passed #}
+      {%- set air_pollution_live = now >= framework_go_live.air_pollution -%}
+      {% if air_pollution_live %}
+      {% include "framework/air_pollution_framework.html" %}
+      {% else %}
+      <!-- prettier-ignore -->
+      {% set air_pollution_paragraphs = ['The interplay between climate change and air pollution presents a pressing
+      global health hazard with far-reaching implications for human well-being and environmental sustainability. The
+      health impacts of air pollution by climate change are extensive and multifaceted, impacting individuals in both
+      the short-term and long-term, encompassing a range of acute and chronic conditions.'] %}
+      {% set air_pollution_info_panels = ['This topic area aims to quantify the short-term health impacts of particulate
+      matter (PM2.5) on all-cause mortality.'] %}
+      {% set air_pollution_buttons = [{"href": "https://doi.org/10.5281/zenodo.14884211", "label": "Topic
+      Introduction"}, {"href": "https://doi.org/10.5281/zenodo.15585042", "label": "Methodology"}, {"href":
+      "https://doi.org/10.5281/zenodo.15585284", "label": "Metadata"}] %}
+      {% set air_pollution_img = {"src": "assets/framework-air-pollution.png", "alt": "Air pollution illustration"} %}
+      {{ framework_section(title='Air pollution', intro_paragraphs=air_pollution_paragraphs,
+      info_panel_paragraphs=air_pollution_info_panels, buttons=air_pollution_buttons, image=air_pollution_img) }}
+      {% endif %}
+      {# TEMPORARY END #}
+
+    </section>
+    <!-- Tab Content for Sub-Tab 3-2 -->
+    <section id="airborne-diseases-tab" class="ons-tabs__panel ons-tabs__panel--hidden">
+      <!-- prettier-ignore -->
+      {% set airborne_diseases_paragraphs = [
+      "Climate change is leading to more frequent and intense high temperatures, droughts, and wildfires. These changes
+      promote the spread of certain airborne diseases which are impacted by warm temperatures, dry conditions, dusty
+      winds, overcrowding, and poor sanitation. One airborne disease which is particularly impacted by these conditions
+      is Cerebrospinal Meningitis (CSM). CSM is prevalent in the African Meningitis Belt and has severe health
+      impacts.",
+      "Methods for this topic are still in development, therefore a preliminary \u201cMethods Review\u201d document has
+      been published at this stage. This document may be updated to a \u201cMethodology\u201d document depending on the
+      feasibility of ongoing developments and decisions on the final scope of proposed indicators and methods."
+      ] %}
+      {% set airborne_diseases_info_panels = [
+      "This topic area aims to quantify the health impacts of Cerebrospinal Meningitis (CSM) attributable to high
+      temperatures."
+      ] %}
+      {% set airborne_diseases_buttons = [
+      {
+      "href": "https://zenodo.org/records/14051848",
+      "label": "Topic Introduction"
+      },
+      {
+      "href": "https://doi.org/10.5281/zenodo.14871052",
+      "label": "Methods Review"
+      }
+      ] %}
+      {{ framework_section(title='Airborne disease (CSM)', intro_paragraphs=airborne_diseases_paragraphs,
+      info_panel_paragraphs=airborne_diseases_info_panels, buttons=airborne_diseases_buttons) }}
+    </section>
+  </section>
+</div>
+<!-- Tab Content for Sub-Tab 4 -->
+<div id="waterborne-diseases" class="subtab-content">
+  <h1 class="ons-u-fs-xl ons-u-mt-l">Waterborne diseases</h1>
+  <section class="ons-tabs ons-u-mt-m">
+    <h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m">Contents</h2>
+    <div class="ons-tabs__container">
+      <ul class="ons-tabs__list">
+        <li class="ons-tab__list-item">
+          <a href="#waterborne-diseases-tab" class="ons-tab">Diarrhea</a>
+        </li>
+        <li class="ons-tab__list-item">
+          <a href="#chemical-contaminants-tab" class="ons-tab">Chemical contaminants</a>
+        </li>
+      </ul>
+    </div>
+    <section id="waterborne-diseases-tab" class="ons-tabs__panel">
+      {% include "framework/waterborne_framework.html" %}
+    </section>
+    <section id="chemical-contaminants-tab" class="ons-tabs__panel ons-tabs__panel--hidden">
+      <!-- prettier-ignore -->
+      {% set chemical_contaminants_paragraphs = [
+      "Climate change is leading to more extreme temperatures, precipitation, and weather events. These changes impact
+      the presence of harmful chemicals in the environment through factors such as contamination of waterbodies through
+      runoff, reduced dilution of waterbodies, and greater use of agricultural chemicals to support crop and cattle
+      yield in warm and dry conditions. Exposure to these contaminants is linked with a range of health outcomes."
+      ] %}
+      {% set chemical_contaminants_info_panels = [
+      "This topic introduction provides an overview of the process we took to identify a climate-health chemical
+      contaminants indicator.",
+      "This process identified significant limitations in data availability and knowledge within this field. As a
+      result, the SOSCHI framework will not include an indicator on chemical contaminants. We make recommendations for
+      future developments within the field and highlight Harmful Algal Blooms as a potential future indicator."
+      ] %}
+      {% set chemical_contaminants_buttons = [{"href": "https://zenodo.org/records/14051500", "label": "Topic
+      Introduction"}] %}
+      {{ framework_section(title='Exposure to chemical contaminants',
+      intro_paragraphs=chemical_contaminants_paragraphs,
+      info_panel_paragraphs=chemical_contaminants_info_panels, buttons=chemical_contaminants_buttons) }}
+    </section>
+  </section>
+</div>
+<!-- Tab Content for Sub-Tab 5 -->
+<div id="vectorborne-diseases" class="subtab-content">
+  <!-- prettier-ignore -->
+  <section id="vectorborne-diseases-tab" class="ons-tabs__panel">
+    {% include "framework/vectorborne_framework.html" %}
+  </section>
+</div>
+<!-- Tab Content for Sub-Tab 6 -->
+<div id="undernutrition" class="subtab-content">
+  <!-- prettier-ignore -->
+  {% set undernutrition_paragraphs = [
+  "Climate change is leading to more extreme temperatures, precipitation, and other weather events. These changes
+  exacerbate conditions which lead to undernutrition, a health condition resulting from an imbalance in dietary intake,
+  where nutrients are either insufficiently or overly consumed, leading to adverse health effects. Conditions which
+  impact undernutrition include soil fertility, crop and livestock production and diversity, food and water security,
+  and sanitation."
+  ] %}
+  {% set undernutrition_info_panels = [
+  "This topic area aims to quantify the health impacts of undernutrition attributable to extreme temperatures,
+  precipitation, and drought.",
+  "Methods for this topic are still in development, therefore a preliminary \u201cMethods Review\u201d document has been
+  published at this stage. This document may be updated to a \u201cMethodology\u201d document depending on the
+  feasibility of ongoing developments and decisions on the final scope of proposed indicators and methods."
+  ] %}
+  {% set undernutrition_buttons = [
+  {
+  "href": "https://doi.org/10.5281/zenodo.14051845",
+  "label": "Topic Introduction"
+  },
+  {
+  "href": "https://doi.org/10.5281/zenodo.14942893",
+  "label": "Methods Review"
+  }
+  ] %}
+  {{ framework_section(title='Undernutrition', intro_paragraphs=undernutrition_paragraphs,
+  info_panel_paragraphs=undernutrition_info_panels, buttons=undernutrition_buttons) }}
+</div>
+<!-- Tab Content for Sub-Tab 7 -->
+<div id="mental-health" class="subtab-content">
+  <!-- prettier-ignore -->
+  {# TEMPORARY START: remove this if/else once mental health go-live date has passed #}
+  {%- set mental_health_live = now >= framework_go_live.mental_health -%}
+  {% if mental_health_live %}
+  {% include "framework/mental_health_framework.html" %}
+  {% else %}
+  {% set mental_health_paragraphs = ['Climate change is leading to more frequent and extreme climate-related hazards
+  that influence mental health outcomes. Direct impacts on mental health can arise from increased exposure to extreme
+  temperatures and extreme weather events. Indirect impacts can be due to displacement, malnutrition, conflict,
+  climate-related economic and social losses, along with anxiety and distress associated with worry about climate
+  change.'] %}
+  {% set mental_health_info_panels = ['This topic area aims to quantify the mental health impacts, specifically
+  suicides, attributable to extreme temperatures, using a case-crossover approach.'] %}
+  {% set mental_health_buttons = [{"href": "https://doi.org/10.5281/zenodo.14049911", "label": "Topic Introduction"},
+  {"href": "https://doi.org/10.5281/zenodo.14050224", "label": "Methodology"}, {"href":
+  "https://doi.org/10.5281/zenodo.14051475", "label": "Metadata"}] %}
+  {% set mental_health_img = {"src": "assets/framework-mental-health.png", "alt": "Mental health illustration"} %}
+  {{ framework_section(title='Mental health', intro_paragraphs=mental_health_paragraphs,
+  info_panel_paragraphs=mental_health_info_panels, buttons=mental_health_buttons, image=mental_health_img) }}
+  {% endif %}
+  {# TEMPORARY END #}
+</div>
+<!-- Tab Content for Sub-Tab 8 -->
+<div id="healthcare-systems-and-facilities" class="subtab-content">
+  <!-- prettier-ignore -->
+  {% set healthcare_paragraphs = [
+  "Healthcare systems include a broad range of activities from public health initiatives to services, covering both
+  private and public sectors. Globally, healthcare systems are under significant pressure which are further compounded
+  by the effects of climate change. These can be direct impacts to infrastructure as well as disruption to medical
+  supply and service delivery.",
+  "The ability of facilities to function, particularly in vulnerable regions, during extreme conditions such as
+  flooding, heatwaves and storms determines the effectiveness of these systems in mitigating the impacts of climate
+  change on public health."
+  ] %}
+  {% set healthcare_info_panels = [
+  "This topic area follows a different approach to the wider framework, aiming to use qualitative methods to assess the
+  impact on health workforce, infrastructure and technology as well as service delivery."
+  ] %}
+  {% set healthcare_buttons = [{"href": "https://doi.org/10.5281/zenodo.14883129", "label": "Topic Introduction"}] %}
+  {% set healthcare_img = {"src": "assets/framework-healthcare-systems.png", "alt": "Health care systems illustration"}
+  %}
+  {{ framework_section(title='Healthcare systems and facilities', intro_paragraphs=healthcare_paragraphs,
+  info_panel_paragraphs=healthcare_info_panels, buttons=healthcare_buttons, image=healthcare_img) }}
+</div>
 {% endblock %}
 {% block scripts %}
-  <script>
-    window.allowedFrameworkHashes = {{ allowed_hashes | default([]) | tojson }};
-    window.comingSoonUrl = "{{ url_for('main_bp.coming_soon') }}";
-    window.enforceHashAllowlist = {{ (not config.get('ENABLE_FULL_UI', False)) | tojson }};
-  </script>
-  <script src="{{ url_for('static', filename='js/teamCards.js') }}"
-          type="text/javascript"
-          defer></script>
+<script src="{{ url_for('static', filename='js/teamCards.js') }}" type="text/javascript" defer></script>
 {% endblock %}

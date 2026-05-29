@@ -4,10 +4,12 @@
 {% import "macros/buttons.html" as btn %}
 {% import "macros/cards.html" as cards %}
 {% import "macros/external_link.html" as link %}
-{% set title = "Air pollution" %}
+{% set title = "Health effects of air pollution" %}
 {% set topic_id = "air-pollution" %}
+{% set cran_package_url = "https://CRAN.R-project.org/package=climatehealth" %}
+{% set github_url = "https://github.com/onssoschi/climatehealth" %}
 {# TITLE #}
-<h1 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h1>
+<h2 class="ons-u-fs-xl ons-u-mt-l">{{ title }}</h2>
 {# INTRO PARAGRAPH #}
 <p class="ons-u-fs-r">
   The interplay between climate change and air pollution presents a pressing global health hazard
@@ -20,37 +22,53 @@
   <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
   <div class="ons-panel__body">
     <p class="ons-u-fs-r">
-      This topic area aims to quantify the short-term health impacts of particulate matter (PM2.5)
+      This topic area aims to quantify the short-term health effects of particulate matter (PM2.5)
       on all-cause mortality.
     </p>
+  </div>
+</div>
+<div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
+  <span class="ons-panel__assistive-text ons-u-vh">UN endorsement:</span>
+  <div class="ons-panel__body">
+    <h5 class="ons-u-fs-r--b">UN endorsement</h5>
+    <p class="ons-u-fs-r">
+      The methods for measuring the headline outcome indicator for this topic were endorsed by the 57th United Nations
+      Statistical Commission to
+      include in the Global Set of Climate Change Statistics and Indicators (see decision 57/109 (b)
+      in the {{
+      link.external_link('https://unstats.un.org/UNSDWebsite/statcom/session_57/documents/2026-35-FinalReport-EE.pdf',
+      'Final Report') }}).
+      This will be included in the {{ link.external_link('https://unstats.un.org/unsd/envstats/climatechange.cshtml',
+      'Global Set') }} metadata as:
+    </p>
+    <ul class="ons-list">
+      <li class="ons-list__item list-disc">Indicator 46: Climate-induced air pollution: <br>
+        46.1 Mortality attributable to short-term effects of ambient air quality (PM2.5)</li>
+    </ul>
   </div>
 </div>
 {# BUTTONS ONE (TOPIC INTRO, METHODOLOGY, METADATA) #}
 <!-- prettier-ignore -->
 {% set buttons = [
-  {
-    "text": "Topic Introduction",
-    "href": "https://doi.org/10.5281/zenodo.14884211",
-    "classes": ""
-  },
-  {
-    "text": "Methodology",
-    "href": "https://doi.org/10.5281/zenodo.15585042",
-    "classes": "ons-btn--secondary"
-  },
-  {
-    "text": "Metadata",
-    "href": "https://doi.org/10.5281/zenodo.15585284",
-    "classes": ""
-  }
+{
+"text": "Topic Introduction",
+"href": "https://doi.org/10.5281/zenodo.14884211",
+"classes": ""
+},
+{
+"text": "Methodology",
+"href": "https://doi.org/10.5281/zenodo.15585042",
+"classes": "ons-btn--secondary"
+},
+{
+"text": "Metadata",
+"href": "https://doi.org/10.5281/zenodo.15585284",
+"classes": ""
+}
 ] %}
-<div
-  class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1"
->
+<div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
   {% for button in buttons %}
-  <div class="ons-grid__col ons-col-auto ons-u-mt-m">
-    {{ btn.external(button.text, button.href, button.classes) }}
-  </div>
+  <div class="ons-grid__col ons-col-auto ons-u-mt-m">{{ btn.external(button.text, button.href, button.classes) }}</div>
   {% endfor %}
 </div>
 {# ACCORDION ONE #}
@@ -59,16 +77,26 @@
 group=topic_id ~ "-accordion",) }}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 1, "Impact Pathway", title_level=3) %}
-  {{ image.image(image_name='framework-air-pollution.png', width='100%', alt="Diagram showing pathways between climate change and air pollution related health impacts. At the top left, climate drivers and hazards include rising temperature, extreme weather events such as storms, floods, droughts, alongside increased air pollution driven by population mobility, urbanisation and changing human behaviours. At the top right, exposure and vulnerability include higher exposure in urban areas dud to population density as well as socioeconomic and demographic factors such as age, economic status and pre-existing health conditions. These factors interact and flow downward toward physiological impacts and health outcomes. Physiological impacts include dehydration, increased heat stress, cardiovascular strain, and higher infection risk. Health outcomes include acute and chronic respiratory and cardiovascular diseases, aggravated allergies and  increased premature mortality. Adaptation and mitigation measures—such as strengthened air quality monitoring, targeted public health interventions, ecosystem-based mitigation strategies and forestation—are shown intervening to reduce negative impacts.") }}
+{{ image.image(image_name='framework-air-pollution.png', width='100%', alt="Diagram showing pathways between climate
+change and air pollution related health impacts. At the top left, climate drivers and hazards include rising
+temperature, extreme weather events such as storms, floods, droughts, alongside increased air pollution driven by
+population mobility, urbanisation and changing human behaviours. At the top right, exposure and vulnerability include
+higher exposure in urban areas dud to population density as well as socioeconomic and demographic factors such as age,
+economic status and pre-existing health conditions. These factors interact and flow downward toward physiological
+impacts and health outcomes. Physiological impacts include dehydration, increased heat stress, cardiovascular strain,
+and higher infection risk. Health outcomes include acute and chronic respiratory and cardiovascular diseases, aggravated
+allergies and increased premature mortality. Adaptation and mitigation measures—such as strengthened air quality
+monitoring, targeted public health interventions, ecosystem-based mitigation strategies and forestation—are shown
+intervening to reduce negative impacts.") }}
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicators", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion", 2, "Headline Indicator", title_level=3) %}
 <div class="ons-panel ons-panel--info ons-panel--no-title headline-indicators__one">
   <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
   <div class="ons-panel__body">
     <p class="ons-u-fs-r">
       The priority indicator for the health effects of air pollution topic is all-cause mortality
-      attributable to short-term exposure to outdoor PM2.5
+      attributable to short-term exposure to ambient PM2.5
     </p>
   </div>
 </div>
@@ -77,15 +105,19 @@ group=topic_id ~ "-accordion",) }}
   data to monitor climate-related health impacts using state-of-the-art statistical methods.
 </p>
 <p class="ons-u-fs-r">
-  Further justification for the focus on this indicator is explained in the Topic introduction,
+  Further justification for the focus on this indicator is explained in the {{
+  link.external_link('https://doi.org/10.5281/zenodo.14884211', 'Topic introduction') }},
   which also outlines supplementary and additional indicators that are not in scope for the current
   SOSCHI framework but are recommended for future development.
+</p>
+<p class="ons-u-fs-r">
+  The indicator has three component parts:
 </p>
 <div class="ons-panel ons-panel--info ons-panel--no-title">
   <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
   <div class="ons-panel__body">
     <p class="ons-u-fs-r">
-      Number of all-cause deaths attributable to short-term outdoor PM2.5 exposure
+      Relative risk of mortality associated with short-term ambient PM2.5 exposure
     </p>
   </div>
 </div>
@@ -93,7 +125,7 @@ group=topic_id ~ "-accordion",) }}
   <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
   <div class="ons-panel__body">
     <p class="ons-u-fs-r">
-      Relative risk of mortality associated with short-term outdoor PM2.5 exposure
+      Attributable number of all-cause deaths attributable to short-term ambient PM2.5 exposure
     </p>
   </div>
 </div>
@@ -101,8 +133,8 @@ group=topic_id ~ "-accordion",) }}
   <span class="ons-panel__assistive-text ons-u-vh">Important information:</span>
   <div class="ons-panel__body">
     <p class="ons-u-fs-r">
-      All-cause mortality rate per 100,000 population attributable to short-term outdoor PM2.5
-      exposure
+      Attributable rate of all-cause mortality rate per 100,000 population attributable to 
+      short-term ambient PM2.5 exposure
     </p>
   </div>
 </div>
@@ -124,16 +156,16 @@ group=topic_id ~ "-accordion",) }}
   immediate health burden of air pollution and provides evidence to support air quality regulations,
   emergency response planning, and public health interventions.
 </p>
-<p class="ons-u-fs-r--b">This indicator can therefore:</p>
+<p class="ons-u-fs-r">This indicator can therefore:</p>
 <ul class="ons-list">
   <li class="ons-list__item list-disc">
-    Monitor and quantify health impacts associated with climate-sensitive air pollution exposures
+    monitor and quantify health impacts associated with climate-sensitive air pollution exposures
   </li>
   <li class="ons-list__item list-disc">
-    Inform national adaptation plans (NAPs) and resilience strategies
+    inform national adaptation plans (NAPs) and resilience strategies
   </li>
   <li class="ons-list__item list-disc">
-    Guide environmental and public health policy, including air quality regulation and health
+    guide environmental and public health policy, including air quality regulation and health
     protection measures
   </li>
 </ul>
@@ -141,7 +173,7 @@ group=topic_id ~ "-accordion",) }}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 4, "Methodology", title_level=3) %}
 <p class="ons-u-fs-r">
-  The indicator estimates short-term health effects associated with outdoor PM2.5 exposure using a
+  The indicator estimates short-term health effects associated with ambient PM2.5 exposure using a
   Generalised Additive Model (GAM), with parameters estimated by Restricted Maximum Likelihood
   (REML). The model adjusts for key confounders such as temperature, precipitation, humidity and
   wind speed, thereby isolating the specific influence of PM2.5. Lag terms are incorporated to
@@ -168,22 +200,25 @@ group=topic_id ~ "-accordion",) }}
     <h5 class="ons-u-fs-r--b">Develop bespoke analyses</h5>
     <p class="ons-u-fs-r">
       For flexible, reproducible analysis or to adapt methods to your country or region, use the
-      Code Library and R package, which provides program code for the priority indicators.
+      {{ link.internal_link(url_for('main_bp.r_package'), 'R package') }}, which provides program code for the priority
+      indicators.
     </p>
   </div>
 </div>
 {% endcall %}
 <!-- prettier-ignore -->
 {% call acc.accordion_item(topic_id ~ "-accordion", 5, "Data Requirements and Guidance", title_level=3) %}
-<p class="ons-u-fs-r--b">The following data is needed for this indicator production:</p>
+<p class="ons-u-fs-r">The following data are needed for this indicator production:</p>
 <ul class="ons-list">
   <li class="ons-list__item list-disc">
-    Daily all-cause mortality data from national administrative records and civil registration
-    records.
+    daily all-cause mortality data from national administrative records and civil registration
+    records
   </li>
-  <li class="ons-list__item list-disc">Climate data from the National Meteorological Agency.</li>
   <li class="ons-list__item list-disc">
-    Population estimates are obtained from national statistical agencies.
+    climate data from the National Meteorological Agency
+  </li>
+  <li class="ons-list__item list-disc">
+    population estimates from national statistical agencies
   </li>
 </ul>
 <p class="ons-u-fs-r ons-u-mt-m">
@@ -195,19 +230,20 @@ group=topic_id ~ "-accordion",) }}
 {% endcall %}
 <!-- prettier-ignore -->
 {{ acc.accordion_end() }}
-{# BUTTONS TWO (CODE LIBRARY, INDICATOR TOOLS) #}
-<div
-  class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1"
->
+{# BUTTONS THREE (R PACKAGE GITHUB, CRAN) #}
+<div class="ons-grid ons-grid-flex ons-grid-flex--start ons-grid-flex--vertical-center ons-grid-flex--wrap gap-1">
   <div class="ons-grid__col ons-col-auto ons-u-mt-m">
-    {{ btn.external('Code Library', 'https://github.com/onssoschi/climatehealth') }}
+    {{ btn.external('Climatehealth GitHub', github_url) }}
   </div>
   <div class="ons-grid__col ons-col-auto ons-u-mt-m">
-    {{ btn.internal("Indicator Tools", url_for('indicator_bp.indicator_calculators') ~
-    '#air-pollution-select-file', "ons-btn--secondary" ) }}
+    {{ btn.external('CRAN Package Page', cran_package_url, "ons-btn--secondary") }}
   </div>
+  <!-- <div class="ons-grid__col ons-col-auto ons-u-mt-m">
+    {{ btn.internal("Indicator Tools", url_for('data_bp.indicator_calculators') ~ '#' ~ topic_id) }}
+  </div> -->
 </div>
 {# ACCORDION TWO #}
+<h2 class="ons-u-fs-l ons-u-mt-xl">FAQs</h2>
 <!-- prettier-ignore -->
 {{ acc.accordion_start(id=topic_id ~ "-accordion-two",
 group=topic_id ~ "-accordion-two",
@@ -225,9 +261,10 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "What does “short-term exposure” to outdoor PM2.5 mean?", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 2, "What does “short-term exposure” to ambient PM2.5 mean?",
+title_level=3) %}
 <p class="ons-u-fs-r">
-  Short-term exposure refers to exposure to outdoor PM2.5 concentrations over a period of days,
+  Short-term exposure refers to exposure to ambient PM2.5 concentrations over a period of days,
   rather than months or years. Daily PM2.5 levels are analysed, and their effects on mortality are
   assessed for the same day and up to 14 previous days using lag structures.
 </p>
@@ -237,11 +274,12 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "What is the relevance of statistics on all-cause mortality attributable to short-term exposure to outdoor PM2.5?", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 3, "What is the relevance of statistics on all-cause mortality
+attributable to short-term exposure to ambient PM2.5?", title_level=3) %}
 <p class="ons-u-fs-r">
   All-cause mortality is a comprehensive health outcome that captures deaths from any cause and is
   therefore a robust indicator of the overall health impact of air pollution. Short-term exposure to
-  outdoor PM2.5 has been shown to increase the risk of death, particularly from cardiovascular and
+  ambient PM2.5 has been shown to increase the risk of death, particularly from cardiovascular and
   respiratory causes.
 </p>
 <p class="ons-u-fs-r">
@@ -252,7 +290,8 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "Why is PM2.5 used as the main air pollution indicator?", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 4, "Why is PM2.5 used as the main air pollution indicator?",
+title_level=3) %}
 <p class="ons-u-fs-r">
   PM2.5 consists of very fine particles that can penetrate deep into the lungs and enter the
   bloodstream, making it especially harmful to human health. A substantial body of scientific
@@ -262,7 +301,8 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "How is the reference level for PM2.5 chosen?", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 5, "How is the reference level for PM2.5 chosen?",
+title_level=3) %}
 <p class="ons-u-fs-r">
   By default, the topic uses the World Health Organization (WHO) 24-hour PM2.5 guideline of 15 µg/m³
   as the reference level. Users may also apply their national air quality standards if these are
@@ -272,7 +312,8 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "Why are daily data required for this analysis?", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 6, "Why are daily data required for this analysis?",
+title_level=3) %}
 <p class="ons-u-fs-r">
   Daily data are essential because this analysis focuses on short-term health effects, which can
   vary from day to day. Using daily mortality, PM2.5, and meteorological data allows the model to
@@ -281,7 +322,8 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "Why are meteorological variables included in the model?", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 7, "Why are meteorological variables included in the model?",
+title_level=3) %}
 <p class="ons-u-fs-r">
   Meteorological factors such as temperature, humidity, precipitation, and wind speed influence both
   PM2.5 concentrations and human health. If not controlled for, they could confound the estimated
@@ -293,7 +335,8 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 8, "Why is disaggregation by age, sex, and other characteristics important?", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 8, "Why is disaggregation by age, sex, and other characteristics
+important?", title_level=3) %}
 <p class="ons-u-fs-r">
   Disaggregating the results helps identify population groups that are more vulnerable to short-term
   PM2.5 exposure, such as older adults, young children, or people living in urban areas. This
@@ -302,7 +345,8 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 9, "What are the main limitations of these PM2.5 mortality estimates?", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 9, "What are the main limitations of these PM2.5 mortality
+estimates?", title_level=3) %}
 <p class="ons-u-fs-r">
   The topic estimates population-level associations and does not measure individual exposure or
   causation. PM2.5 exposure may be misclassified because the topic does not account for indoor air
@@ -311,7 +355,8 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 {% endcall %}
 <!-- prettier-ignore -->
-{% call acc.accordion_item(topic_id ~ "-accordion-two", 10, "How should the results be interpreted by policymakers and the public?s", title_level=3) %}
+{% call acc.accordion_item(topic_id ~ "-accordion-two", 10, "How should the results be interpreted by policymakers and
+the public?", title_level=3) %}
 <p class="ons-u-fs-r">
   The results indicate how many deaths are statistically associated with short-term PM2.5 exposure
   at the population level, not how many deaths were directly caused by air pollution in a
@@ -326,14 +371,16 @@ toggle_text_close="Hide all FAQs") }}
 <!-- prettier-ignore -->
 {{ acc.accordion_end() }}
 <p class="ons-u-fs-r ons-u-mt-l">
-  For broader questions that apply across the platform, please see our{{
-  link.internal_link(url_for('main_bp.faqs') , 'General FAQs' ) }}section.
+  For broader questions that apply across the platform, please see our {{ link.internal_link(url_for('main_bp.faqs') ,
+  'General FAQs' ) }}section.
 </p>
 {# RELATED TOPICS #}
-<h2 class="ons-u-fs--l ons-u-mt-xl">Related Topics</h2>
+<h2 class="ons-u-fs-l ons-u-mt-xl">Related Topics</h2>
 <div class="ons-grid--flex ons-grid__col--flex justify-items-center text-center gap-4">
   <!-- prettier-ignore -->
-    {{ cards.relevant_pages("Health effects of extreme weather events - Wildfires", "", [], "icons/wildfires.svg", title_href=url_for('indicator_bp.framework') ~ '#wildfires-tab', img_width=200, img_height=200, img_alt='Wildfires icon') }}
+  {{ cards.relevant_pages("Health effects of extreme weather events - Wildfires", "", [], "icons/wildfires.svg",
+  title_href=url_for('data_bp.framework') ~ '#extreme-weather-events', img_width=200, img_height=200, img_alt='Wildfires
+  icon') }}
 </div>
 <h2 class="ons-u-fs-l ons-u-mt-xl">Topic Expert Group</h2>
 <p class="ons-u-fs-r">
@@ -344,68 +391,42 @@ toggle_text_close="Hide all FAQs") }}
 </p>
 <!-- prettier-ignore -->
 {% set team_members = [
-  {
-    "name": "Prof. Sir Andy Haines",
-    "company": "London School of Hygiene & Tropical Medicine, UK"
-  },
-  {
-    "name": "Prof. Ian Hamilton",
-    "company": "University College London (UCL), UK"
-  },
-  {
-    "name": "Dr. Maquines Sewe",
-    "company": "Umeå University, Sweden"
-  }
+{
+"name": "Prof. Sir Andy Haines",
+"company": "London School of Hygiene & Tropical Medicine, UK"
+},
+{
+"name": "Prof. Ian Hamilton",
+"company": "University College London (UCL), UK"
+},
+{
+"name": "Dr. Maquines Sewe",
+"company": "Umeå University, Sweden"
+}
 ] %}
 <!-- prettier-ignore -->
 {% set team_list_id = "ons-meet-the-team-" ~ topic_id ~ "-list" %}
 {# TEAM CARDS #}
 {% set members_count = team_members | length %}
-<div
-  class="ons-team-cards ons-u-mt-xl"
-  role="region"
-  aria-label="{{ title }} team"
-  data-js="ons-team-cards"
->
-  <ul
-    id="{{ team_list_id }}"
-    class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
-    data-js="ons-team-cards-list"
-  >
+<div class="ons-team-cards ons-u-mt-xl" role="region" aria-label="{{ title }} team" data-js="ons-team-cards">
+  <ul id="{{ team_list_id }}" class="ons-team-cards__list ons-list ons-list--bare ons-u-pb-s"
+    data-js="ons-team-cards-list">
     {% for member in team_members %}
     <li class="ons-team-cards__item flex items-end">
       <div class="ons-card">
         <h4 class="ons-card__title ons-u-fs-r--b ons-u-mb-no">{{ member.name }}</h4>
-        {% if member.company %}
-        <p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>
-        {% endif %}
+        {% if member.company %}<p class="ons-card__body ons-u-fs-s">{{ member.company }}</p>{% endif %}
       </div>
     </li>
     {% endfor %}
   </ul>
-  <button
-    type="button"
+  <button type="button"
     class="ons-team-cards__arrow {% if members_count <= 5 %}ons-team-cards__arrow--mobile-only{% endif %}"
-    aria-label="Show next team members"
-    aria-controls="{{ team_list_id }}"
-    data-js="ons-team-cards-next"
-  >
-    <svg
-      class="ons-icon"
-      viewBox="0 0 12 12"
-      xmlns="http://www.w3.org/2000/svg"
-      focusable="false"
-      aria-hidden="true"
-      role="img"
-    >
-      <path
-        d="M4 2.5L8 6L4 9.5"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
+    aria-label="Show next team members" aria-controls="{{ team_list_id }}" data-js="ons-team-cards-next">
+    <svg class="ons-icon" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"
+      role="img">
+      <path d="M4 2.5L8 6L4 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
     </svg>
   </button>
 </div>
@@ -421,16 +442,16 @@ toggle_text_close="Hide all FAQs") }}
     </p>
     <p class="ons-u-fs-r">
       For more information on the selection criteria used for prioritising the SOSCHI topics and the
-      development process, see the{{ link.internal_link(url_for('indicator_bp.framework') , 'SOSCHI
+      development process, see the{{ link.internal_link(url_for('data_bp.framework') , 'SOSCHI
       Framework Page' ) }}.
     </p>
     <p class="ons-u-fs-r">
       We recommend that the proposed indicators, methods and tools (e.g. R code) described on this
-      page can be used for official statistics reporting. See the{{
-      link.internal_link(url_for('indicator_bp.framework') , 'SOSCHI Framework Page' ) }}for information
+      page can be used for official statistics reporting. See the{{ link.internal_link(url_for('data_bp.framework') ,
+      'SOSCHI Framework Page' ) }}for information
       on the endorsement of the proposed indicators.
     </p>
   </div>
 </div>
 {# LAST UPDATED #}
-<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 28/02/2025</p>
+<p class="ons-u-mt-l ons-u-fs-r--b">Last updated: 28/05/2026</p>

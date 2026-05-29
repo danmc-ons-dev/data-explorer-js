@@ -20,7 +20,7 @@ class Header extends HTMLElement {
           <div class="flex flex-col text-center px-3 mb-4 md:mb-0 hidden xl:block">
             <h1 class="text-4xl font-semibold">
               <a href="/">
-                <span style="color: #003c57">Climate and Health Platform</span>
+                <span style="color: #003c57">Climate-Health Platform</span>
               </a>
             </h1>
             <p class="text-lg font-medium text-gray-700">

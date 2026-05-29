@@ -4,7 +4,7 @@ def get_search_entries():
             "title": "Home",
             "url": "/",
             "type": "page",
-            "summary": "Overview of the SOSCHI Climate and Health Platform.",
+            "summary": "Overview of the SOSCHI Climate-Health Platform.",
             "keywords": [
                 "home",
                 "homepage",
