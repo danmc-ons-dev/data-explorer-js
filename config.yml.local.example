@@ -4,6 +4,8 @@
 run_migrations: "false"
 debug_mode: "true"
 dummy_mode: "true"
+# Set to "true" to display the R-API system-health banner on every page
+show_system_health_notice: "true"
 
 # Database settings (not used in dummy_mode)
 host: "localhost"
@@ -13,6 +15,8 @@ password: "mypassword"
 port: 5432
 
 # R API URL - must be running for indicator calculators to work
-API_URL: "http://127.0.0.1:8000"
+# Local homelab deployment uses 8080 (matches the climatehealth R plumber service);
+# upstream default is 8000. Use 8080 for the local homelab stack.
+API_URL: "http://127.0.0.1:8080"
 
 # Note: Flask app runs on port 5001 by default
